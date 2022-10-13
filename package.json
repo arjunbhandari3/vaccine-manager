@@ -1,0 +1,11 @@
+{
+  "name": "vaccine-manager",
+  "version": "1.0.0",
+  "description": "Vaccine Management System",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 0"
+  },
+  "author": "Arjun Bhandari",
+  "license": "MIT"
+}

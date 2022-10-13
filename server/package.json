@@ -1,0 +1,59 @@
+{
+  "name": "vaccine-manager-server",
+  "version": "1.0.0",
+  "main": "server.js",
+  "license": "MIT",
+  "author": "Arjun Bhandari",
+  "scripts": {
+    "start:dev": "nodemon --watch .env --watch src --exec babel-node src --source-maps",
+    "knex": "babel-node node_modules/knex/bin/cli.js",
+    "migrate": "yarn knex migrate:latest --knexfile src/knexfile.js",
+    "rollback": "yarn knex migrate:rollback --knexfile src/knexfile.js",
+    "make:migration": "yarn knex migrate:make --knexfile src/knexfile.js",
+    "seed": "yarn knex seed:run --knexfile src/knexfile.js",
+    "make:seed": "yarn knex seed:make --knexfile src/knexfile.js",
+    "lint": "prettier --check .",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "pg": "^8.8.0",
+    "joi": "^17.6.2",
+    "knex": "^2.3.0",
+    "winston": "^3.8.2",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.0.2",
+    "morgan": "^1.10.0",
+    "express": "^4.18.1",
+    "lodash": "^4.17.21",
+    "nodemon": "^2.0.20",
+    "jsonwebtoken": "^8.5.1",
+    "camelcase-keys": "6.2.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{md,yml,yml,json}": [
+      "prettier --write"
+    ]
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.18.10",
+    "@babel/core": "^7.19.1",
+    "@babel/node": "^7.19.1",
+    "@babel/preset-env": "^7.19.1",
+    "basetag": "^2.1.0",
+    "husky": "4.2.5",
+    "lint-staged": "^13.0.3",
+    "prettier": "2.7.1"
+  },
+  "engines": {
+    "node": ">= 14.10.0"
+  }
+}
