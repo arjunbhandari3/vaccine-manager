@@ -1,5 +1,6 @@
 import User from '../models/user';
 
+import logger from '../utils/logger';
 import { filterFields } from '../utils/object';
 import { getHashedPassword, compareHash, getSignedTokens, verifyToken } from '../utils/auth';
 
@@ -12,6 +13,8 @@ import { REFRESH_TOKEN } from '../constants';
  * @returns {Object}
  */
 export const signIn = async payload => {
+  logger.info('Signing in user');
+
   const { email, password } = payload;
 
   const user = await User.getUserByEmail(email);
@@ -38,6 +41,8 @@ export const signIn = async payload => {
  * @returns {Object}
  */
 export const signUp = async payload => {
+  logger.info('Signing up user');
+
   const { email, password } = payload;
 
   const user = await User.getUserByEmail(email);
@@ -70,6 +75,8 @@ export const signUp = async payload => {
  * @returns {Object}
  */
 export const refreshAccessToken = async refreshToken => {
+  logger.info('Refreshing access token');
+
   const { id } = verifyToken(refreshToken, REFRESH_TOKEN);
 
   const user = await User.getUserById(id);

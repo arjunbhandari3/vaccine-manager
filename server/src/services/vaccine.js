@@ -1,3 +1,7 @@
+import Vaccine from '../models/vaccine';
+
+import logger from '../utils/logger';
+
 /**
  * Create a new vaccine.
  *
@@ -5,6 +9,8 @@
  * @returns {Object}
  */
 export const createVaccine = async payload => {
+  logger.info('Creating vaccine');
+
   const vaccine = await Vaccine.getVaccineByName(payload.name);
 
   if (vaccine) {
@@ -24,6 +30,8 @@ export const createVaccine = async payload => {
  * @returns {Object}
  */
 export const getVaccineById = async id => {
+  logger.info('Getting vaccine by id:' + id);
+
   const vaccine = await Vaccine.getVaccineById(id);
 
   return vaccine;
@@ -35,6 +43,8 @@ export const getVaccineById = async id => {
  * @returns {Object}
  */
 export const getVaccineByName = async name => {
+  logger.info('Getting vaccine by name:' + name);
+
   const vaccine = await Vaccine.getVaccineByName(name);
 
   return vaccine;
@@ -45,6 +55,8 @@ export const getVaccineByName = async name => {
  * @returns {Object}
  */
 export const getAllVaccines = async () => {
+  logger.info('Getting all vaccines');
+
   const vaccines = await Vaccine.getAllVaccines();
 
   return vaccines;
@@ -57,6 +69,8 @@ export const getAllVaccines = async () => {
  * @returns {Object}
  */
 export const updateVaccine = async (id, payload) => {
+  logger.info('Updating vaccine by id:' + id);
+
   const vaccine = await Vaccine.getVaccineById(id);
 
   if (!vaccine) {
@@ -76,6 +90,8 @@ export const updateVaccine = async (id, payload) => {
  * @returns {Object}
  */
 export const deleteVaccine = async id => {
+  logger.info('Deleting vaccine by id:' + id);
+
   const vaccine = await Vaccine.getVaccineById(id);
 
   if (!vaccine) {
