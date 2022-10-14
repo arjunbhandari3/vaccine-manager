@@ -1,11 +1,9 @@
-import jwt from 'jsonwebtoken';
-
 import User from '../models/user';
 
 import { filterFields } from '../utils/object';
-import { getHashedPassword, compareHash, getSignedTokens } from '../utils/auth';
+import { getHashedPassword, compareHash, getSignedTokens, verifyToken } from '../utils/auth';
 
-import { TOKEN_SECRETS, REFRESH_TOKEN } from '../constants';
+import { REFRESH_TOKEN } from '../constants';
 
 /**
  * Sign in an existing user.
@@ -55,8 +53,8 @@ export const signUp = async payload => {
     password: hashedPassword,
   });
 
-  const { accessToken, refreshToken } = getSignedTokens({ id: user.id, email: user.email });
-  const filteredUser = filterFields(user, ['password']);
+  const { accessToken, refreshToken } = getSignedTokens({ id: newUser.id, email: newUser.email });
+  const filteredUser = filterFields(newUser, ['password']);
 
   return {
     accessToken,
@@ -72,7 +70,7 @@ export const signUp = async payload => {
  * @returns {Object}
  */
 export const refreshAccessToken = async refreshToken => {
-  const { id } = jwt.verify(refreshToken, TOKEN_SECRETS[REFRESH_TOKEN]);
+  const { id } = verifyToken(refreshToken, REFRESH_TOKEN);
 
   const user = await User.getUserById(id);
 
@@ -80,7 +78,7 @@ export const refreshAccessToken = async refreshToken => {
     throw new Error('User not found!');
   }
 
-  const { accessToken, refreshToken: newRefreshToken } = getSignedTokens(user);
+  const { accessToken, refreshToken: newRefreshToken } = getSignedTokens({ id: user.id, email: user.email });
   const filteredUser = filterFields(user, ['password']);
 
   return {

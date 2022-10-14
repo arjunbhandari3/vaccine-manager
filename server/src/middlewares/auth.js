@@ -1,3 +1,4 @@
+import logger from '../utils/logger';
 import { verifyToken } from '../utils/auth';
 
 const auth = async (req, res, next) => {
@@ -13,7 +14,8 @@ const auth = async (req, res, next) => {
 
     next();
   } catch (error) {
-    next(error);
+    logger.error(error);
+    next(new Error('Unauthorized'));
   }
 };
 

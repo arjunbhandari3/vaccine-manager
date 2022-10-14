@@ -1,9 +1,20 @@
 import db from '../db';
 
-class User {
-  static TABLE_NAME = 'user';
+import { TABLE_NAME_USER } from '../constants';
 
-  static qb = db(this.TABLE_NAME);
+class User {
+  static qb = db(TABLE_NAME_USER);
+
+  /**
+   * Get user by id.
+   * @param {Number} id
+   * @returns {Object}
+   */
+  static async getById(id) {
+    const result = this.qb.where('id', id).returning('*');
+
+    return result.then(([user]) => user);
+  }
 
   /**
    * Get user by email.
@@ -26,27 +37,6 @@ class User {
    */
   static createUser(payload) {
     return this.qb.insert(payload).returning('*');
-  }
-
-  /**
-   * Update user.
-   *
-   * @param {number} id
-   * @param {object} payload
-   * @returns {Promise}
-   */
-  static updateUser(id, payload) {
-    return this.qb.where({ id }).update(payload).returning('*');
-  }
-
-  /**
-   * Delete user.
-   *
-   * @param {number} id
-   * @returns {Promise}
-   */
-  static deleteUser(id) {
-    return this.qb.where({ id }).del();
   }
 }
 

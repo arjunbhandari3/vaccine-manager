@@ -1,15 +1,15 @@
 /**
  * Remove fields from object.
- * @param {object} user
+ * @param {object} object
  * @param {array} fields
  * @returns {object}
  */
-export const filterFields = (user, fields) => {
-  const filteredUser = { ...user };
+export const filterFields = (object, fields = []) => {
+  const filteredObject = { ...object };
 
   fields.forEach(field => {
-    delete filteredUser[field];
+    delete filteredObject[field];
   });
 
-  return filteredUser;
+  return filteredObject;
 };

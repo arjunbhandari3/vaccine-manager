@@ -1,6 +1,8 @@
-require("dotenv").config({ path: `${__dirname}/../.env` });
+import dotenv from 'dotenv';
 
-// [TODO]:change according to requirements.
+dotenv.config({ path: `${__dirname}/../.env` });
+
+// TODO:change according to requirements.
 // Default configuration for database connection
 const connection = {
   port: process.env.DB_PORT,
@@ -17,12 +19,12 @@ module.exports = {
   connection,
   client: process.env.DB_CLIENT,
   migrations: {
-    tableName: "migrations",
-    directory: "./migrations",
-    stub: "./stubs/migration.stub",
+    tableName: 'migrations',
+    directory: './migrations',
+    stub: './stubs/migration.stub',
   },
   seeds: {
-    directory: "./seeds",
-    stub: "./stubs/seed.stub",
+    directory: './seeds',
+    stub: './stubs/seed.stub',
   },
 };
