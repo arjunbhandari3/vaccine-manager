@@ -4,13 +4,24 @@ dotenv.config({ path: `${__dirname}/../.env` });
 
 // TODO:change according to requirements.
 // Default configuration for database connection
-const connection = {
+let connection = {
   port: process.env.DB_PORT,
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
 };
+
+// For test environment
+if (process.env.NODE_ENV === 'test') {
+  connection = {
+    port: process.env.TEST_DB_PORT,
+    host: process.env.TEST_DB_HOST,
+    user: process.env.TEST_DB_USER,
+    password: process.env.TEST_DB_PASSWORD,
+    database: process.env.TEST_DB_NAME,
+  };
+}
 
 /**
  * Database configuration.
