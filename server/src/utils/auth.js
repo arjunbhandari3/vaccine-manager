@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-import { ACCESS_TOKEN, REFRESH_TOKEN, TOKEN_EXPIRES_IN, TOKEN_SECRETS } from '../constants';
+import { ACCESS_TOKEN } from '../constants';
 
 /**
  * Get hashed password.
@@ -33,18 +33,15 @@ export const compareHash = async (password, hashedPassword) => {
  * @returns {object}
  */
 export const getSignedTokens = data => {
-  const accessToken = jwt.sign(data, TOKEN_SECRETS[ACCESS_TOKEN], {
-    expiresIn: TOKEN_EXPIRES_IN[ACCESS_TOKEN],
+  const accessToken = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN,
   });
 
-  const refreshToken = jwt.sign(data, TOKEN_SECRETS[REFRESH_TOKEN], {
-    expiresIn: TOKEN_EXPIRES_IN[REFRESH_TOKEN],
+  const refreshToken = jwt.sign(data, process.env.REFRESH_TOKEN_SECRET, {
+    expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN,
   });
 
-  return {
-    accessToken,
-    refreshToken,
-  };
+  return { accessToken, refreshToken };
 };
 
 /**
@@ -54,6 +51,6 @@ export const getSignedTokens = data => {
  * @param {string} type
  * @returns {object}
  */
-export const verifyToken = (token, type) => {
-  return jwt.verify(token, TOKEN_SECRETS[type]);
+export const verifyToken = (token, type = ACCESS_TOKEN) => {
+  return jwt.verify(token, type === ACCESS_TOKEN ? process.env.ACCESS_TOKEN_SECRET : process.env.REFRESH_TOKEN_SECRET);
 };
