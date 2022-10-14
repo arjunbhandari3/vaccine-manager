@@ -10,7 +10,7 @@ class Vaccine {
    * @param {Number} id
    * @returns {Object}
    */
-  static async getById(id) {
+  static async getVaccineById(id) {
     const result = this.qb.where('id', id).returning('*');
 
     return result.then(([vaccine]) => vaccine);
@@ -27,6 +27,16 @@ class Vaccine {
     const result = this.qb.where('name', name).returning('*');
 
     return result.then(([vaccine]) => vaccine);
+  }
+
+  /**
+   * Get all vaccines.
+   * @returns {Object}
+   */
+  static getAllVaccines() {
+    const result = this.qb.returning('*');
+
+    return result;
   }
 
   /**

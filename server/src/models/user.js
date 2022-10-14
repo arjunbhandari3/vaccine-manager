@@ -10,7 +10,7 @@ class User {
    * @param {Number} id
    * @returns {Object}
    */
-  static async getById(id) {
+  static async getUserById(id) {
     const result = this.qb.where('id', id).returning('*');
 
     return result.then(([user]) => user);
