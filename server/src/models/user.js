@@ -13,7 +13,9 @@ class User {
    */
 
   static getUserByEmail(email) {
-    return this.qb.where({ email }).first();
+    const result = this.qb.where('email', email).returning('*');
+
+    return result.then(([user]) => user);
   }
 
   /**

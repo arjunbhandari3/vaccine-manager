@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-import { ACCESS_TOKEN, REFRESH_TOKEN, TOKEN_SECRETS } from '../constants';
+import { ACCESS_TOKEN, REFRESH_TOKEN, TOKEN_EXPIRES_IN, TOKEN_SECRETS } from '../constants';
 
 /**
  * Get hashed password.
@@ -29,12 +29,17 @@ export const compareHash = async (password, hashedPassword) => {
 /**
  * Get signed tokens.
  *
- * @param {object} user
+ * @param {object} data
  * @returns {object}
  */
-export const getSignedTokens = user => {
-  const accessToken = jwt.sign({ id: user.id }, TOKEN_SECRETS[ACCESS_TOKEN], { expiresIn: '15m' });
-  const refreshToken = jwt.sign({ id: user.id }, TOKEN_SECRETS[REFRESH_TOKEN], { expiresIn: '7d' });
+export const getSignedTokens = data => {
+  const accessToken = jwt.sign(data, TOKEN_SECRETS[ACCESS_TOKEN], {
+    expiresIn: TOKEN_EXPIRES_IN[ACCESS_TOKEN],
+  });
+
+  const refreshToken = jwt.sign(data, TOKEN_SECRETS[REFRESH_TOKEN], {
+    expiresIn: TOKEN_EXPIRES_IN[REFRESH_TOKEN],
+  });
 
   return {
     accessToken,

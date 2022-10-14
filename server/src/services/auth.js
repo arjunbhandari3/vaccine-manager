@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 
 import User from '../models/user';
 
+import { filterFields } from '../utils/object';
 import { getHashedPassword, compareHash, getSignedTokens } from '../utils/auth';
 
 import { TOKEN_SECRETS, REFRESH_TOKEN } from '../constants';
@@ -21,12 +22,14 @@ export const signIn = async payload => {
     throw new Error('Invalid credentials');
   }
 
-  const { accessToken, refreshToken } = getSignedTokens({ id: user.id, email });
+  const { accessToken, refreshToken } = getSignedTokens({ id: user.id, email: user.email });
+
+  const filteredUser = filterFields(user, ['password']);
 
   return {
     accessToken,
     refreshToken,
-    user,
+    user: filteredUser,
   };
 };
 
@@ -52,12 +55,13 @@ export const signUp = async payload => {
     password: hashedPassword,
   });
 
-  const { accessToken, refreshToken } = getSignedTokens({ id: newUser.id, email });
+  const { accessToken, refreshToken } = getSignedTokens({ id: user.id, email: user.email });
+  const filteredUser = filterFields(user, ['password']);
 
   return {
     accessToken,
     refreshToken,
-    user: newUser,
+    user: filteredUser,
   };
 };
 
@@ -77,10 +81,11 @@ export const refreshAccessToken = async refreshToken => {
   }
 
   const { accessToken, refreshToken: newRefreshToken } = getSignedTokens(user);
+  const filteredUser = filterFields(user, ['password']);
 
   return {
     accessToken,
     refreshToken: newRefreshToken,
-    user,
+    user: filteredUser,
   };
 };

@@ -3,13 +3,12 @@ import HttpStatus from 'http-status-codes';
 import logger from '../utils/logger';
 
 export default (err, req, res, next) => {
-  //Postgres unique constriant error
-  if (err.code === '23505') {
-    return res.status(HttpStatus.BAD_REQUEST).send({
-      message: 'Email already exists,',
-    });
-  }
+  err.statusCode = err.statusCode || HttpStatus.INTERNAL_SERVER_ERROR;
+  err.message = err.message || 'Internal Server Error';
 
-  logger.error(err.stack);
-  res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Internal Server Error' });
+  logger.error(err);
+  res.status(err.statusCode).json({
+    success: false,
+    error: err.message,
+  });
 };
