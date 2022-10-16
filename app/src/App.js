@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+// import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
 
-function App() {
+import "assets/css/app.css";
+import { AppRouter } from "Router";
+// import { store } from "./redux/store";
+import { tokenInterceptorProvider } from "axios/interceptor";
+
+const App = () => {
+  tokenInterceptorProvider();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      {/* <Provider store={store}> */}
+      <BrowserRouter>
+        <AppRouter />
+      </BrowserRouter>
+      {/* </Provider> */}
     </div>
   );
-}
+};
 
 export default App;
