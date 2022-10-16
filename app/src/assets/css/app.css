@@ -66,3 +66,32 @@
 .add-vaccine-btn:hover {
   background-color: #002a52;
 }
+
+.vaccines-container {
+  padding: 40px 80px;
+}
+
+.vaccines-heading {
+  font-size: 42px;
+  color: rgb(29, 84, 156);
+}
+
+.add-vaccine-container {
+  max-width: 760px;
+  margin: 0px auto;
+  padding: 40px 80px;
+}
+
+.add-vaccine-heading {
+  font-size: 42px;
+  color: rgb(29, 84, 156);
+}
+
+.form-label {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.form-label--required {
+  color: red;
+}

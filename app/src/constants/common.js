@@ -9,9 +9,15 @@ export const SUCCESSFULLY_SIGNED_OUT = "Signed out Successfully!";
 export const INVALID_CREDENTIALS_MESSAGE = "Invalid Credentials!";
 export const SIGN_IN_FAILED = "Sign in failed!";
 
-export const EMPTY_EMAIL = "Please enter your email!";
+export const REQUIRED = "Required!";
 export const INVALID_EMAIL = "Please enter valid email!";
-export const EMPTY_PASSWORD = "Please enter your password!";
-export const EMPTY_CONFIRM_PASSWORD = "Please confirm your password!";
 export const INVALID_CONFIRM_PASSWORD =
   "The two passwords that you entered do not match!";
+export const INVALID_PASSWORD = "Password must be at least 6 characters long!";
+export const INVALID_DATE = "Please enter valid date!";
+export const INVALID_EXPIRY_DATE =
+  "Expiry date must be greater than release date!";
+
+export const VACCINE_ADDED_MESSAGE = "New Vaccine Added Successfully!";
+export const VACCINE_EDITED_MESSAGE = "Vaccine Edited Successfully!";
+export const VACCINE_DELETED_MESSAGE = "Vaccine Deleted Successfully!";

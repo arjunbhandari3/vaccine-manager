@@ -10,9 +10,8 @@ import { signIn } from "services/auth";
 import useDocumentTitle from "hooks/useDocumentTitle";
 
 import {
-  EMPTY_EMAIL,
+  REQUIRED,
   INVALID_EMAIL,
-  EMPTY_PASSWORD,
   SUCCESSFULLY_SIGNED_IN,
   INVALID_CREDENTIALS_MESSAGE,
 } from "constants/common";
@@ -49,7 +48,6 @@ const SignIn = (props) => {
           form={form}
           onFinish={onSubmit}
           validateTrigger="onSubmit"
-          initialValues={{ remember: true }}
           autoComplete="off"
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
@@ -60,8 +58,9 @@ const SignIn = (props) => {
           <Form.Item
             colon={false}
             name="email"
+            placeholder="Email"
             rules={[
-              { required: true, message: EMPTY_EMAIL },
+              { required: true, message: REQUIRED },
               { type: "email", message: INVALID_EMAIL },
             ]}
           >
@@ -73,8 +72,9 @@ const SignIn = (props) => {
           </div>
           <Form.Item
             name="password"
+            placeholder="Password"
             colon={false}
-            rules={[{ required: true, message: EMPTY_PASSWORD }]}
+            rules={[{ required: true, message: REQUIRED }]}
           >
             <Input.Password />
           </Form.Item>

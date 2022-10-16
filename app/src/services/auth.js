@@ -7,6 +7,9 @@ import {
 } from "../utils/token";
 import config from "../config/config";
 
+/**
+ * Get token
+ */
 export const getToken = async () => {
   const userId = getUserFromLocalStorage();
   const { refreshToken } = getTokenFromLocalStorage();
@@ -24,6 +27,12 @@ export const getToken = async () => {
   }
 };
 
+/**
+ * Sign in user
+ * @param {string} email
+ * @param {string} password
+ * @returns {Promise}
+ */
 export const signIn = async (email, password) => {
   const { data } = await axios.post(config.endpoints.auth.signIn, {
     email,
@@ -37,6 +46,12 @@ export const signIn = async (email, password) => {
   return data;
 };
 
+/**
+ * Sign up user
+ * @param {string} email
+ * @param {string} password
+ * @returns {Promise}
+ */
 export const signUp = async (email, password) => {
   const { data } = await axios.post(config.endpoints.auth.signUp, {
     email,
