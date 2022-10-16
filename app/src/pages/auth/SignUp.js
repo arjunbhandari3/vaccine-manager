@@ -10,10 +10,9 @@ import { signUp } from "services/auth";
 import useDocumentTitle from "hooks/useDocumentTitle";
 
 import {
-  EMPTY_EMAIL,
+  REQUIRED,
   INVALID_EMAIL,
-  EMPTY_PASSWORD,
-  EMPTY_CONFIRM_PASSWORD,
+  INVALID_PASSWORD,
   SUCCESSFULLY_SIGNED_UP,
   INVALID_CONFIRM_PASSWORD,
   INVALID_CREDENTIALS_MESSAGE,
@@ -49,7 +48,6 @@ const SignUp = (props) => {
           name="basic"
           form={form}
           onFinish={onSubmit}
-          initialValues={{ remember: true }}
           autoComplete="off"
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
@@ -61,7 +59,7 @@ const SignUp = (props) => {
             colon={false}
             name="email"
             rules={[
-              { required: true, message: EMPTY_EMAIL },
+              { required: true, message: REQUIRED },
               { type: "email", message: INVALID_EMAIL },
             ]}
           >
@@ -74,7 +72,13 @@ const SignUp = (props) => {
           <Form.Item
             name="password"
             colon={false}
-            rules={[{ required: true, message: EMPTY_PASSWORD }]}
+            rules={[
+              { required: true, message: REQUIRED },
+              {
+                min: 6,
+                message: INVALID_PASSWORD,
+              },
+            ]}
           >
             <Input.Password />
           </Form.Item>
@@ -86,7 +90,7 @@ const SignUp = (props) => {
             name="confirm-password"
             colon={false}
             rules={[
-              { required: true, message: EMPTY_CONFIRM_PASSWORD },
+              { required: true, message: REQUIRED },
               ({ getFieldValue }) => ({
                 validator(_, value) {
                   if (!value || getFieldValue("password") === value) {
