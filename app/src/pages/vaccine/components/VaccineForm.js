@@ -42,8 +42,8 @@ export const VaccineForm = (props) => {
 
         form.setFieldsValue({
           ...vaccine,
-          releaseDate: moment(vaccine.releaseDate).format("DD-MM-YYYY"),
-          expirationDate: moment(vaccine.expirationDate).format("DD-MM-YYYY"),
+          releaseDate: moment(vaccine.releaseDate).format("YYYY-MM-DD"),
+          expirationDate: moment(vaccine.expirationDate).format("YYYY-MM-DD"),
         });
       };
 
@@ -53,7 +53,7 @@ export const VaccineForm = (props) => {
 
   const onSubmit = async (values) => {
     const formData = new FormData();
-
+    console.log(values);
     formData.append("name", values.name);
     formData.append("description", values.description);
     formData.append("numberOfDoses", values.numberOfDoses);
@@ -62,7 +62,7 @@ export const VaccineForm = (props) => {
     formData.append("expirationDate", values.expirationDate);
     formData.append("isMandatory", values.isMandatory);
     values.picture?.file?.originFileObj &&
-      formData.append("photoUrl", values.picture.file.originFileObj);
+      formData.append("photoUrl", values?.picture?.file?.originFileObj);
 
     if (isEditForm) {
       await editVaccine(vaccineId, formData);
@@ -137,6 +137,7 @@ export const VaccineForm = (props) => {
           <Label label="Expiration Date" isCompulsory />
           <Form.Item
             colon={false}
+            format="YYYY-MM-DD"
             name="expirationDate"
             rules={[
               { required: true, message: REQUIRED },
@@ -146,7 +147,10 @@ export const VaccineForm = (props) => {
               },
               ({ getFieldValue }) => ({
                 validator(rule, value) {
-                  if (!value || getFieldValue("releaseDate") < value) {
+                  if (
+                    !value ||
+                    moment(value).isAfter(getFieldValue("releaseDate"))
+                  ) {
                     return Promise.resolve();
                   }
 
@@ -180,17 +184,8 @@ export const VaccineForm = (props) => {
         </Col>
       </Row>
 
-      <Label label="Image" isCompulsory={!isEditForm} />
-      <Form.Item
-        colon={false}
-        name="photoUrl"
-        rules={[
-          {
-            required: !isEditForm,
-            message: !isEditForm ? REQUIRED : null,
-          },
-        ]}
-      >
+      <Label label="Image" />
+      <Form.Item colon={false} name="photoUrl">
         <Upload maxCount={1}>
           <Button icon={<UploadOutlined />}>Click to Upload</Button>
         </Upload>

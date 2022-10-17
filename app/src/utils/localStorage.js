@@ -15,9 +15,9 @@ export const setDataToLocalStorage = (key, value, isObject = false) => {
  * @returns {string} value
  */
 export const getDataFromLocalStorage = (key, isObject = false) => {
-  return isObject
-    ? JSON.parse(localStorage.getItem(key))
-    : localStorage.getItem(key);
+  const value = localStorage.getItem(key);
+
+  return isObject ? JSON.parse(value) : value;
 };
 
 /**

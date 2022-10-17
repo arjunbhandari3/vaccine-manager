@@ -6,8 +6,6 @@ export const DEVELOPMENT = "development";
 export const SUCCESSFULLY_SIGNED_IN = "Signed in Successfully!";
 export const SUCCESSFULLY_SIGNED_UP = "Signed up Successfully!";
 export const SUCCESSFULLY_SIGNED_OUT = "Signed out Successfully!";
-export const INVALID_CREDENTIALS_MESSAGE = "Invalid Credentials!";
-export const SIGN_IN_FAILED = "Sign in failed!";
 
 export const REQUIRED = "Required!";
 export const INVALID_EMAIL = "Please enter valid email!";

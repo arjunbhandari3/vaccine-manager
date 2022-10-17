@@ -1,5 +1,5 @@
 import { Divider } from "antd";
-import VaccinesTable from "./components/VaccineTable";
+import { VaccineTable } from "./components/VaccineTable";
 
 export const Vaccines = (props) => {
   return (
@@ -9,7 +9,7 @@ export const Vaccines = (props) => {
       </div>
       <Divider />
       <div>
-        <VaccinesTable />
+        <VaccineTable />
       </div>
     </div>
   );
