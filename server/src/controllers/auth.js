@@ -50,7 +50,7 @@ export const refreshTokens = async (req, res, next) => {
   try {
     const { refreshToken } = req.body;
 
-    const data = await authService.generateNewTokens(refreshToken);
+    const data = await authService.refreshAccessToken(refreshToken);
 
     return res.status(HttpStatus.OK).json(data);
   } catch (error) {
