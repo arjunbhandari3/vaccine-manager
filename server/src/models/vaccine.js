@@ -11,9 +11,9 @@ class Vaccine {
    * @returns {Object}
    */
   static async getVaccineById(id) {
-    const result = this.qb.where('id', id).returning('*');
+    const result = await this.qb.where('id', id).select('*');
 
-    return result.then(([vaccine]) => vaccine);
+    return result[0];
   }
 
   /**
@@ -23,18 +23,18 @@ class Vaccine {
    * @returns {Promise}
    */
 
-  static getVaccineByName(name) {
-    const result = this.qb.where('name', name).returning('*');
+  static async getVaccineByName(name) {
+    const result = await this.qb.where('name', name).select('*');
 
-    return result.then(([vaccine]) => vaccine);
+    return result[0];
   }
 
   /**
    * Get all vaccines.
    * @returns {Object}
    */
-  static getAllVaccines() {
-    const result = this.qb.returning('*');
+  static async getAllVaccines() {
+    const result = await this.qb.returning('*');
 
     return result;
   }
@@ -45,8 +45,10 @@ class Vaccine {
    * @param {object} payload
    * @returns {Promise}
    */
-  static createVaccine(payload) {
-    return this.qb.insert(payload).returning('*');
+  static async createVaccine(payload) {
+    const result = await this.qb.insert(payload).returning('*');
+
+    return result[0];
   }
 
   /**
@@ -56,8 +58,8 @@ class Vaccine {
    * @param {object} payload
    * @returns {Promise}
    */
-  static updateVaccine(id, payload) {
-    return this.qb.where('id', id).update(payload).returning('*');
+  static async updateVaccine(id, payload) {
+    return await this.qb.where('id', id).update(payload).returning('*');
   }
 
   /**
@@ -66,8 +68,8 @@ class Vaccine {
    * @param {number} id
    * @returns {Promise}
    */
-  static deleteVaccine(id) {
-    return this.qb.returning('*').del().where('id', id);
+  static async deleteVaccine(id) {
+    return await this.qb.returning('*').del().where('id', id);
   }
 }
 
