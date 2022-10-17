@@ -9,18 +9,19 @@ const createVaccineSchema = Joi.object({
   manufacturer: Joi.string().required().label('Manufacturer'),
   releaseDate: Joi.date().required().label('Release Date'),
   expirationDate: Joi.date().required().label('Expiration Date'),
-  photoUrl: Joi.string().label('Photo URL'),
+  photoUrl: Joi.string().label('Photo URL').allow(null),
   isMandatory: Joi.boolean().label('Is Mandatory'),
 });
 
 const updateVaccineSchema = Joi.object({
+  id: Joi.number().required().label('Id'),
   name: Joi.string().label('Name'),
   description: Joi.string().label('Description'),
   numberOfDoses: Joi.number().label('Number of Doses'),
   manufacturer: Joi.string().label('Manufacturer'),
   releaseDate: Joi.date().label('Release Date'),
   expirationDate: Joi.date().label('Expiration Date'),
-  photoUrl: Joi.string().label('Photo URL'),
+  photoUrl: Joi.string().label('Photo URL').allow(null),
   isMandatory: Joi.boolean().label('Is Mandatory'),
 });
 

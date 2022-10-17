@@ -18,11 +18,10 @@ describe('Auth Test', () => {
   it('should create new user', async () => {
     const res = await request(app).post(`${url}/signup`).send(userData);
 
-    console.log(res.body, res.status, 'signup');
     expect(res.status).to.equal(201);
-    expect(res.body.data).to.be.an('object');
-    expect(res.body.data.user).to.be.an('object');
-    expect(res.body.data.accessToken).to.be.an('string');
+    expect(res.body).to.be.an('object');
+    expect(res.body.user).to.be.an('object');
+    expect(res.body.accessToken).to.be.an('string');
   });
 
   it('should sign in user', async () => {
