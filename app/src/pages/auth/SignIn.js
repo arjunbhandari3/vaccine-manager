@@ -13,7 +13,6 @@ import {
   REQUIRED,
   INVALID_EMAIL,
   SUCCESSFULLY_SIGNED_IN,
-  INVALID_CREDENTIALS_MESSAGE,
 } from "constants/common";
 import * as routes from "constants/routes";
 
@@ -24,14 +23,15 @@ const SignIn = (props) => {
   useDocumentTitle("Sign In");
 
   const onSubmit = async (values) => {
-    const data = await signIn(values.email, values.password);
+    try {
+      await signIn(values.email, values.password);
 
-    if (data) {
-      navigate("/dashboard");
+      navigate(routes.VACCINES);
 
       showSuccessNotification(SUCCESSFULLY_SIGNED_IN);
-    } else {
-      showErrorNotification(INVALID_CREDENTIALS_MESSAGE);
+    } catch (error) {
+      console.log(error);
+      showErrorNotification(error?.response?.data?.error);
     }
 
     form.resetFields();

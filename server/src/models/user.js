@@ -11,9 +11,9 @@ class User {
    * @returns {Object}
    */
   static async getUserById(id) {
-    const result = this.qb.where('id', id).returning('*');
+    const result = await this.qb.select('*').where('id', id);
 
-    return result.then(([user]) => user);
+    return result[0];
   }
 
   /**
@@ -23,10 +23,10 @@ class User {
    * @returns {Promise}
    */
 
-  static getUserByEmail(email) {
-    const result = this.qb.where('email', email).returning('*');
+  static async getUserByEmail(email) {
+    const result = await this.qb.select('*').where('email', email);
 
-    return result.then(([user]) => user);
+    return result[0];
   }
 
   /**
@@ -35,8 +35,10 @@ class User {
    * @param {object} payload
    * @returns {Promise}
    */
-  static createUser(payload) {
-    return this.qb.insert(payload).returning('*');
+  static async createUser(payload) {
+    const result = await this.qb.insert(payload).returning('*');
+
+    return result[0];
   }
 }
 

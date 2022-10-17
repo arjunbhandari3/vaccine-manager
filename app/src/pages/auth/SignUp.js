@@ -15,7 +15,6 @@ import {
   INVALID_PASSWORD,
   SUCCESSFULLY_SIGNED_UP,
   INVALID_CONFIRM_PASSWORD,
-  INVALID_CREDENTIALS_MESSAGE,
 } from "constants/common";
 import * as routes from "constants/routes";
 
@@ -26,15 +25,16 @@ const SignUp = (props) => {
   useDocumentTitle("Sign Up");
 
   const onSubmit = async (values) => {
-    const data = await signUp(values.email, values.password);
+    try {
+      await signUp(values.email, values.password);
 
-    if (data) {
-      navigate("/login");
+      navigate(routes.VACCINES);
+      form.resetFields();
 
       showSuccessNotification(SUCCESSFULLY_SIGNED_UP);
-      form.resetFields();
-    } else {
-      showErrorNotification(INVALID_CREDENTIALS_MESSAGE);
+    } catch (error) {
+      console.log(error);
+      showErrorNotification(error?.response?.data?.error);
     }
   };
 

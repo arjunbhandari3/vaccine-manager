@@ -95,3 +95,25 @@
 .form-label--required {
   color: red;
 }
+
+.profile-img {
+  height: 50px;
+  width: 50px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+}
+
+.delete-link {
+  color: red;
+  cursor: pointer;
+}
+
+.edit-link {
+  color: rgb(231, 177, 95);
+  cursor: pointer;
+}
+
+.favourite-container {
+  cursor: pointer;
+}

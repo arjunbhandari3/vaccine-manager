@@ -6,7 +6,6 @@ import { getTokenFromLocalStorage } from "../utils/token";
 const reqInterceptor = (config) => {
   const { accessToken } = getTokenFromLocalStorage() || {};
 
-  console.log(accessToken);
   if (accessToken && config.headers) {
     config.headers.Authorization = `Bearer ${accessToken}`;
   }

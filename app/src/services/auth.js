@@ -11,18 +11,17 @@ import config from "../config/config";
  * Get token
  */
 export const getToken = async () => {
-  const userId = getUserFromLocalStorage();
+  const { id } = getUserFromLocalStorage();
   const { refreshToken } = getTokenFromLocalStorage();
 
-  const res = await axios.post(config.endpoints.auth.refreshToken, {
+  const { data } = await axios.post(config.endpoints.auth.refreshToken, {
     refreshToken,
-    userId,
+    id,
   });
 
-  if (res.data) {
-    const data = res.data.data;
-
+  if (data) {
     const { accessToken, refreshToken, user } = data;
+
     setUserDataToLocalStorage(accessToken, refreshToken, user.id);
   }
 };
@@ -39,7 +38,7 @@ export const signIn = async (email, password) => {
     password,
   });
 
-  const { accessToken, refreshToken, user } = data.data;
+  const { accessToken, refreshToken, user } = data;
 
   setUserDataToLocalStorage(accessToken, refreshToken, user.id);
 
@@ -58,7 +57,7 @@ export const signUp = async (email, password) => {
     password,
   });
 
-  const { accessToken, refreshToken, user } = data.data;
+  const { accessToken, refreshToken, user } = data;
 
   setUserDataToLocalStorage(accessToken, refreshToken, user.id);
 

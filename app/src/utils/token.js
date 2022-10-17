@@ -22,11 +22,22 @@ export const setUserDataToLocalStorage = (
 };
 
 /**
+ * Get access token from local storage
+ * @returns {string}
+ */
+export const getAccessToken = () => {
+  const token = getDataFromLocalStorage("token", true);
+
+  return token.accessToken;
+};
+
+/**
  * Get tokens from local storage
  * @returns {Object} {accessToken, refreshToken}
  */
 export const getTokenFromLocalStorage = () => {
   const token = getDataFromLocalStorage("token", true);
+
   return token;
 };
 
@@ -35,7 +46,6 @@ export const getTokenFromLocalStorage = () => {
  * @returns {Number} userId
  */
 export const getUserFromLocalStorage = () => {
-  removeUserDataFromLocalStorage();
   const userId = getDataFromLocalStorage("userId");
 
   return userId;
@@ -46,7 +56,7 @@ export const getUserFromLocalStorage = () => {
  * @returns {Boolean}
  */
 export const isUserLoggedIn = () => {
-  const { accessToken } = getTokenFromLocalStorage();
+  const { accessToken } = getTokenFromLocalStorage() || {};
   const userId = getUserFromLocalStorage();
 
   return accessToken && userId;

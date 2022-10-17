@@ -4,13 +4,13 @@
 const config = {
   endpoints: {
     auth: {
-      signIn: "/signin",
-      signUp: "/signup",
-      refreshToken: "/token",
+      signIn: "/api/auth/signin",
+      signUp: "/api/auth/signup",
+      refreshToken: "/api/auth/token",
     },
     vaccine: {
-      all: "/vaccines",
-      one: "/vaccines/:id",
+      all: "/api/vaccines",
+      one: "/api/vaccines/:id",
     },
   },
 };

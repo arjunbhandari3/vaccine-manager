@@ -1,3 +1,5 @@
 import { combineReducers } from "redux";
 
-export const rootReducer = combineReducers();
+import { vaccineReducer } from "./vaccineReducer";
+
+export const rootReducer = combineReducers({ vaccine: vaccineReducer });

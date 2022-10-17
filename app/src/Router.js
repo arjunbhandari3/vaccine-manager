@@ -15,16 +15,18 @@ import * as routes from "constants/routes";
 export const AppRouter = (props) => {
   return (
     <Routes>
+      <Route path={routes.HOME} element={<AuthorizedRoute />}>
+        <Route path={routes.HOME} element={<Layout />}>
+          <Route path={routes.VACCINES} element={<Vaccines />} />
+          <Route path={routes.ADD_VACCINE} element={<AddVaccine />} />
+          <Route path={routes.EDIT_VACCINE} element={<EditVaccine />} />
+        </Route>
+      </Route>
+
       <Route path={routes.HOME} element={<Navigate to={routes.SIGN_IN} />} />
       <Route path={routes.SIGN_IN} element={<SignIn />} />
       <Route path={routes.SIGN_UP} element={<SignUp />} />
-      {/* <Route path={routes.HOME} element={<AuthorizedRoute />}> */}
-      <Route path={routes.HOME} element={<Layout />}>
-        <Route path={routes.VACCINES} element={<Vaccines />} />
-        <Route path={routes.ADD_VACCINE} element={<AddVaccine />} />
-        <Route path="/vaccines/:id/edit-vaccine" element={<EditVaccine />} />
-      </Route>
-      {/* </Route> */}
+
       <Route path={routes.NOT_FOUND} element={<NotFound />} />
     </Routes>
   );
