@@ -8,7 +8,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { sortVaccinesData } from "utils/array";
 import { getAllVaccines } from "redux/actions/vaccineAction";
 import { showSuccessNotification } from "utils/notification";
-import { deleteVaccine, editVaccine } from "services/vaccine";
+import { deleteVaccine, updateVaccine } from "services/vaccine";
 
 import { VACCINE_DELETED_MESSAGE } from "constants/common";
 
@@ -19,19 +19,22 @@ export const VaccineTable = (props) => {
 
   const [vaccinesData, setVaccinesData] = useState(vaccines || []);
 
-  let data = vaccinesData.map((vaccine) => ({
-    ...vaccine,
-    releaseDate: moment(vaccine.releaseDate).format("DD-MM-YYYY"),
-    expirationDate: moment(vaccine.expirationDate).format("DD-MM-YYYY"),
-  }));
+  const formatVaccineData = useCallback((vaccines) => {
+    return vaccines.map((vaccine) => ({
+      ...vaccine,
+      key: vaccine.id,
+      releaseDate: moment(vaccine.releaseDate).format("YYYY-MM-DD"),
+      expirationDate: moment(vaccine.expirationDate).format("YYYY-MM-DD"),
+    }));
+  }, []);
 
   useEffect(() => {
     if (vaccines?.length) {
-      setVaccinesData(vaccines);
+      setVaccinesData(formatVaccineData(vaccines));
     } else {
       dispatch(getAllVaccines());
     }
-  }, [dispatch, vaccines]);
+  }, [dispatch, vaccines, formatVaccineData]);
 
   const getVaccineData = useCallback(async () => {
     const vaccines = await getAllVaccines();
@@ -55,7 +58,7 @@ export const VaccineTable = (props) => {
       isMandatory: !isMandatory,
     };
 
-    await editVaccine(updatedVaccine);
+    await updateVaccine(updatedVaccine);
 
     getVaccineData();
   };
@@ -64,7 +67,7 @@ export const VaccineTable = (props) => {
 
   return (
     <div>
-      <Table dataSource={data} pagination={false}>
+      <Table dataSource={vaccinesData} pagination={false}>
         <Column
           title="Mandatory"
           dataIndex="isMandatory"
@@ -120,7 +123,7 @@ export const VaccineTable = (props) => {
           dataIndex="key"
           render={(key) => (
             <Space size="small">
-              <Link to={`/vaccine/${key}/edit-vaccine`}>
+              <Link to={`/vaccines/${key}/edit-vaccine`}>
                 <div className="edit-link">Edit</div>
               </Link>
 

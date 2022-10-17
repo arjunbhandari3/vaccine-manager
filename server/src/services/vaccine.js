@@ -1,3 +1,5 @@
+import { v2 as cloudinary } from 'cloudinary';
+
 import Vaccine from '../models/vaccine';
 
 import logger from '../utils/logger';
@@ -11,15 +13,13 @@ import logger from '../utils/logger';
 export const createVaccine = async payload => {
   logger.info('Creating vaccine');
 
-  const vaccine = await Vaccine.getVaccineByName(payload.name);
+  if (payload.photoUrl) {
+    const upload = await cloudinary.v2.uploader.upload(payload.photoUrl, { folder: 'vaccines' });
 
-  if (vaccine) {
-    throw new Error('Vaccine already exists!');
+    payload.photoUrl = upload.secure_url;
   }
 
-  const vaccinePayload = { ...payload, created_by: req.user.id, created_at: new Date() };
-
-  const newVaccine = await Vaccine.createVaccine(vaccinePayload);
+  const newVaccine = await Vaccine.createVaccine(payload);
 
   return newVaccine;
 };
@@ -77,9 +77,12 @@ export const updateVaccine = async (id, payload) => {
     throw new Error('Vaccine does not exist!');
   }
 
-  const vaccinePayload = { ...payload, updated_by: req.user.id, updated_at: new Date() };
+  if (payload.photoUrl && payload.photoUrl !== vaccine.photoUrl) {
+    const upload = await cloudinary.v2.uploader.upload(payload.photoUrl, { folder: 'vaccines' });
+    payload.photoUrl = upload.secure_url;
+  }
 
-  const updatedVaccine = await Vaccine.updateVaccine(id, vaccinePayload);
+  const updatedVaccine = await Vaccine.updateVaccine(id, payload);
 
   return updatedVaccine;
 };

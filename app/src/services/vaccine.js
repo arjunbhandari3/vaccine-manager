@@ -19,8 +19,6 @@ export const getAllVaccines = async () => {
     },
   });
 
-  console.log(data);
-
   return data;
 };
 
@@ -59,11 +57,11 @@ export const addVaccine = async (vaccine) => {
 };
 
 /**
- * Edit a vaccine
+ * Update a vaccine
  * @param {object} vaccine
  * @returns {Promise}
  */
-export const editVaccine = async (vaccine) => {
+export const updateVaccine = async (vaccine) => {
   const url = interpolate(config.endpoints.vaccine.one, { id: vaccine.id });
 
   const { data } = await axios.put(url, vaccine, {

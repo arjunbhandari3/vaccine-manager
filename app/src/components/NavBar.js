@@ -1,8 +1,10 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-import { APP_TITLE } from "constants/common";
 import { removeUserDataFromLocalStorage } from "utils/token";
+
+import * as routes from "constants/routes";
+import { APP_TITLE } from "constants/common";
 
 export const Navbar = (props) => {
   const Styling = (isActive = false) => {
@@ -21,15 +23,15 @@ export const Navbar = (props) => {
       <div className="nav-items">
         <NavLink
           style={Styling}
-          to={"/vaccines/add-vaccine"}
+          to={routes.ADD_VACCINE}
           className="add-vaccine-btn"
         >
           Add Vaccine
         </NavLink>
-        <NavLink style={Styling} to={"/vaccines"}>
+        <NavLink style={Styling} to={routes.HOME}>
           Vaccines
         </NavLink>
-        <NavLink style={Styling} to="/login" onClick={handleClick}>
+        <NavLink style={Styling} to={routes.SIGN_IN} onClick={handleClick}>
           Logout
         </NavLink>
       </div>

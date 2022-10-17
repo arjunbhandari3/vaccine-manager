@@ -12,7 +12,13 @@ import * as vaccineService from '../services/vaccine';
  */
 export const createVaccine = async (req, res, next) => {
   try {
-    const data = await vaccineService.createVaccine(req.body);
+    if (req.file) {
+      req.body.photoUrl = req.file.path;
+    }
+
+    const vaccinePayload = { ...req.body, created_by: req.user.id, created_at: new Date() };
+
+    const data = await vaccineService.createVaccine(vaccinePayload);
 
     return res.status(HttpStatus.CREATED).json(data);
   } catch (error) {
@@ -66,7 +72,13 @@ export const getAllVaccines = async (req, res, next) => {
  */
 export const updateVaccine = async (req, res, next) => {
   try {
-    const data = await vaccineService.updateVaccine(req.params.id, req.body);
+    if (req.file) {
+      req.body.photoUrl = req.file.path;
+    }
+
+    const updatedVaccine = { ...req.body, updated_by: req.user.id, updated_at: new Date() };
+
+    const data = await vaccineService.updateVaccine(req.params.id, updatedVaccine);
 
     return res.status(HttpStatus.OK).json(data);
   } catch (error) {

@@ -30,7 +30,6 @@ const SignIn = (props) => {
 
       showSuccessNotification(SUCCESSFULLY_SIGNED_IN);
     } catch (error) {
-      console.log(error);
       showErrorNotification(error?.response?.data?.error);
     }
 

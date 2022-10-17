@@ -33,7 +33,6 @@ const SignUp = (props) => {
 
       showSuccessNotification(SUCCESSFULLY_SIGNED_UP);
     } catch (error) {
-      console.log(error);
       showErrorNotification(error?.response?.data?.error);
     }
   };

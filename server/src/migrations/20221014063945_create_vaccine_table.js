@@ -20,7 +20,7 @@ export function up(knex) {
     table.integer('created_by').unsigned().notNull();
     table.foreign('created_by').references('id').inTable('user');
     table.timestamp('created_at').notNull().defaultTo(knex.raw('now()'));
-    table.integer('updated_by').unsigned().notNull();
+    table.integer('updated_by').unsigned().nullable();
     table.foreign('updated_by').references('id').inTable('user');
     table.timestamp('updated_at').notNull().defaultTo(knex.raw('now()'));
   });

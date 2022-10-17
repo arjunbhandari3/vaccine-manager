@@ -1,5 +1,5 @@
 import moment from "moment";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import {
@@ -16,7 +16,7 @@ import {
 import { UploadOutlined } from "@ant-design/icons";
 
 import { showSuccessNotification } from "utils/notification";
-import { addVaccine, editVaccine, getVaccineById } from "services/vaccine";
+import { addVaccine, updateVaccine, getVaccineById } from "services/vaccine";
 
 import {
   REQUIRED,
@@ -35,6 +35,8 @@ export const VaccineForm = (props) => {
 
   const [form] = Form.useForm();
 
+  const [file, setFile] = useState(null);
+
   useEffect(() => {
     if (isEditForm) {
       const fetchVaccine = async () => {
@@ -42,8 +44,14 @@ export const VaccineForm = (props) => {
 
         form.setFieldsValue({
           ...vaccine,
-          releaseDate: moment(vaccine.releaseDate).format("YYYY-MM-DD"),
-          expirationDate: moment(vaccine.expirationDate).format("YYYY-MM-DD"),
+          releaseDate: moment(
+            moment(vaccine.releaseDate).format("YYYY-MM-DD"),
+            "YYYY-MM-DD"
+          ),
+          expirationDate: moment(
+            moment(vaccine.expirationDate).format("YYYY-MM-DD"),
+            "YYYY-MM-DD"
+          ),
         });
       };
 
@@ -53,7 +61,7 @@ export const VaccineForm = (props) => {
 
   const onSubmit = async (values) => {
     const formData = new FormData();
-    console.log(values);
+
     formData.append("name", values.name);
     formData.append("description", values.description);
     formData.append("numberOfDoses", values.numberOfDoses);
@@ -61,11 +69,10 @@ export const VaccineForm = (props) => {
     formData.append("releaseDate", values.releaseDate);
     formData.append("expirationDate", values.expirationDate);
     formData.append("isMandatory", values.isMandatory);
-    values.picture?.file?.originFileObj &&
-      formData.append("photoUrl", values?.picture?.file?.originFileObj);
+    file && formData.append("photoUrl", file);
 
     if (isEditForm) {
-      await editVaccine(vaccineId, formData);
+      await updateVaccine(vaccineId, formData);
     } else {
       await addVaccine(formData);
     }
@@ -129,7 +136,7 @@ export const VaccineForm = (props) => {
             name="releaseDate"
             rules={[{ required: true, message: REQUIRED }]}
           >
-            <DatePicker defaultValue={moment()} />
+            <DatePicker />
           </Form.Item>
         </Col>
 
@@ -159,7 +166,7 @@ export const VaccineForm = (props) => {
               }),
             ]}
           >
-            <DatePicker defaultValue={moment()} />
+            <DatePicker />
           </Form.Item>
         </Col>
       </Row>
@@ -186,7 +193,13 @@ export const VaccineForm = (props) => {
 
       <Label label="Image" />
       <Form.Item colon={false} name="photoUrl">
-        <Upload maxCount={1}>
+        <Upload
+          maxCount={1}
+          beforeUpload={(file) => {
+            setFile(file);
+            return false;
+          }}
+        >
           <Button icon={<UploadOutlined />}>Click to Upload</Button>
         </Upload>
       </Form.Item>
