@@ -1,6 +1,7 @@
 import User from '../models/user';
 
 import logger from '../utils/logger';
+import ErrorRes from '../utils/error';
 import { filterFields } from '../utils/object';
 import { getHashedPassword, compareHash, getSignedTokens, verifyToken } from '../utils/auth';
 
@@ -20,7 +21,7 @@ export const signIn = async payload => {
   const user = await User.getUserByEmail(email);
 
   if (!user || !(await compareHash(password, user.password))) {
-    throw new Error('Invalid credentials');
+    throw new ErrorRes('Invalid credentials', 401);
   }
 
   const { accessToken, refreshToken } = getSignedTokens({ id: user.id, email: user.email });
@@ -48,7 +49,7 @@ export const signUp = async payload => {
   const user = await User.getUserByEmail(email);
 
   if (user) {
-    throw new Error('User already exists!');
+    throw new ErrorRes('User already exists!', 400);
   }
 
   const hashedPassword = await getHashedPassword(password);
@@ -82,7 +83,7 @@ export const refreshAccessToken = async refreshToken => {
   const user = await User.getUserById(id);
 
   if (!user) {
-    throw new Error('User not found!');
+    throw new ErrorRes('User not found!', 404);
   }
 
   const { accessToken, refreshToken: newRefreshToken } = getSignedTokens({ id: user.id, email: user.email });

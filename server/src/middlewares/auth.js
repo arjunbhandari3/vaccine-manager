@@ -1,4 +1,5 @@
 import logger from '../utils/logger';
+import ErrorRes from '../utils/error';
 import { verifyToken } from '../utils/auth';
 
 const auth = async (req, res, next) => {
@@ -6,7 +7,7 @@ const auth = async (req, res, next) => {
     const authorization = req.headers.authorization || '';
     const token = authorization.split(' ')[1];
     if (!token) {
-      return next(new Error('No Authorization Token'));
+      return next(new ErrorRes('No Authorization Token', 401));
     }
 
     const decoded = verifyToken(token);
@@ -15,7 +16,7 @@ const auth = async (req, res, next) => {
     next();
   } catch (error) {
     logger.error(error);
-    next(new Error('Unauthorized'));
+    next(new ErrorRes('Unauthorized', 401));
   }
 };
 

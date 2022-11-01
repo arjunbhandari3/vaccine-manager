@@ -2,13 +2,18 @@ import HttpStatus from 'http-status-codes';
 
 import logger from '../utils/logger';
 
-export default (err, req, res, next) => {
-  err.statusCode = err.statusCode || HttpStatus.INTERNAL_SERVER_ERROR;
-  err.message = err.message || 'Internal Server Error';
-
+const errorHandler = (err, req, res, next) => {
   logger.error(err);
-  res.status(err.statusCode).json({
-    success: false,
-    error: err.message,
+
+  const { statusCode, message } = err;
+
+  res.status(statusCode || HttpStatus.INTERNAL_SERVER_ERROR).json({
+    status: 'error',
+    statusCode: statusCode || HttpStatus.INTERNAL_SERVER_ERROR,
+    message: message || 'Internal Server Error',
   });
+
+  next();
 };
+
+export default errorHandler;

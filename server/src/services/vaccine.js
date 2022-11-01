@@ -3,6 +3,7 @@ import { v2 as cloudinary } from 'cloudinary';
 import Vaccine from '../models/vaccine';
 
 import logger from '../utils/logger';
+import ErrorRes from '../utils/error';
 
 /**
  * Create a new vaccine.
@@ -74,7 +75,7 @@ export const updateVaccine = async (id, payload) => {
   const vaccine = await Vaccine.getVaccineById(id);
 
   if (!vaccine) {
-    throw new Error('Vaccine does not exist!');
+    throw new ErrorRes('Vaccine does not exist!', 404);
   }
 
   if (payload.photoUrl && payload.photoUrl !== vaccine.photoUrl) {
@@ -98,7 +99,7 @@ export const deleteVaccine = async id => {
   const vaccine = await Vaccine.getVaccineById(id);
 
   if (!vaccine) {
-    throw new Error('Vaccine does not exist!');
+    throw new ErrorRes('Vaccine does not exist!', 404);
   }
 
   const deletedVaccine = await Vaccine.deleteVaccine(id);
