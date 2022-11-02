@@ -3,9 +3,11 @@ import { Button, Form, Input } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 
 import {
-  showErrorNotification,
+  // showErrorNotification,
   showSuccessNotification,
 } from "utils/notification";
+import { handleError } from "utils/error";
+
 import { signIn } from "services/auth";
 import useDocumentTitle from "hooks/useDocumentTitle";
 
@@ -24,13 +26,15 @@ const SignIn = (props) => {
 
   const onSubmit = async (values) => {
     try {
-      await signIn(values.email, values.password);
+      const { email, password } = values;
+
+      await signIn(email, password);
 
       navigate(routes.VACCINES);
 
       showSuccessNotification(SUCCESSFULLY_SIGNED_IN);
     } catch (error) {
-      showErrorNotification(error?.response?.data?.error);
+      handleError(error);
     }
 
     form.resetFields();
@@ -39,7 +43,7 @@ const SignIn = (props) => {
   return (
     <div className="auth-container">
       <div>
-        <h1 className="auth-heading">Sign In</h1>
+        <h1 className="header-title">Sign In</h1>
       </div>
       <div>
         <Form
@@ -77,7 +81,7 @@ const SignIn = (props) => {
           >
             <Input.Password />
           </Form.Item>
-          <Form.Item className="button--form-item">
+          <Form.Item className="button">
             <Button type="primary" htmlType="submit" size="large" block>
               Sign In
             </Button>

@@ -6,7 +6,7 @@ export const EditVaccine = (props) => {
   return (
     <div className="add-vaccine-container">
       <div>
-        <h1 className="add-vaccine-heading">Edit Vaccine</h1>
+        <h1 className="vaccines-header-title">Edit Vaccine</h1>
       </div>
       <div>
         <VaccineForm isEditForm={true} />

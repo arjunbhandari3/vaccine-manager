@@ -1,15 +1,17 @@
 /**
- * Remove fields from object.
- * @param {object} object
- * @param {array} fields
- * @returns {object}
+ * Remove not required attributes from given object.
+ *
+ * @param {Object} obj
+ * @param {Array} notRequiredAttributes
  */
-export const filterFields = (object, fields = []) => {
-  const filteredObject = { ...object };
+export function withoutAttrs(obj, notRequiredAttributes = []) {
+  const result = {};
 
-  fields.forEach(field => {
-    delete filteredObject[field];
+  Object.keys(obj).forEach(key => {
+    if (!notRequiredAttributes.includes(key)) {
+      result[key] = obj[key];
+    }
   });
 
-  return filteredObject;
-};
+  return result;
+}

@@ -5,6 +5,17 @@ import {
 } from "./localStorage";
 
 /**
+ * Get Auth Header
+ *
+ * @returns {string}
+ */
+export const getAuthHeader = () => {
+  const token = getAccessToken();
+
+  return token ? `Bearer ${token}` : "";
+};
+
+/**
  * Set user data to local storage
  * @param {string} accessToken
  * @param {string} refreshToken

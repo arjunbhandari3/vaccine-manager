@@ -2,10 +2,9 @@ import React from "react";
 import { Button, Form, Input } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 
-import {
-  showErrorNotification,
-  showSuccessNotification,
-} from "utils/notification";
+import { handleError } from "utils/error";
+import { showSuccessNotification } from "utils/notification";
+
 import { signUp } from "services/auth";
 import useDocumentTitle from "hooks/useDocumentTitle";
 
@@ -26,21 +25,23 @@ const SignUp = (props) => {
 
   const onSubmit = async (values) => {
     try {
-      await signUp(values.email, values.password);
+      const { email, password } = values;
+
+      await signUp(email, password);
 
       navigate(routes.VACCINES);
       form.resetFields();
 
       showSuccessNotification(SUCCESSFULLY_SIGNED_UP);
     } catch (error) {
-      showErrorNotification(error?.response?.data?.error);
+      handleError(error);
     }
   };
 
   return (
     <div className="auth-container">
       <div>
-        <h1 className="auth-heading">Sign Up</h1>
+        <h1 className="header-title">Sign Up</h1>
       </div>
       <div>
         <Form
@@ -103,7 +104,7 @@ const SignUp = (props) => {
             <Input.Password />
           </Form.Item>
 
-          <Form.Item className="button--form-item">
+          <Form.Item className="button">
             <Button type="primary" htmlType="submit" size="large" block>
               Sign Up
             </Button>

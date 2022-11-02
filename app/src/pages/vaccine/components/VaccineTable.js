@@ -6,11 +6,16 @@ import { StarFilled, StarOutlined } from "@ant-design/icons";
 import React, { useCallback, useEffect, useState } from "react";
 
 import { sortVaccinesData } from "utils/array";
-import { getAllVaccines } from "redux/actions/vaccineAction";
 import { showSuccessNotification } from "utils/notification";
-import { deleteVaccine, updateVaccine } from "services/vaccine";
 
-import { VACCINE_DELETED_MESSAGE } from "constants/common";
+import { getAllVaccines } from "redux/actions/vaccineAction";
+
+import { deleteVaccine } from "services/vaccine";
+
+import {
+  DEFAULT_VACCINE_IMAGE,
+  VACCINE_DELETED_MESSAGE,
+} from "constants/common";
 
 export const VaccineTable = (props) => {
   const dispatch = useDispatch();
@@ -22,7 +27,6 @@ export const VaccineTable = (props) => {
   const formatVaccineData = useCallback((vaccines) => {
     return vaccines.map((vaccine) => ({
       ...vaccine,
-      key: vaccine.id,
       releaseDate: moment(vaccine.releaseDate).format("YYYY-MM-DD"),
       expirationDate: moment(vaccine.expirationDate).format("YYYY-MM-DD"),
     }));
@@ -52,17 +56,6 @@ export const VaccineTable = (props) => {
     getVaccineData();
   };
 
-  const toggleMandatory = async (isMandatory, vaccine) => {
-    const updatedVaccine = {
-      ...vaccine,
-      isMandatory: !isMandatory,
-    };
-
-    await updateVaccine(updatedVaccine);
-
-    getVaccineData();
-  };
-
   const { Column } = Table;
 
   return (
@@ -72,18 +65,11 @@ export const VaccineTable = (props) => {
           title="Mandatory"
           dataIndex="isMandatory"
           key="isMandatory"
-          render={(isMandatory, object, index) => {
-            return (
-              <div
-                className="favourite-container"
-                onClick={() => toggleMandatory(isMandatory, object)}
-              >
-                {isMandatory ? (
-                  <StarFilled style={{ color: "orange" }} />
-                ) : (
-                  <StarOutlined />
-                )}
-              </div>
+          render={(isMandatory) => {
+            return isMandatory ? (
+              <StarFilled style={{ color: "orange" }} />
+            ) : (
+              <StarOutlined />
             );
           }}
         />
@@ -91,9 +77,11 @@ export const VaccineTable = (props) => {
           title=""
           dataIndex="photoUrl"
           key="photoUrl"
-          render={(pic) => (
-            <img src={pic} alt={pic + ""} className="profile-img" />
-          )}
+          render={(pic) => {
+            pic = pic || DEFAULT_VACCINE_IMAGE;
+
+            return <img src={pic} alt="vaccine" className="vaccine-img" />;
+          }}
         />
         <Column title="Name" dataIndex="name" key="name" />
         <Column title="Description" dataIndex="description" key="description" />
@@ -103,7 +91,7 @@ export const VaccineTable = (props) => {
           key="manufacturer"
         />
         <Column
-          title="Number of Doses"
+          title="No. of Doses"
           dataIndex="numberOfDoses"
           key="numberOfDoses"
         />
@@ -120,17 +108,17 @@ export const VaccineTable = (props) => {
         <Column
           title="Action"
           key="action"
-          dataIndex="key"
-          render={(key) => (
+          dataIndex="id"
+          render={(id) => (
             <Space size="small">
-              <Link to={`/vaccines/${key}/edit-vaccine`}>
+              <Link to={`/vaccines/${id}/edit-vaccine`}>
                 <div className="edit-link">Edit</div>
               </Link>
 
               <div
                 className="delete-link"
                 onClick={() => {
-                  handleDelete(key);
+                  handleDelete(id);
                 }}
               >
                 Delete

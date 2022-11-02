@@ -1,4 +1,4 @@
-import { GET_ALL_VACCINES_SUCCESS } from "redux/constants/constants";
+import { GET_ALL_VACCINES_FULFILLED } from "redux/constants/constants";
 
 const INITIAL_STATE = {
   vaccines: [],
@@ -14,7 +14,7 @@ const INITIAL_STATE = {
  */
 export const vaccineReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case GET_ALL_VACCINES_SUCCESS:
+    case GET_ALL_VACCINES_FULFILLED:
       return {
         ...state,
         vaccines: action.payload,

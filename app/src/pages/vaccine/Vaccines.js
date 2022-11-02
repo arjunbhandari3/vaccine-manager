@@ -5,7 +5,7 @@ export const Vaccines = (props) => {
   return (
     <div className="vaccines-container">
       <div>
-        <h1 className="vaccines-heading">All Vaccines</h1>
+        <h1 className="vaccines-header-title">All Vaccines</h1>
       </div>
       <Divider />
       <div>

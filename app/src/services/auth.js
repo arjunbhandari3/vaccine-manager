@@ -11,8 +11,9 @@ import config from "../config/config";
  * Get token
  */
 export const getToken = async () => {
-  const { id } = getUserFromLocalStorage();
-  const { refreshToken } = getTokenFromLocalStorage();
+  const id = getUserFromLocalStorage();
+
+  const { refreshToken } = getTokenFromLocalStorage() || {};
 
   const { data } = await axios.post(config.endpoints.auth.refreshToken, {
     refreshToken,

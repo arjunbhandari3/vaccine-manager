@@ -14,7 +14,6 @@ const createVaccineSchema = Joi.object({
 });
 
 const updateVaccineSchema = Joi.object({
-  id: Joi.number().required().label('Id'),
   name: Joi.string().label('Name'),
   description: Joi.string().label('Description'),
   numberOfDoses: Joi.number().label('Number of Doses'),

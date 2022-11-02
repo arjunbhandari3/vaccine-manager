@@ -204,7 +204,7 @@ export const VaccineForm = (props) => {
         </Upload>
       </Form.Item>
 
-      <Form.Item className="button--form-item">
+      <Form.Item className="button">
         <Button type="primary" htmlType="submit" size="large" block>
           {!isEditForm ? "Add Vaccine" : "Edit Vaccine"}
         </Button>

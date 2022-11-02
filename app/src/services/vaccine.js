@@ -1,8 +1,9 @@
 import axios from "axios";
 
 import config from "config/config";
+import { cleanObject } from "utils/object";
 import { interpolate } from "utils/string";
-import { getAccessToken } from "utils/token";
+import { getAuthHeader } from "utils/token";
 
 /**
  * Get all vaccines
@@ -15,7 +16,7 @@ export const getAllVaccines = async () => {
   const { data } = await axios.get(url, {
     headers: {
       "Content-type": "application/json",
-      Authorization: `Bearer ` + getAccessToken(),
+      Authorization: getAuthHeader(),
     },
   });
 
@@ -33,7 +34,7 @@ export const getVaccineById = async (id) => {
   const { data } = await axios.get(url, {
     headers: {
       "Content-type": "application/json",
-      Authorization: `Bearer ` + getAccessToken(),
+      Authorization: getAuthHeader(),
     },
   });
 
@@ -49,7 +50,7 @@ export const addVaccine = async (vaccine) => {
   const { data } = await axios.post(config.endpoints.vaccine.all, vaccine, {
     headers: {
       "content-type": "multipart/form-data",
-      Authorization: `Bearer ` + getAccessToken(),
+      Authorization: getAuthHeader(),
     },
   });
 
@@ -61,13 +62,15 @@ export const addVaccine = async (vaccine) => {
  * @param {object} vaccine
  * @returns {Promise}
  */
-export const updateVaccine = async (vaccine) => {
-  const url = interpolate(config.endpoints.vaccine.one, { id: vaccine.id });
+export const updateVaccine = async (id, vaccine) => {
+  const url = interpolate(config.endpoints.vaccine.one, { id: id });
 
-  const { data } = await axios.put(url, vaccine, {
+  const vaccineData = cleanObject(vaccine);
+
+  const { data } = await axios.put(url, vaccineData, {
     headers: {
       "content-type": "multipart/form-data",
-      Authorization: `Bearer ` + getAccessToken(),
+      Authorization: getAuthHeader(),
     },
   });
 
@@ -83,7 +86,7 @@ export const deleteVaccine = async (id) => {
   const url = interpolate(config.endpoints.vaccine.one, { id });
 
   const { data } = await axios.delete(url, {
-    headers: { Authorization: `Bearer ` + getAccessToken() },
+    headers: { Authorization: getAuthHeader() },
   });
 
   return data;

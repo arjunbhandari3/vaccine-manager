@@ -2,7 +2,7 @@ import User from '../models/user';
 
 import logger from '../utils/logger';
 import ErrorRes from '../utils/error';
-import { filterFields } from '../utils/object';
+import { withoutAttrs } from '../utils/object';
 import { getHashedPassword, compareHash, getSignedTokens, verifyToken } from '../utils/auth';
 
 import { REFRESH_TOKEN } from '../constants';
@@ -21,12 +21,12 @@ export const signIn = async payload => {
   const user = await User.getUserByEmail(email);
 
   if (!user || !(await compareHash(password, user.password))) {
-    throw new ErrorRes('Invalid credentials', 401);
+    throw new ErrorRes('Invalid credentials', 400);
   }
 
   const { accessToken, refreshToken } = getSignedTokens({ id: user.id, email: user.email });
 
-  const filteredUser = filterFields(user, ['password']);
+  const filteredUser = withoutAttrs(user, ['password']);
 
   return {
     accessToken,
@@ -60,7 +60,7 @@ export const signUp = async payload => {
   });
 
   const { accessToken, refreshToken } = getSignedTokens({ id: newUser.id, email: newUser.email });
-  const filteredUser = filterFields(newUser, ['password']);
+  const filteredUser = withoutAttrs(newUser, ['password']);
 
   return {
     accessToken,
@@ -87,7 +87,7 @@ export const refreshAccessToken = async refreshToken => {
   }
 
   const { accessToken, refreshToken: newRefreshToken } = getSignedTokens({ id: user.id, email: user.email });
-  const filteredUser = filterFields(user, ['password']);
+  const filteredUser = withoutAttrs(user, ['password']);
 
   return {
     accessToken,
