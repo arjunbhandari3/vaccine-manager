@@ -6,11 +6,10 @@ import { StarFilled, StarOutlined } from "@ant-design/icons";
 import React, { useCallback, useEffect, useState } from "react";
 
 import { sortVaccinesData } from "utils/array";
-import { showSuccessNotification } from "utils/notification";
-
-import { getAllVaccines } from "redux/actions/vaccineAction";
-
 import { deleteVaccine } from "services/vaccine";
+import useDocumentTitle from "hooks/useDocumentTitle";
+import { showSuccessNotification } from "utils/notification";
+import { getAllVaccines } from "redux/actions/vaccineAction";
 
 import {
   DEFAULT_VACCINE_IMAGE,
@@ -23,6 +22,8 @@ export const VaccineTable = (props) => {
   const vaccines = useSelector((state) => state.vaccine.vaccines);
 
   const [vaccinesData, setVaccinesData] = useState(vaccines || []);
+
+  useDocumentTitle("Vaccines");
 
   const formatVaccineData = useCallback((vaccines) => {
     return vaccines.map((vaccine) => ({

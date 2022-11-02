@@ -1,8 +1,11 @@
 import React from "react";
 
+import useDocumentTitle from "hooks/useDocumentTitle";
 import { VaccineForm } from "./components/VaccineForm";
 
 export const EditVaccine = (props) => {
+  useDocumentTitle("Edit Vaccine");
+
   return (
     <div className="add-vaccine-container">
       <div>

@@ -28,7 +28,7 @@ export const Navbar = (props) => {
         >
           Add Vaccine
         </NavLink>
-        <NavLink style={Styling} to={routes.HOME}>
+        <NavLink style={Styling} to={routes.VACCINES}>
           Vaccines
         </NavLink>
         <NavLink style={Styling} to={routes.SIGN_IN} onClick={handleClick}>
