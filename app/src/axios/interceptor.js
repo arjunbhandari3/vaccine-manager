@@ -1,4 +1,5 @@
 import axios from "axios";
+import * as routes from "constants/routes";
 
 import { getToken } from "../services/auth";
 import { getTokenFromLocalStorage } from "../utils/token";
@@ -19,13 +20,18 @@ const resErrorInterceptor = async (error, reqInterceptorId) => {
   const originalReq = error.config;
 
   if (error.response?.status === 401 && !originalReq?.sent) {
-    await getToken();
+    try {
+      await getToken();
 
-    axios.interceptors.request.eject(reqInterceptorId);
-    axios.interceptors.request.use(reqInterceptor);
-    originalReq.sent = true;
+      axios.interceptors.request.eject(reqInterceptorId);
+      axios.interceptors.request.use(reqInterceptor);
+      originalReq.sent = true;
 
-    return axios(originalReq);
+      return axios(originalReq);
+    } catch (err) {
+      window.location.href = routes.SIGN_IN;
+      return;
+    }
   }
 
   return Promise.reject(error);

@@ -1,11 +1,15 @@
-import moment from "moment";
+import {
+  StarFilled,
+  StarOutlined,
+  EditOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
 import { Space, Table } from "antd";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { StarFilled, StarOutlined } from "@ant-design/icons";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import { sortVaccinesData } from "utils/array";
+import { handleError } from "utils/error";
 import { deleteVaccine } from "services/vaccine";
 import useDocumentTitle from "hooks/useDocumentTitle";
 import { showSuccessNotification } from "utils/notification";
@@ -19,49 +23,50 @@ import {
 export const VaccineTable = (props) => {
   const dispatch = useDispatch();
 
-  const vaccines = useSelector((state) => state.vaccine.vaccines);
-
-  const [vaccinesData, setVaccinesData] = useState(vaccines || []);
+  const vaccines = useSelector((state) => state.data.vaccine.vaccines);
+  const isVaccinesLoading = useSelector(
+    (state) => state.ui.vaccine.isVaccinesLoading
+  );
 
   useDocumentTitle("Vaccines");
 
-  const formatVaccineData = useCallback((vaccines) => {
-    return vaccines.map((vaccine) => ({
-      ...vaccine,
-      releaseDate: moment(vaccine.releaseDate).format("YYYY-MM-DD"),
-      expirationDate: moment(vaccine.expirationDate).format("YYYY-MM-DD"),
-    }));
-  }, []);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (vaccines?.length) {
-      setVaccinesData(formatVaccineData(vaccines));
-    } else {
-      dispatch(getAllVaccines());
-    }
-  }, [dispatch, vaccines, formatVaccineData]);
+    const fetchVaccines = async () => {
+      try {
+        setLoading(true);
+        await dispatch(getAllVaccines());
+      } catch (err) {
+        handleError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const getVaccineData = useCallback(async () => {
-    const vaccines = await getAllVaccines();
-    const sortedVaccines = sortVaccinesData(vaccines);
-
-    setVaccinesData(sortedVaccines);
-    dispatch(getAllVaccines());
+    fetchVaccines();
   }, [dispatch]);
 
   const handleDelete = async (id) => {
-    await deleteVaccine(id);
+    try {
+      await deleteVaccine(id);
+      dispatch(getAllVaccines());
 
-    showSuccessNotification(VACCINE_DELETED_MESSAGE);
-
-    getVaccineData();
+      showSuccessNotification(VACCINE_DELETED_MESSAGE);
+    } catch (err) {
+      handleError(err);
+    }
   };
 
   const { Column } = Table;
 
   return (
     <div>
-      <Table dataSource={vaccinesData} pagination={false}>
+      <Table
+        dataSource={vaccines}
+        pagination={true}
+        loading={isVaccinesLoading || loading}
+      >
         <Column
           title="Mandatory"
           dataIndex="isMandatory"
@@ -85,7 +90,12 @@ export const VaccineTable = (props) => {
           }}
         />
         <Column title="Name" dataIndex="name" key="name" />
-        <Column title="Description" dataIndex="description" key="description" />
+        <Column
+          title="Description"
+          dataIndex="description"
+          key="description"
+          ellipsis={true}
+        />
         <Column
           title="Manufacturer"
           dataIndex="manufacturer"
@@ -113,16 +123,18 @@ export const VaccineTable = (props) => {
           render={(id) => (
             <Space size="small">
               <Link to={`/vaccines/${id}/edit-vaccine`}>
-                <div className="edit-link">Edit</div>
+                <div className="cursor-pointer">
+                  <EditOutlined style={{ fontSize: "16px", color: "blue" }} />
+                </div>
               </Link>
 
               <div
-                className="delete-link"
+                className="cursor-pointer"
                 onClick={() => {
                   handleDelete(id);
                 }}
               >
-                Delete
+                <DeleteOutlined style={{ fontSize: "16px", color: "red" }} />
               </div>
             </Space>
           )}

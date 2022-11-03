@@ -17,7 +17,7 @@ export const AppRouter = (props) => {
     <Routes>
       <Route path={routes.HOME} element={<AuthorizedRoute />}>
         <Route path={routes.HOME} element={<Layout />}>
-          <Route path={routes.VACCINES} element={<Vaccines />} />
+          <Route path={routes.HOME} element={<Vaccines />} />
           <Route path={routes.ADD_VACCINE} element={<AddVaccine />} />
           <Route path={routes.EDIT_VACCINE} element={<EditVaccine />} />
         </Route>

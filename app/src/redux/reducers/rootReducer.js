@@ -1,5 +1,8 @@
 import { combineReducers } from "redux";
 
-import { vaccineReducer } from "./vaccineReducer";
+import ui from "./ui";
+import data from "./data";
 
-export const rootReducer = combineReducers({ vaccine: vaccineReducer });
+const rootReducer = combineReducers({ ui, data });
+
+export default rootReducer;

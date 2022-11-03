@@ -2,7 +2,10 @@ export const sortVaccinesData = (data) => {
   const mandatoryVaccine = data.filter((vaccine) => vaccine.isMandatory);
   const optionalVaccine = data.filter((vaccine) => !vaccine.isMandatory);
 
-  return [sortDataByKey(mandatoryVaccine), sortDataByKey(optionalVaccine)];
+  return [
+    ...sortDataByKey(mandatoryVaccine),
+    ...sortDataByKey(optionalVaccine),
+  ];
 };
 
 export const sortDataByKey = (data = [], key = "name") => {

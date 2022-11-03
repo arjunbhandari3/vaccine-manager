@@ -24,9 +24,9 @@ class Vaccine {
    */
 
   static async getVaccineByName(name) {
-    const result = await this.qb.select('*').where('name', name);
+    const [result] = await this.qb.select('*').where('name', name);
 
-    return result[0];
+    return result;
   }
 
   /**
@@ -46,9 +46,9 @@ class Vaccine {
    * @returns {Promise}
    */
   static async createVaccine(payload) {
-    const result = await this.qb.insert(payload).returning('*');
+    const [result] = await this.qb.insert(payload).returning('*');
 
-    return result[0];
+    return result;
   }
 
   /**
@@ -59,7 +59,9 @@ class Vaccine {
    * @returns {Promise}
    */
   static async updateVaccine(id, payload) {
-    return await this.qb.where('id', id).update(payload).returning('*');
+    const [result] = await this.qb.returning('*').update(payload).where('id', id);
+
+    return result;
   }
 
   /**
@@ -69,7 +71,9 @@ class Vaccine {
    * @returns {Promise}
    */
   static async deleteVaccine(id) {
-    return await this.qb.returning('*').del().where('id', id);
+    const [result] = await this.qb.returning('*').del().where('id', id);
+
+    return result;
   }
 }
 
