@@ -21,7 +21,6 @@ describe('Auth Test', () => {
     expect(res.status).to.equal(201);
     expect(res.body).to.be.an('object');
     expect(res.body.user).to.be.an('object');
-    expect(res.body.accessToken).to.be.an('string');
   });
 
   it('should sign in user', async () => {
