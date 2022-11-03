@@ -4,9 +4,10 @@ import {
   EditOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
-import { Space, Table, Avatar } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { Space, Table, Modal, Avatar } from "antd";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 
 import { handleError } from "utils/error";
 import { deleteVaccine } from "services/vaccine";
@@ -35,6 +36,7 @@ const VaccineTable = (props) => {
 
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [selectedVaccine, setSelectedVaccine] = useState(null);
   const [pageNumber, setPageNumber] = useState(DEFAULT_PAGE_NUMBER);
@@ -57,13 +59,33 @@ const VaccineTable = (props) => {
 
   const handleDelete = async (id) => {
     try {
+      setIsDeleting(true);
+
       await deleteVaccine(id);
+
       await dispatch(getAllVaccines());
 
       showSuccessNotification(VACCINE_DELETED_MESSAGE);
     } catch (err) {
       handleError(err);
+    } finally {
+      setIsDeleting(false);
     }
+  };
+
+  const showDeleteVaccineModal = (id) => {
+    Modal.confirm({
+      title: "Are you sure you want to delete this vaccine?",
+      icon: <ExclamationCircleOutlined />,
+      content: "This action cannot be undone.",
+      okText: "Delete Vaccine",
+      okType: "danger",
+      cancelText: "No",
+      onOk() {
+        handleDelete(id);
+      },
+      confirmLoading: isDeleting,
+    });
   };
 
   const { Column } = Table;
@@ -157,9 +179,7 @@ const VaccineTable = (props) => {
 
               <div
                 className="cursor-pointer"
-                onClick={() => {
-                  handleDelete(id);
-                }}
+                onClick={() => showDeleteVaccineModal(id)}
               >
                 <DeleteOutlined style={{ fontSize: 20, color: "red" }} />
               </div>

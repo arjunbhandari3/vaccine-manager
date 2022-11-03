@@ -3,7 +3,7 @@ import db from '../db';
 import { TABLE_NAME_USER } from '../constants';
 
 class User {
-  static qb = db(TABLE_NAME_USER);
+  static qb = () => db(TABLE_NAME_USER);
 
   /**
    * Get user by id.
@@ -11,7 +11,7 @@ class User {
    * @returns {Object}
    */
   static async getUserById(id) {
-    const [result] = await this.qb.select('*').where('id', id);
+    const [result] = await this.qb().select('*').where('id', id);
 
     return result;
   }
@@ -24,7 +24,7 @@ class User {
    */
 
   static async getUserByEmail(email) {
-    const [result] = await this.qb.select('*').where('email', email);
+    const [result] = await this.qb().select('*').where('email', email);
 
     return result;
   }
@@ -36,7 +36,7 @@ class User {
    * @returns {Promise}
    */
   static async createUser(payload) {
-    const [result] = await this.qb.insert(payload, ['id', 'email', 'password']).returning('*');
+    const [result] = await this.qb().insert(payload, ['id', 'email', 'password']).returning('*');
 
     return result;
   }

@@ -3,7 +3,7 @@ import db from '../db';
 import { TABLE_NAME_VACCINE } from '../constants';
 
 class Vaccine {
-  static qb = db(TABLE_NAME_VACCINE);
+  static qb = () => db(TABLE_NAME_VACCINE);
 
   /**
    * Get vaccine by id.
@@ -11,9 +11,9 @@ class Vaccine {
    * @returns {Object}
    */
   static async getVaccineById(id) {
-    const result = await this.qb.where('id', id).select('*');
+    const [result] = await this.qb().where('id', id).select('*');
 
-    return result[0];
+    return result;
   }
 
   /**
@@ -24,7 +24,7 @@ class Vaccine {
    */
 
   static async getVaccineByName(name) {
-    const [result] = await this.qb.select('*').where('name', name);
+    const [result] = await this.qb().select('*').where('name', name);
 
     return result;
   }
@@ -34,7 +34,7 @@ class Vaccine {
    * @returns {Object}
    */
   static async getAllVaccines() {
-    const result = await this.qb.select('*').orderBy('id');
+    const result = await this.qb().select('*').orderBy('id');
 
     return result;
   }
@@ -46,7 +46,7 @@ class Vaccine {
    * @returns {Promise}
    */
   static async createVaccine(payload) {
-    const [result] = await this.qb.insert(payload).returning('*');
+    const [result] = await this.qb().insert(payload).returning('*');
 
     return result;
   }
@@ -59,7 +59,7 @@ class Vaccine {
    * @returns {Promise}
    */
   static async updateVaccine(id, payload) {
-    const [result] = await this.qb.returning('*').update(payload).where('id', id);
+    const [result] = await this.qb().returning('*').update(payload).where('id', id);
 
     return result;
   }
@@ -71,7 +71,7 @@ class Vaccine {
    * @returns {Promise}
    */
   static async deleteVaccine(id) {
-    const [result] = await this.qb.returning('*').del().where('id', id);
+    const [result] = await this.qb().returning('*').del().where('id', id);
 
     return result;
   }

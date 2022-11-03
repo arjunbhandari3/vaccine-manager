@@ -1,9 +1,8 @@
-import { v2 as cloudinary } from 'cloudinary';
-
 import Vaccine from '../models/vaccine';
 
 import logger from '../utils/logger';
 import ErrorRes from '../utils/error';
+import { deleteImageFromCloudinary, uploadImageToCloudinary } from '../utils/fileUploader';
 
 /**
  * Create a new vaccine.
@@ -15,9 +14,8 @@ export const createVaccine = async payload => {
   logger.info('Creating vaccine');
 
   if (payload.photoUrl) {
-    const upload = await cloudinary.v2.uploader.upload(payload.photoUrl, { folder: 'vaccines' });
-
-    payload.photoUrl = upload.secure_url;
+    const uploadUrl = await uploadImageToCloudinary(payload.photoUrl);
+    payload.photoUrl = uploadUrl;
   }
 
   const newVaccine = await Vaccine.createVaccine(payload);
@@ -78,9 +76,13 @@ export const updateVaccine = async (id, payload) => {
     throw new ErrorRes('Vaccine does not exist!', 404);
   }
 
-  if (payload.photoUrl && payload.photoUrl !== vaccine.photoUrl) {
-    const upload = await cloudinary.v2.uploader.upload(payload.photoUrl, { folder: 'vaccines' });
-    payload.photoUrl = upload.secure_url;
+  if (payload.photoUrl) {
+    const uploadUrl = await uploadImageToCloudinary(payload.photoUrl);
+    payload.photoUrl = uploadUrl;
+  }
+
+  if (vaccine.photoUrl) {
+    await deleteImageFromCloudinary(vaccine.photoUrl);
   }
 
   const updatedVaccine = await Vaccine.updateVaccine(id, payload);
@@ -103,6 +105,10 @@ export const deleteVaccine = async id => {
   }
 
   const deletedVaccine = await Vaccine.deleteVaccine(id);
+
+  if (deletedVaccine.photoUrl) {
+    await deleteImageFromCloudinary(deletedVaccine.photoUrl);
+  }
 
   return deletedVaccine;
 };
