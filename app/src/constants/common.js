@@ -3,6 +3,9 @@ export const APP_TITLE = "Vaccine Manager";
 export const PRODUCTION = "production";
 export const DEVELOPMENT = "development";
 
+export const DEFAULT_PAGE_SIZE = 10;
+export const DEFAULT_PAGE_NUMBER = 1;
+
 export const DEFAULT_VACCINE_IMAGE =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPtjpM7aoR4kbaH9c6j-uKN4SDiuiekzLTgA&usqp=CAU";
 

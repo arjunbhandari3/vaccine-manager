@@ -57,3 +57,21 @@ export const refreshTokens = async (req, res, next) => {
     next(error);
   }
 };
+
+/**
+ * Sign out user.
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Function} next
+ * @returns {Object}
+ */
+export const signOut = async (req, res, next) => {
+  try {
+    req.user = null;
+
+    return res.status(HttpStatus.OK).json({ message: 'Successfully signed out.' });
+  } catch (error) {
+    next(error);
+  }
+};

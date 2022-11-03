@@ -55,31 +55,14 @@
   font-weight: bold;
 }
 
-.add-vaccine-btn {
-  background-color: #00407c;
-  padding: 10px 20px;
-  color: white !important;
-  border-radius: 8px;
-  transition: background-color 0.3s ease-in-out;
-}
-
-.add-vaccine-btn:hover {
-  background-color: #002a52;
-}
-
 .vaccines-container {
   padding: 40px 80px;
 }
 
 .vaccines-header-title {
-  font-size: 42px;
+  font-size: 32px;
+  padding: 4px 0px 0px 0px;
   color: rgb(29, 84, 156);
-}
-
-.add-vaccine-container {
-  max-width: 760px;
-  margin: 0px auto;
-  padding: 40px 80px;
 }
 
 .form-label {
@@ -89,14 +72,6 @@
 
 .form-label--required {
   color: red;
-}
-
-.vaccine-img {
-  height: 50px;
-  width: 50px;
-  object-fit: cover;
-  object-position: center;
-  border-radius: 50%;
 }
 
 .cursor-pointer {

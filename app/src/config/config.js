@@ -9,6 +9,7 @@ const config = {
       signIn: "/api/auth/signin",
       signUp: "/api/auth/signup",
       refreshToken: "/api/auth/token",
+      signOut: "/api/auth/signout",
     },
     vaccine: {
       all: "/api/vaccines",

@@ -1,7 +1,8 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-import { removeUserDataFromLocalStorage } from "utils/token";
+import { handleError } from "utils/error";
+import * as authService from "services/auth";
 
 import * as routes from "constants/routes";
 import { APP_TITLE } from "constants/common";
@@ -11,27 +12,23 @@ export const Navbar = (props) => {
     return { color: isActive ? "#176bb9" : "gray" };
   };
 
-  const handleClick = () => {
-    removeUserDataFromLocalStorage();
+  const handleLogout = async () => {
+    try {
+      await authService.signOut();
+      window.location.href = routes.SIGN_IN;
+    } catch (error) {
+      handleError(error);
+    }
   };
 
   return (
     <div className="navbar">
-      <div>
-        <h1 className="logo">{APP_TITLE}</h1>
-      </div>
+      <h1 className="logo">{APP_TITLE}</h1>
       <div className="nav-items">
-        <NavLink
-          style={Styling}
-          to={routes.ADD_VACCINE}
-          className="add-vaccine-btn"
-        >
-          Add Vaccine
-        </NavLink>
         <NavLink style={Styling} to={routes.HOME}>
           Vaccines
         </NavLink>
-        <NavLink style={Styling} to={routes.SIGN_IN} onClick={handleClick}>
+        <NavLink style={Styling} to={routes.SIGN_IN} onClick={handleLogout}>
           Logout
         </NavLink>
       </div>

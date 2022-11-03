@@ -6,8 +6,6 @@ import SignUp from "pages/auth/SignUp";
 import SignIn from "pages/auth/SignIn";
 import { NotFound } from "pages/NotFound";
 import { Vaccines } from "pages/vaccine/Vaccines";
-import { AddVaccine } from "pages/vaccine/AddVaccine";
-import { EditVaccine } from "pages/vaccine/EditVaccine";
 import AuthorizedRoute from "components/AuthorizedRoute";
 
 import * as routes from "constants/routes";
@@ -18,8 +16,6 @@ export const AppRouter = (props) => {
       <Route path={routes.HOME} element={<AuthorizedRoute />}>
         <Route path={routes.HOME} element={<Layout />}>
           <Route path={routes.HOME} element={<Vaccines />} />
-          <Route path={routes.ADD_VACCINE} element={<AddVaccine />} />
-          <Route path={routes.EDIT_VACCINE} element={<EditVaccine />} />
         </Route>
       </Route>
 

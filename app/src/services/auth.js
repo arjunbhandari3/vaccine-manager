@@ -2,6 +2,7 @@ import axios from "axios";
 
 import {
   getTokenFromLocalStorage,
+  removeUserDataFromLocalStorage,
   setUserDataToLocalStorage,
 } from "../utils/token";
 import config from "../config/config";
@@ -59,4 +60,14 @@ export const signUp = async (email, password) => {
   setUserDataToLocalStorage(accessToken, refreshToken, user.id);
 
   return data;
+};
+
+/**
+ * Sign out user
+ *
+ */
+export const signOut = async () => {
+  await axios.get(config.endpoints.auth.signOut);
+
+  removeUserDataFromLocalStorage();
 };

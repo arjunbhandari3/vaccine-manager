@@ -11,7 +11,7 @@ class Vaccine {
    * @returns {Object}
    */
   static async getVaccineById(id) {
-    const result = await this.qb.select('*').where('id', id);
+    const result = await this.qb.where('id', id).select('*');
 
     return result[0];
   }
@@ -34,7 +34,7 @@ class Vaccine {
    * @returns {Object}
    */
   static async getAllVaccines() {
-    const result = await this.qb.select('*');
+    const result = await this.qb.select('*').orderBy('id');
 
     return result;
   }
