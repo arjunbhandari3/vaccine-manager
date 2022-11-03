@@ -1,9 +1,24 @@
 import axios from "axios";
+import moment from "moment";
 
 import config from "config/config";
 import { cleanObject } from "utils/object";
 import { interpolate } from "utils/string";
 import { getAuthHeader } from "utils/token";
+import { sortVaccinesData } from "utils/array";
+
+/**
+ * Format the vaccine data.
+ * @param {*} vaccines
+ * @returns
+ */
+const formatVaccineData = (vaccines) => {
+  return vaccines.map((vaccine) => ({
+    ...vaccine,
+    releaseDate: moment(vaccine.releaseDate).format("YYYY-MM-DD"),
+    expirationDate: moment(vaccine.expirationDate).format("YYYY-MM-DD"),
+  }));
+};
 
 /**
  * Get all vaccines
@@ -13,14 +28,11 @@ import { getAuthHeader } from "utils/token";
 export const getAllVaccines = async () => {
   const url = interpolate(config.endpoints.vaccine.all);
 
-  const { data } = await axios.get(url, {
-    headers: {
-      "Content-type": "application/json",
-      Authorization: getAuthHeader(),
-    },
-  });
+  const { data } = await axios.get(url);
 
-  return data;
+  const sortedData = sortVaccinesData(formatVaccineData(data));
+
+  return sortedData;
 };
 
 /**
@@ -31,12 +43,7 @@ export const getAllVaccines = async () => {
 export const getVaccineById = async (id) => {
   const url = interpolate(config.endpoints.vaccine.one, { id });
 
-  const { data } = await axios.get(url, {
-    headers: {
-      "Content-type": "application/json",
-      Authorization: getAuthHeader(),
-    },
-  });
+  const { data } = await axios.get(url);
 
   return data;
 };
@@ -85,9 +92,7 @@ export const updateVaccine = async (id, vaccine) => {
 export const deleteVaccine = async (id) => {
   const url = interpolate(config.endpoints.vaccine.one, { id });
 
-  const { data } = await axios.delete(url, {
-    headers: { Authorization: getAuthHeader() },
-  });
+  const { data } = await axios.delete(url);
 
   return data;
 };

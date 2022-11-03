@@ -1,12 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Form, Input } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 
-import {
-  // showErrorNotification,
-  showSuccessNotification,
-} from "utils/notification";
+import Loading from "components/Loading";
+
 import { handleError } from "utils/error";
+import { showSuccessNotification } from "utils/notification";
 
 import { signIn } from "services/auth";
 import useDocumentTitle from "hooks/useDocumentTitle";
@@ -24,20 +23,24 @@ const SignIn = (props) => {
 
   useDocumentTitle("Sign In");
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const onSubmit = async (values) => {
     try {
+      setIsSubmitting(true);
       const { email, password } = values;
 
       await signIn(email, password);
 
-      navigate(routes.VACCINES);
+      navigate(routes.HOME);
 
       showSuccessNotification(SUCCESSFULLY_SIGNED_IN);
     } catch (error) {
       handleError(error);
+    } finally {
+      setIsSubmitting(false);
+      form.resetFields();
     }
-
-    form.resetFields();
   };
 
   return (
@@ -83,7 +86,7 @@ const SignIn = (props) => {
           </Form.Item>
           <Form.Item className="button">
             <Button type="primary" htmlType="submit" size="large" block>
-              Sign In
+              {isSubmitting ? <Loading /> : "Sign In"}
             </Button>
           </Form.Item>
         </Form>

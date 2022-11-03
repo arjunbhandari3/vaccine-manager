@@ -2,7 +2,6 @@ import axios from "axios";
 
 import {
   getTokenFromLocalStorage,
-  getUserFromLocalStorage,
   setUserDataToLocalStorage,
 } from "../utils/token";
 import config from "../config/config";
@@ -11,13 +10,10 @@ import config from "../config/config";
  * Get token
  */
 export const getToken = async () => {
-  const id = getUserFromLocalStorage();
-
   const { refreshToken } = getTokenFromLocalStorage() || {};
 
   const { data } = await axios.post(config.endpoints.auth.refreshToken, {
     refreshToken,
-    id,
   });
 
   if (data) {

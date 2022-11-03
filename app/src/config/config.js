@@ -3,6 +3,7 @@
  */
 const config = {
   env: process.env.REACT_APP_ENV,
+  baseURL: process.env.REACT_APP_BASE_URL,
   endpoints: {
     auth: {
       signIn: "/api/auth/signin",

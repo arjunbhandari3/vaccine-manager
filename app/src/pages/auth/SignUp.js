@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Form, Input } from "antd";
 import { Link, useNavigate } from "react-router-dom";
+
+import Loading from "components/Loading";
 
 import { handleError } from "utils/error";
 import { showSuccessNotification } from "utils/notification";
@@ -21,20 +23,25 @@ const SignUp = (props) => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   useDocumentTitle("Sign Up");
 
   const onSubmit = async (values) => {
     try {
+      setIsSubmitting(true);
       const { email, password } = values;
 
       await signUp(email, password);
 
-      navigate(routes.VACCINES);
+      navigate(routes.HOME);
       form.resetFields();
 
       showSuccessNotification(SUCCESSFULLY_SIGNED_UP);
     } catch (error) {
       handleError(error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -106,7 +113,7 @@ const SignUp = (props) => {
 
           <Form.Item className="button">
             <Button type="primary" htmlType="submit" size="large" block>
-              Sign Up
+              {isSubmitting ? <Loading /> : "Sign Up"}
             </Button>
           </Form.Item>
         </Form>

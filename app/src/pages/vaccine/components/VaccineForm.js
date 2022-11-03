@@ -81,7 +81,7 @@ export const VaccineForm = (props) => {
       isEditForm ? VACCINE_EDITED_MESSAGE : VACCINE_ADDED_MESSAGE
     );
 
-    navigate(routes.VACCINES);
+    navigate(routes.HOME);
   };
 
   const Label = ({ label, isCompulsory = false }) => {
