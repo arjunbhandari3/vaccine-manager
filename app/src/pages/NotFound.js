@@ -1,14 +1,12 @@
-import { useRouteError } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const NotFound = (props) => {
-  const error = useRouteError();
-
   return (
-    <div id="error-page">
+    <div className="error-page">
       <h1>Oops!</h1>
       <p>Sorry, an unexpected error has occurred.</p>
       <p>
-        <i>{error.statusText || error.message}</i>
+        <Link to="/">Return to home</Link> or try again.
       </p>
     </div>
   );

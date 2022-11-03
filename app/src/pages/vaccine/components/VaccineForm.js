@@ -164,7 +164,7 @@ const VaccineForm = ({ vaccine, form, onClose, setIsSubmitting }) => {
             name="numberOfDoses"
             rules={[{ required: true, message: REQUIRED }]}
           >
-            <InputNumber min={0} defaultValue={0} />
+            <InputNumber min={0} initialValues={0} />
           </Form.Item>
         </Col>
 

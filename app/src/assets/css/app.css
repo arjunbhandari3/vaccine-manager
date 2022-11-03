@@ -78,6 +78,14 @@
   cursor: pointer;
 }
 
+.error-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+}
+
 /* Loading Indicator */
 .loader {
   width: 50px;

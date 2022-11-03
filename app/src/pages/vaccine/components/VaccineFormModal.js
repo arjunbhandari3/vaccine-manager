@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 
 import VaccineForm from "./VaccineForm";
 
-const VaccineModal = ({ vaccine, visible, onCancel }) => {
+const VaccineFormModal = ({ vaccine, open, onCancel }) => {
   const [form] = Form.useForm();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -21,7 +21,7 @@ const VaccineModal = ({ vaccine, visible, onCancel }) => {
 
   return (
     <Modal
-      visible={visible}
+      open={open}
       onCancel={onCancel}
       title={
         <h1 className="vaccines-header-title">
@@ -42,4 +42,4 @@ const VaccineModal = ({ vaccine, visible, onCancel }) => {
   );
 };
 
-export default VaccineModal;
+export default VaccineFormModal;

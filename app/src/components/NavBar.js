@@ -25,9 +25,6 @@ export const Navbar = (props) => {
     <div className="navbar">
       <h1 className="logo">{APP_TITLE}</h1>
       <div className="nav-items">
-        <NavLink style={Styling} to={routes.HOME}>
-          Vaccines
-        </NavLink>
         <NavLink style={Styling} to={routes.SIGN_IN} onClick={handleLogout}>
           Logout
         </NavLink>
