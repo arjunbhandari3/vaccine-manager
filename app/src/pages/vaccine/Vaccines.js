@@ -113,7 +113,7 @@ export const Vaccines = (props) => {
         extra={[
           <Input
             key={1}
-            placeholder="Search Vaccine Name"
+            placeholder="Search Vaccines"
             value={value}
             onChange={(e) => {
               if (e.target.value === "") {
@@ -160,7 +160,6 @@ export const Vaccines = (props) => {
             title="Mandatory"
             dataIndex="isMandatory"
             key="isMandatory"
-            colSpan={1}
             render={(isMandatory) => {
               return isMandatory ? (
                 <StarFilled style={{ color: "orange", fontSize: 20 }} />
@@ -217,22 +216,25 @@ export const Vaccines = (props) => {
             dataIndex="id"
             render={(id, object) => (
               <Space size="small">
-                <div
-                  className="cursor-pointer"
-                  onClick={() => {
-                    setShowModal(true);
-                    setSelectedVaccine(object);
-                  }}
-                >
-                  <EditOutlined style={{ fontSize: 20, color: "blue" }} />
-                </div>
-
-                <div
-                  className="cursor-pointer"
-                  onClick={() => showDeleteVaccineModal(id)}
-                >
-                  <DeleteOutlined style={{ fontSize: 20, color: "red" }} />
-                </div>
+                <Tooltip title="Edit Vaccine">
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => {
+                      setShowModal(true);
+                      setSelectedVaccine(object);
+                    }}
+                  >
+                    <EditOutlined style={{ fontSize: 20, color: "blue" }} />
+                  </div>
+                </Tooltip>
+                <Tooltip title="Delete Vaccine">
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => showDeleteVaccineModal(id)}
+                  >
+                    <DeleteOutlined style={{ fontSize: 20, color: "red" }} />
+                  </div>
+                </Tooltip>
               </Space>
             )}
           />

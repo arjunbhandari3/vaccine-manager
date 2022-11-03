@@ -59,12 +59,9 @@ export const signUp = async payload => {
     password: hashedPassword,
   });
 
-  const { accessToken, refreshToken } = getSignedTokens({ id: newUser.id, email: newUser.email });
   const filteredUser = withoutAttrs(newUser, ['password']);
 
   return {
-    accessToken,
-    refreshToken,
     user: filteredUser,
   };
 };

@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as routes from "constants/routes";
 
-import { getToken } from "../services/auth";
+import { refreshToken } from "../services/auth";
 import { getTokenFromLocalStorage } from "../utils/token";
 
 const reqInterceptor = (config) => {
@@ -21,7 +21,7 @@ const resErrorInterceptor = async (error, reqInterceptorId) => {
 
   if (error.response?.status === 401 && !originalReq?.sent) {
     try {
-      await getToken();
+      await refreshToken();
 
       axios.interceptors.request.eject(reqInterceptorId);
       axios.interceptors.request.use(reqInterceptor);

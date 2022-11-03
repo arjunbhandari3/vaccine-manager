@@ -10,7 +10,7 @@ import config from "../config/config";
 /**
  * Get token
  */
-export const getToken = async () => {
+export const refreshToken = async () => {
   const { refreshToken } = getTokenFromLocalStorage() || {};
 
   const { data } = await axios.post(config.endpoints.auth.refreshToken, {
@@ -54,10 +54,6 @@ export const signUp = async (email, password) => {
     email,
     password,
   });
-
-  const { accessToken, refreshToken, user } = data;
-
-  setUserDataToLocalStorage(accessToken, refreshToken, user.id);
 
   return data;
 };

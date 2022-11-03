@@ -10,7 +10,7 @@ export const DEFAULT_VACCINE_IMAGE =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPtjpM7aoR4kbaH9c6j-uKN4SDiuiekzLTgA&usqp=CAU";
 
 export const SUCCESSFULLY_SIGNED_IN = "Signed in Successfully!";
-export const SUCCESSFULLY_SIGNED_UP = "Signed up Successfully!";
+export const SUCCESSFULLY_SIGNED_UP = "Signed up Successfully! Please Sign In.";
 export const SUCCESSFULLY_SIGNED_OUT = "Signed out Successfully!";
 
 export const REQUIRED = "Required!";

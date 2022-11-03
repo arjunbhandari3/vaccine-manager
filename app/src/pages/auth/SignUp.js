@@ -34,7 +34,7 @@ const SignUp = (props) => {
 
       await signUp(email, password);
 
-      navigate(routes.HOME);
+      navigate(routes.SIGN_IN);
       form.resetFields();
 
       showSuccessNotification(SUCCESSFULLY_SIGNED_UP);
