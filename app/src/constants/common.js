@@ -24,4 +24,6 @@ export const INVALID_EXPIRY_DATE =
 
 export const VACCINE_ADDED_MESSAGE = "New Vaccine Added Successfully!";
 export const VACCINE_EDITED_MESSAGE = "Vaccine Edited Successfully!";
+export const VACCINE_MANADATORY_UPDATE_MESSAGE =
+  "Vaccine Mandatory Status Updated.";
 export const VACCINE_DELETED_MESSAGE = "Vaccine Deleted Successfully!";

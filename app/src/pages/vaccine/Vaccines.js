@@ -1,4 +1,5 @@
 import {
+  Spin,
   Space,
   Input,
   Table,
@@ -13,13 +14,14 @@ import {
   StarOutlined,
   EditOutlined,
   DeleteOutlined,
+  LoadingOutlined,
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { handleError } from "utils/error";
-import { deleteVaccine } from "services/vaccine";
+import { deleteVaccine, updateVaccine } from "services/vaccine";
 import useDocumentTitle from "hooks/useDocumentTitle";
 import { getAllVaccines } from "redux/actions/vaccineAction";
 import VaccineFormModal from "./components/VaccineFormModal";
@@ -30,6 +32,7 @@ import {
   DEFAULT_PAGE_NUMBER,
   DEFAULT_VACCINE_IMAGE,
   VACCINE_DELETED_MESSAGE,
+  VACCINE_MANADATORY_UPDATE_MESSAGE,
 } from "constants/common";
 
 export const Vaccines = (props) => {
@@ -44,6 +47,7 @@ export const Vaccines = (props) => {
 
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [selectedVaccine, setSelectedVaccine] = useState(null);
@@ -70,6 +74,21 @@ export const Vaccines = (props) => {
 
     fetchVaccines();
   }, [dispatch]);
+
+  const handleUpdateMandatory = async (vaccine) => {
+    try {
+      setIsUpdating(true);
+
+      await updateVaccine(vaccine.id, { isMandatory: !vaccine.isMandatory });
+      await dispatch(getAllVaccines());
+
+      showSuccessNotification(VACCINE_MANADATORY_UPDATE_MESSAGE);
+    } catch (err) {
+      handleError(err);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
 
   const handleDelete = async (id) => {
     try {
@@ -152,26 +171,18 @@ export const Vaccines = (props) => {
           <Column
             title="S.N."
             key="index"
+            width={80}
             render={(value, item, index) =>
               (pageNumber - 1) * pageSize + index + 1
             }
           />
-          <Column
-            title="Mandatory"
-            dataIndex="isMandatory"
-            key="isMandatory"
-            render={(isMandatory) => {
-              return isMandatory ? (
-                <StarFilled style={{ color: "orange", fontSize: 20 }} />
-              ) : (
-                <StarOutlined style={{ fontSize: 20 }} />
-              );
-            }}
-          />
+
           <Column
             title=""
             dataIndex="photoUrl"
             key="photoUrl"
+            align="center"
+            width={80}
             render={(pic) => {
               pic = pic || DEFAULT_VACCINE_IMAGE;
 
@@ -180,9 +191,40 @@ export const Vaccines = (props) => {
           />
           <Column title="Name" dataIndex="name" key="name" />
           <Column
+            title="Mandatory"
+            dataIndex="isMandatory"
+            key="isMandatory"
+            align="center"
+            width={120}
+            render={(isMandatory, object) => {
+              return isUpdating && selectedVaccine === object.id ? (
+                <Spin
+                  indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />}
+                />
+              ) : (
+                <Tooltip title={"Change Mandatory Status"}>
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => {
+                      setSelectedVaccine(object.id);
+                      handleUpdateMandatory(object);
+                    }}
+                  >
+                    {isMandatory ? (
+                      <StarFilled style={{ color: "orange", fontSize: 20 }} />
+                    ) : (
+                      <StarOutlined style={{ fontSize: 20 }} />
+                    )}
+                  </div>
+                </Tooltip>
+              );
+            }}
+          />
+          <Column
             title="Description"
             dataIndex="description"
             key="description"
+            width={200}
             ellipsis={{ showTitle: false }}
             render={(description) => (
               <Tooltip placement="topLeft" title={description}>
@@ -193,12 +235,15 @@ export const Vaccines = (props) => {
           <Column
             title="Manufacturer"
             dataIndex="manufacturer"
+            ellipsis={{ showTitle: false }}
             key="manufacturer"
           />
           <Column
             title="No. of Doses"
             dataIndex="numberOfDoses"
             key="numberOfDoses"
+            align="center"
+            width={120}
           />
           <Column
             title="Release Date"

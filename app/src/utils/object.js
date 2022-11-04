@@ -8,7 +8,7 @@ export function cleanObject(obj, acc) {
   const cleaned = acc || {};
 
   Object.keys(obj).forEach((key) => {
-    if (key && obj[key]) {
+    if (obj[key] !== undefined && obj[key] !== null) {
       cleaned[key] = obj[key];
     }
   });
