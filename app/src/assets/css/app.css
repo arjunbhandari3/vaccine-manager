@@ -70,6 +70,18 @@
   font-weight: 500;
 }
 
+.d-flex {
+  display: flex;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.mb-10x {
+  margin-bottom: 10px;
+}
+
 .form-label--required {
   color: red;
 }

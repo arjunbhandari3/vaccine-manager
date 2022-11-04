@@ -34,7 +34,7 @@ const updateVaccineSchema = Joi.object({
  * @returns {object}
  */
 export const validateCreateVaccine = async (req, res, next) => {
-  if (req.body?.allergies.length > 0) {
+  if (req.body?.allergies?.length > 0) {
     req.body.allergies = JSON.parse(req.body.allergies);
   }
   return await validate(req.body, createVaccineSchema)
@@ -50,7 +50,7 @@ export const validateCreateVaccine = async (req, res, next) => {
  * @returns {object}
  */
 export const validateUpdateVaccine = async (req, res, next) => {
-  if (req.body?.allergies.length > 0) {
+  if (req.body?.allergies?.length > 0) {
     req.body.allergies = JSON.parse(req.body.allergies);
   }
 

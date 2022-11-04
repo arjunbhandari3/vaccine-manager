@@ -19,3 +19,19 @@ export const interpolate = (str, params = {}) => {
 
   return formattedString;
 };
+
+/**
+ * Truncate the given string to the given length.
+ *
+ * @param {string} str
+ * @param {number} length
+ *
+ * @returns string
+ */
+export const truncate = (str, length = 10) => {
+  if (str.length <= length) {
+    return str;
+  }
+
+  return `${str.substring(0, length)}...`;
+};

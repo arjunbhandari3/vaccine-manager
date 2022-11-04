@@ -24,6 +24,7 @@ const AllergyForm = () => {
                 <Row>
                   <Form.Item
                     {...field}
+                    key="allergy"
                     name={[field.name, "allergy"]}
                     validateTrigger={["onChange", "onBlur"]}
                     rules={[
@@ -35,11 +36,18 @@ const AllergyForm = () => {
                       marginRight: 16,
                     }}
                   >
-                    <Input.TextArea placeholder="Allergy" row={3} />
+                    <Input.TextArea
+                      placeholder="Allergy"
+                      row={3}
+                      showCount={true}
+                      maxLength={100}
+                      rules={[{ required: true, message: REQUIRED }]}
+                    />
                   </Form.Item>
 
                   <Form.Item
                     {...field}
+                    key="risk"
                     name={[field.name, "risk"]}
                     rules={[{ required: true, message: REQUIRED }]}
                   >

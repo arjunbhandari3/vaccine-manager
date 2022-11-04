@@ -12,6 +12,12 @@ export const DEFAULT_VACCINE_IMAGE =
 export const ALLERGY_RISK = { LOW: "Low", MEDIUM: "Medium", HIGH: "High" };
 export const ALLERGY_RISK_ENUM = Object.values(ALLERGY_RISK);
 
+export const ALLERGY_RISK_COLOR = {
+  [ALLERGY_RISK.LOW]: "green",
+  [ALLERGY_RISK.MEDIUM]: "orange",
+  [ALLERGY_RISK.HIGH]: "red",
+};
+
 export const SUCCESSFULLY_SIGNED_IN = "Signed in Successfully!";
 export const SUCCESSFULLY_SIGNED_UP = "Signed up Successfully! Please Sign In.";
 export const SUCCESSFULLY_SIGNED_OUT = "Signed out Successfully!";

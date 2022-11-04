@@ -1,4 +1,5 @@
 import {
+  Tag,
   Spin,
   Space,
   Input,
@@ -20,12 +21,15 @@ import {
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+import { truncate } from "utils/string";
 import { handleError } from "utils/error";
-import { deleteVaccine, updateVaccine } from "services/vaccine";
-import useDocumentTitle from "hooks/useDocumentTitle";
-import { getAllVaccines } from "redux/actions/vaccineAction";
-import VaccineFormModal from "./components/VaccineFormModal";
+import { truncateArray } from "utils/array";
 import { showSuccessNotification } from "utils/notification";
+
+import useDocumentTitle from "hooks/useDocumentTitle";
+import VaccineFormModal from "./components/VaccineFormModal";
+import { getAllVaccines } from "redux/actions/vaccineAction";
+import { deleteVaccine, updateVaccine } from "services/vaccine";
 
 import {
   DEFAULT_PAGE_SIZE,
@@ -33,6 +37,7 @@ import {
   DEFAULT_VACCINE_IMAGE,
   VACCINE_DELETED_MESSAGE,
   VACCINE_MANADATORY_UPDATE_MESSAGE,
+  ALLERGY_RISK_COLOR,
 } from "constants/common";
 
 export const Vaccines = (props) => {
@@ -240,15 +245,20 @@ export const Vaccines = (props) => {
           <Column
             title="Manufacturer"
             dataIndex="manufacturer"
-            ellipsis={{ showTitle: false }}
             key="manufacturer"
+            width={150}
+            ellipsis={{ showTitle: false }}
+            render={(manufacturer) => (
+              <Tooltip placement="topLeft" title={manufacturer}>
+                {manufacturer}
+              </Tooltip>
+            )}
           />
           <Column
             title="No. of Doses"
             dataIndex="numberOfDoses"
             key="numberOfDoses"
             align="center"
-            width={120}
           />
           <Column
             title="Release Date"
@@ -259,6 +269,30 @@ export const Vaccines = (props) => {
             title="Expiration Date"
             dataIndex="expirationDate"
             key="expirationDate"
+          />
+          <Column
+            title="Allergies"
+            dataIndex="allergies"
+            key="allergies"
+            ellipsis={{ showTitle: false }}
+            width={200}
+            render={(allergies) => {
+              const allergiesList =
+                allergies?.length > 0 && truncateArray(allergies);
+
+              return allergies?.length > 0 ? (
+                <div className="d-flex flex-wrap">
+                  {allergiesList.map(({ allergy, risk }) => (
+                    <Tag className="mb-10x" color={ALLERGY_RISK_COLOR[risk]}>
+                      <Tooltip title={allergy}>{truncate(allergy, 25)}</Tooltip>
+                    </Tag>
+                  ))}
+                  {allergies?.length > 5 && <span>...</span>}
+                </div>
+              ) : (
+                <span>-</span>
+              );
+            }}
           />
           <Column
             title="Action"
