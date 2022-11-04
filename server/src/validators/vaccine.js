@@ -11,6 +11,7 @@ const createVaccineSchema = Joi.object({
   expirationDate: Joi.date().required().label('Expiration Date'),
   photoUrl: Joi.string().label('Photo URL').allow(null),
   isMandatory: Joi.boolean().label('Is Mandatory'),
+  allergies: Joi.array().label('Allergies'),
 });
 
 const updateVaccineSchema = Joi.object({
@@ -22,6 +23,7 @@ const updateVaccineSchema = Joi.object({
   expirationDate: Joi.date().label('Expiration Date'),
   photoUrl: Joi.string().label('Photo URL').allow(null),
   isMandatory: Joi.boolean().label('Is Mandatory'),
+  allergies: Joi.array().label('Allergies'),
 });
 
 /**
@@ -32,6 +34,9 @@ const updateVaccineSchema = Joi.object({
  * @returns {object}
  */
 export const validateCreateVaccine = async (req, res, next) => {
+  if (req.body?.allergies.length > 0) {
+    req.body.allergies = JSON.parse(req.body.allergies);
+  }
   return await validate(req.body, createVaccineSchema)
     .then(() => next())
     .catch(next);
@@ -45,6 +50,10 @@ export const validateCreateVaccine = async (req, res, next) => {
  * @returns {object}
  */
 export const validateUpdateVaccine = async (req, res, next) => {
+  if (req.body?.allergies.length > 0) {
+    req.body.allergies = JSON.parse(req.body.allergies);
+  }
+
   return await validate(req.body, updateVaccineSchema)
     .then(() => next())
     .catch(next);

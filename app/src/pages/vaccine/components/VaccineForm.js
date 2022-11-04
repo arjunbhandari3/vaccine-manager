@@ -14,9 +14,12 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { UploadOutlined } from "@ant-design/icons";
 
+import AllergyForm from "./AllergyForm";
+
 import { handleError } from "utils/error";
 import { showSuccessNotification } from "utils/notification";
 import { addVaccine, updateVaccine } from "services/vaccine";
+import { getAllVaccines } from "redux/actions/vaccineAction";
 
 import {
   REQUIRED,
@@ -25,7 +28,6 @@ import {
   VACCINE_ADDED_MESSAGE,
   VACCINE_EDITED_MESSAGE,
 } from "constants/common";
-import { getAllVaccines } from "redux/actions/vaccineAction";
 
 const VaccineForm = ({ vaccine, form, onClose, setIsSubmitting }) => {
   const dispatch = useDispatch();
@@ -41,6 +43,10 @@ const VaccineForm = ({ vaccine, form, onClose, setIsSubmitting }) => {
 
     if (file) {
       data.photoUrl = file;
+    }
+
+    if (data?.allergies?.length > 0) {
+      data.allergies = JSON.stringify(data.allergies);
     }
 
     try {
@@ -201,6 +207,7 @@ const VaccineForm = ({ vaccine, form, onClose, setIsSubmitting }) => {
           <Button icon={<UploadOutlined />}>Click to upload</Button>
         </Upload>
       </Form.Item>
+      <AllergyForm />
     </Form>
   );
 };

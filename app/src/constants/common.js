@@ -9,6 +9,9 @@ export const DEFAULT_PAGE_NUMBER = 1;
 export const DEFAULT_VACCINE_IMAGE =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPtjpM7aoR4kbaH9c6j-uKN4SDiuiekzLTgA&usqp=CAU";
 
+export const ALLERGY_RISK = { LOW: "Low", MEDIUM: "Medium", HIGH: "High" };
+export const ALLERGY_RISK_ENUM = Object.values(ALLERGY_RISK);
+
 export const SUCCESSFULLY_SIGNED_IN = "Signed in Successfully!";
 export const SUCCESSFULLY_SIGNED_UP = "Signed up Successfully! Please Sign In.";
 export const SUCCESSFULLY_SIGNED_OUT = "Signed out Successfully!";

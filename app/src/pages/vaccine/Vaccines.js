@@ -87,6 +87,7 @@ export const Vaccines = (props) => {
       handleError(err);
     } finally {
       setIsUpdating(false);
+      setSelectedVaccine(null);
     }
   };
 
@@ -125,7 +126,11 @@ export const Vaccines = (props) => {
 
   return (
     <div className="vaccines-container">
-      <VaccineFormModal open={showModal} onCancel={() => setShowModal(false)} />
+      <VaccineFormModal
+        vaccine={null}
+        open={showModal}
+        onCancel={() => setShowModal(false)}
+      />
 
       <PageHeader
         title={<h1 className="vaccines-header-title">All Vaccines</h1>}
@@ -287,7 +292,10 @@ export const Vaccines = (props) => {
         <VaccineFormModal
           vaccine={selectedVaccine}
           open={showModal}
-          onCancel={() => setShowModal(false)}
+          onCancel={() => {
+            setShowModal(false);
+            setSelectedVaccine(null);
+          }}
         />
       </div>
     </div>

@@ -1,13 +1,21 @@
+import { Result, Button } from "antd";
 import { Link } from "react-router-dom";
+
+import * as routes from "constants/routes";
 
 export const NotFound = (props) => {
   return (
     <div className="error-page">
-      <h1>Oops!</h1>
-      <p>Sorry, an unexpected error has occurred.</p>
-      <p>
-        <Link to="/">Return to home</Link> or try again.
-      </p>
+      <Result
+        status="404"
+        title="404"
+        subTitle="Sorry, the page you visited does not exist."
+        extra={
+          <Link to={routes.HOME}>
+            <Button type="primary">Back Home</Button>{" "}
+          </Link>
+        }
+      />
     </div>
   );
 };

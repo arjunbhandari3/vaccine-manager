@@ -86,6 +86,10 @@
   height: 100vh;
 }
 
+.allergy-form {
+  padding: 10px;
+}
+
 /* Loading Indicator */
 .loader {
   width: 50px;

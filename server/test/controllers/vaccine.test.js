@@ -15,6 +15,7 @@ const vaccineData = {
   expirationDate: '2022-10-17T18:15:00.000Z',
   photoUrl: null,
   isMandatory: true,
+  allergies: [{ risk: 'Medium', allergy: 'Allergy 1' }],
 };
 
 const updateVaccineData = {
@@ -27,6 +28,7 @@ const updateVaccineData = {
   expirationDate: '2022-10-17T18:15:00.000Z',
   photoUrl: null,
   isMandatory: true,
+  allergies: [{ risk: 'High', allergy: 'Allergy 1' }],
 };
 
 /**

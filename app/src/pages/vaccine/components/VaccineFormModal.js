@@ -16,6 +16,8 @@ const VaccineFormModal = ({ vaccine, open, onCancel }) => {
         releaseDate: moment(vaccine.releaseDate, "YYYY-MM-DD"),
         expirationDate: moment(vaccine.expirationDate, "YYYY-MM-DD"),
       });
+    } else {
+      form.resetFields();
     }
   }, [vaccine, form]);
 
@@ -23,6 +25,7 @@ const VaccineFormModal = ({ vaccine, open, onCancel }) => {
     <Modal
       open={open}
       onCancel={onCancel}
+      closable={false}
       title={
         <h1 className="vaccines-header-title">
           {vaccine ? "Edit vaccine" : "Add vaccine"}
