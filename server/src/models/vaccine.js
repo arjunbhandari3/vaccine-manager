@@ -1,6 +1,6 @@
 import db from '../db';
 
-import { TABLE_NAME_VACCINE } from '../constants';
+import { TABLE_NAME_ALLERGY, TABLE_NAME_VACCINE } from '../constants';
 
 class Vaccine {
   static qb = () => db(TABLE_NAME_VACCINE);
@@ -11,20 +11,21 @@ class Vaccine {
    * @returns {Object}
    */
   static async getVaccineById(id) {
-    const [result] = await this.qb().where('id', id).select('*');
-
-    return result;
-  }
-
-  /**
-   * Get vaccine by name.
-   *
-   * @param {string} name
-   * @returns {Promise}
-   */
-
-  static async getVaccineByName(name) {
-    const [result] = await this.qb().select('*').where('name', name);
+    const [result] = await this.qb()
+      .select(`${TABLE_NAME_VACCINE}.*`, `allergies.allergies`)
+      .leftJoin(
+        db
+          .select(
+            'vaccine_id',
+            db.raw(`json_agg(jsonb_build_object('id',id,'allergy',allergy,'risk',risk)) as allergies`)
+          )
+          .from(`${TABLE_NAME_ALLERGY}`)
+          .groupBy('vaccine_id')
+          .as('allergies'),
+        'allergies.vaccine_id',
+        'vaccine.id'
+      )
+      .where(`${TABLE_NAME_VACCINE}.id`, id);
 
     return result;
   }
@@ -34,7 +35,20 @@ class Vaccine {
    * @returns {Object}
    */
   static async getAllVaccines() {
-    const result = await this.qb().select('*').orderBy('id');
+    const result = await this.qb()
+      .select(`${TABLE_NAME_VACCINE}.*`, `allergies.allergies`)
+      .leftJoin(
+        db
+          .select(
+            'vaccine_id',
+            db.raw(`json_agg(jsonb_build_object('id',id,'allergy',allergy,'risk',risk)) as allergies`)
+          )
+          .from(`${TABLE_NAME_ALLERGY}`)
+          .groupBy('vaccine_id')
+          .as('allergies'),
+        'allergies.vaccine_id',
+        'vaccine.id'
+      );
 
     return result;
   }

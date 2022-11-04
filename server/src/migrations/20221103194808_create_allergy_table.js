@@ -1,4 +1,4 @@
-import { TABLE_NAME_ALLERGY, TABLE_NAME_VACCINE } from '../constants';
+import { ALLERGY_RISK_ENUM, TABLE_NAME_ALLERGY, TABLE_NAME_VACCINE } from '../constants';
 
 /**
  * Create table `allergy`.
@@ -9,9 +9,8 @@ import { TABLE_NAME_ALLERGY, TABLE_NAME_VACCINE } from '../constants';
 export function up(knex) {
   return knex.schema.createTable(TABLE_NAME_ALLERGY, table => {
     table.increments();
-    table.string('name').notNullable();
-    table.string('description').notNullable();
-    table.string('risk').notNullable();
+    table.string('allergy').notNullable();
+    table.enu('risk', ALLERGY_RISK_ENUM).notNullable();
     table.integer('vaccine_id');
     table.foreign('vaccine_id').references('id').inTable(TABLE_NAME_VACCINE);
     table.timestamp('created_at').notNull().defaultTo(knex.raw('now()'));
