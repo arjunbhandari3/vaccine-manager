@@ -1,7 +1,8 @@
-import axios from "axios";
 import moment from "moment";
 
 import config from "config/config";
+
+import http from "utils/http";
 import { cleanObject } from "utils/object";
 import { interpolate } from "utils/string";
 import { getAuthHeader } from "utils/token";
@@ -28,7 +29,7 @@ const formatVaccineData = (vaccines) => {
 export const getAllVaccines = async () => {
   const url = interpolate(config.endpoints.vaccine.all);
 
-  const { data } = await axios.get(url);
+  const { data } = await http.get(url);
 
   const sortedData = sortVaccinesData(formatVaccineData(data));
 
@@ -43,7 +44,7 @@ export const getAllVaccines = async () => {
 export const getVaccineById = async (id) => {
   const url = interpolate(config.endpoints.vaccine.one, { id });
 
-  const { data } = await axios.get(url);
+  const { data } = await http.get(url);
 
   return data;
 };
@@ -54,7 +55,7 @@ export const getVaccineById = async (id) => {
  * @returns {Promise}
  */
 export const addVaccine = async (vaccine) => {
-  const { data } = await axios.post(config.endpoints.vaccine.all, vaccine, {
+  const { data } = await http.post(config.endpoints.vaccine.all, vaccine, {
     headers: {
       "content-type": "multipart/form-data",
       Authorization: getAuthHeader(),
@@ -74,7 +75,7 @@ export const updateVaccine = async (id, vaccine) => {
 
   const vaccineData = cleanObject(vaccine);
 
-  const { data } = await axios.put(url, vaccineData, {
+  const { data } = await http.put(url, vaccineData, {
     headers: {
       "content-type": "multipart/form-data",
       Authorization: getAuthHeader(),
@@ -92,7 +93,7 @@ export const updateVaccine = async (id, vaccine) => {
 export const deleteVaccine = async (id) => {
   const url = interpolate(config.endpoints.vaccine.one, { id });
 
-  const { data } = await axios.delete(url);
+  const { data } = await http.delete(url);
 
   return data;
 };

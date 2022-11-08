@@ -1,7 +1,7 @@
 import { Row, Button, Form, Input, Select, Divider } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 
-import { ALLERGY_RISK_ENUM, REQUIRED } from "constants/common";
+import { ALLERGY_RISK_ENUM } from "constants/common";
 
 const AllergyForm = () => {
   return (
@@ -16,62 +16,45 @@ const AllergyForm = () => {
               <div className="form-label" style={{ marginBottom: 4 }}>
                 {index === 0 ? "Allergies" : ""}
               </div>
-              <Form.Item
-                key={field.key}
-                required={false}
-                style={{ marginBottom: 0 }}
-              >
-                <Row>
-                  <Form.Item
-                    {...field}
-                    key="allergy"
-                    name={[field.name, "allergy"]}
-                    validateTrigger={["onChange", "onBlur"]}
-                    rules={[
-                      { required: true, whitespace: true, message: REQUIRED },
-                    ]}
-                    style={{
-                      display: "inline-block",
-                      width: "calc(50% - 8px)",
-                      marginRight: 16,
-                    }}
-                  >
-                    <Input.TextArea
-                      placeholder="Allergy"
-                      row={3}
-                      showCount={true}
-                      maxLength={100}
-                      rules={[{ required: true, message: REQUIRED }]}
-                    />
-                  </Form.Item>
-
-                  <Form.Item
-                    {...field}
-                    key="risk"
-                    name={[field.name, "risk"]}
-                    rules={[{ required: true, message: REQUIRED }]}
-                  >
-                    <Select
-                      placeholder="Select risk level"
-                      style={{ width: 150 }}
-                    >
-                      {ALLERGY_RISK_ENUM.map((risk) => (
-                        <Select.Option key={risk} value={risk}>
-                          {risk}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                  <MinusCircleOutlined
-                    style={{
-                      margin: "8px",
-                      fontSize: 18,
-                      color: "red",
-                    }}
-                    onClick={() => remove(field.name)}
+              <Row>
+                <Form.Item
+                  key="allergy"
+                  name={[field.name, "allergy"]}
+                  style={{
+                    display: "inline-block",
+                    width: "calc(50% - 8px)",
+                    marginRight: 16,
+                  }}
+                >
+                  <Input.TextArea
+                    placeholder="Allergy"
+                    row={3}
+                    showCount={true}
+                    maxLength={100}
                   />
-                </Row>
-              </Form.Item>
+                </Form.Item>
+
+                <Form.Item key="risk" name={[field.name, "risk"]}>
+                  <Select
+                    placeholder="Select risk level"
+                    style={{ width: 150 }}
+                  >
+                    {ALLERGY_RISK_ENUM.map((risk) => (
+                      <Select.Option key={risk} value={risk}>
+                        {risk}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+                <MinusCircleOutlined
+                  style={{
+                    margin: "8px",
+                    fontSize: 18,
+                    color: "red",
+                  }}
+                  onClick={() => remove(field.name)}
+                />
+              </Row>
               <Divider style={{ margin: "8px 0" }} />
             </>
           ))}

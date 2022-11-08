@@ -1,8 +1,19 @@
 import axios from "axios";
-import * as routes from "constants/routes";
 
 import { refreshToken } from "../services/auth";
-import { getTokenFromLocalStorage } from "../utils/token";
+import {
+  getTokenFromLocalStorage,
+  removeUserDataFromLocalStorage,
+} from "../utils/token";
+
+import * as routes from "constants/routes";
+
+const http = axios.create({
+  baseURL: process.env.REACT_APP_BASE_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
 const reqInterceptor = (config) => {
   const { accessToken } = getTokenFromLocalStorage() || {};
@@ -23,12 +34,14 @@ const resErrorInterceptor = async (error, reqInterceptorId) => {
     try {
       await refreshToken();
 
-      axios.interceptors.request.eject(reqInterceptorId);
-      axios.interceptors.request.use(reqInterceptor);
+      http.interceptors.request.eject(reqInterceptorId);
+      http.interceptors.request.use(reqInterceptor, reqErrorInterceptor);
+
       originalReq.sent = true;
 
-      return axios(originalReq);
+      return http(originalReq);
     } catch (err) {
+      removeUserDataFromLocalStorage();
       window.location.href = routes.SIGN_IN;
       return;
     }
@@ -37,17 +50,14 @@ const resErrorInterceptor = async (error, reqInterceptorId) => {
   return Promise.reject(error);
 };
 
-export const tokenInterceptorProvider = () => {
-  axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
-  axios.defaults.headers.post["Content-Type"] = "application/json";
+const reqInterceptorId = http.interceptors.request.use(
+  reqInterceptor,
+  reqErrorInterceptor
+);
 
-  const reqInterceptorId = axios.interceptors.request.use(
-    reqInterceptor,
-    reqErrorInterceptor
-  );
+http.interceptors.response.use(
+  (response) => response,
+  (error) => resErrorInterceptor(error, reqInterceptorId)
+);
 
-  axios.interceptors.response.use(
-    (response) => response,
-    (error) => resErrorInterceptor(error, reqInterceptorId)
-  );
-};
+export default http;

@@ -10,6 +10,6 @@ const router = Router();
 router.post('/signin', validateUserInput, signIn);
 router.post('/signup', validateUserInput, signUp);
 router.post('/token', validateRefreshToken, refreshTokens);
-router.get('/signout', auth, signOut);
+router.post('/signout', auth, signOut);
 
 module.exports = router;

@@ -16,6 +16,7 @@ import {
   EditOutlined,
   DeleteOutlined,
   LoadingOutlined,
+  InfoCircleOutlined,
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
@@ -33,11 +34,11 @@ import { deleteVaccine, updateVaccine } from "services/vaccine";
 
 import {
   DEFAULT_PAGE_SIZE,
+  ALLERGY_RISK_COLOR,
   DEFAULT_PAGE_NUMBER,
   DEFAULT_VACCINE_IMAGE,
   VACCINE_DELETED_MESSAGE,
   VACCINE_MANADATORY_UPDATE_MESSAGE,
-  ALLERGY_RISK_COLOR,
 } from "constants/common";
 
 export const Vaccines = (props) => {
@@ -50,7 +51,6 @@ export const Vaccines = (props) => {
 
   useDocumentTitle("Vaccines");
 
-  const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -65,19 +65,7 @@ export const Vaccines = (props) => {
   }, [vaccines]);
 
   useEffect(() => {
-    const fetchVaccines = async () => {
-      try {
-        setLoading(true);
-
-        await dispatch(getAllVaccines());
-      } catch (err) {
-        handleError(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchVaccines();
+    dispatch(getAllVaccines());
   }, [dispatch]);
 
   const handleUpdateMandatory = async (vaccine) => {
@@ -139,6 +127,15 @@ export const Vaccines = (props) => {
 
       <PageHeader
         title={<h1 className="vaccines-header-title">All Vaccines</h1>}
+        tags={[
+          <Tag>Total: {vaccinesData.length}</Tag>,
+          <Tag color="red">
+            Mandatory: {vaccinesData.filter((v) => v.isMandatory).length}
+          </Tag>,
+          <Tag color="blue">
+            Optional: {vaccinesData.filter((v) => !v.isMandatory).length}
+          </Tag>,
+        ]}
         extra={[
           <Input
             key={1}
@@ -148,13 +145,12 @@ export const Vaccines = (props) => {
               if (e.target.value === "") {
                 setVaccinesData(vaccines);
               } else {
-                setVaccinesData(
-                  vaccines.filter((vaccine) =>
-                    vaccine.name
-                      .toLowerCase()
-                      .includes(e.target.value.toLowerCase())
-                  )
+                const filteredVaccines = vaccines.filter((vaccine) =>
+                  vaccine.name
+                    .toLowerCase()
+                    .includes(e.target.value.toLowerCase())
                 );
+                setVaccinesData(filteredVaccines);
               }
 
               setValue(e.target.value);
@@ -176,7 +172,7 @@ export const Vaccines = (props) => {
             defaultPageSize: DEFAULT_PAGE_SIZE,
             showSizeChanger: true,
           }}
-          loading={isVaccinesLoading || loading}
+          loading={isVaccinesLoading}
         >
           <Column
             title="S.N."
@@ -209,6 +205,7 @@ export const Vaccines = (props) => {
             render={(isMandatory, object) => {
               return isUpdating && selectedVaccine === object.id ? (
                 <Spin
+                  key={object.id}
                   indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />}
                 />
               ) : (
@@ -271,7 +268,22 @@ export const Vaccines = (props) => {
             key="expirationDate"
           />
           <Column
-            title="Allergies"
+            title={
+              <div className="d-flex align-items-center">
+                <div>Allergies</div>
+                <div className="table-header-icon">
+                  <Tooltip
+                    title="Allergies have their own risk among 'High', 'Medium' and 'Low' and color coded accordingly as 
+                  'Red', 'Orange' and 'Green' respectively."
+                  >
+                    <InfoCircleOutlined
+                      className="ml-2 cursor-pointer"
+                      onClick={() => dispatch(getAllVaccines())}
+                    />
+                  </Tooltip>
+                </div>
+              </div>
+            }
             dataIndex="allergies"
             key="allergies"
             ellipsis={{ showTitle: false }}
@@ -282,8 +294,12 @@ export const Vaccines = (props) => {
 
               return allergies?.length > 0 ? (
                 <div className="d-flex flex-wrap">
-                  {allergiesList.map(({ allergy, risk }) => (
-                    <Tag className="mb-10x" color={ALLERGY_RISK_COLOR[risk]}>
+                  {allergiesList.map(({ id, allergy, risk }) => (
+                    <Tag
+                      key={id}
+                      className="mb-10x"
+                      color={ALLERGY_RISK_COLOR[risk]}
+                    >
                       <Tooltip title={allergy}>{truncate(allergy, 25)}</Tooltip>
                     </Tag>
                   ))}

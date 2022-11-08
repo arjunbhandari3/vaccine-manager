@@ -1,11 +1,14 @@
-import axios from "axios";
-
 import {
   getTokenFromLocalStorage,
-  removeUserDataFromLocalStorage,
   setUserDataToLocalStorage,
-} from "../utils/token";
-import config from "../config/config";
+  removeUserDataFromLocalStorage,
+} from "utils/token";
+import http from "utils/http";
+import config from "config/config";
+import { showSuccessNotification } from "utils/notification";
+
+import * as routes from "constants/routes";
+import { SUCCESSFULLY_SIGNED_OUT } from "constants/common";
 
 /**
  * Get token
@@ -13,7 +16,7 @@ import config from "../config/config";
 export const refreshToken = async () => {
   const { refreshToken } = getTokenFromLocalStorage() || {};
 
-  const { data } = await axios.post(config.endpoints.auth.refreshToken, {
+  const { data } = await http.post(config.endpoints.auth.refreshToken, {
     refreshToken,
   });
 
@@ -31,7 +34,7 @@ export const refreshToken = async () => {
  * @returns {Promise}
  */
 export const signIn = async (email, password) => {
-  const { data } = await axios.post(config.endpoints.auth.signIn, {
+  const { data } = await http.post(config.endpoints.auth.signIn, {
     email,
     password,
   });
@@ -50,7 +53,7 @@ export const signIn = async (email, password) => {
  * @returns {Promise}
  */
 export const signUp = async (email, password) => {
-  const { data } = await axios.post(config.endpoints.auth.signUp, {
+  const { data } = await http.post(config.endpoints.auth.signUp, {
     email,
     password,
   });
@@ -63,7 +66,24 @@ export const signUp = async (email, password) => {
  *
  */
 export const signOut = async () => {
-  await axios.get(config.endpoints.auth.signOut);
+  const { refreshToken, accessToken } = getTokenFromLocalStorage() || {};
 
-  removeUserDataFromLocalStorage();
+  const result = await http.post(
+    config.endpoints.auth.signOut,
+    {
+      refreshToken: refreshToken,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+
+  if (result.status === 200) {
+    removeUserDataFromLocalStorage();
+    window.location.href = routes.SIGN_IN;
+
+    showSuccessNotification(SUCCESSFULLY_SIGNED_OUT);
+  }
 };

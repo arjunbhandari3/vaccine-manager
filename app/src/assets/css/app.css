@@ -49,6 +49,16 @@
   font-size: 14px;
 }
 
+.nav-item {
+  color: #4a5568;
+  text-decoration: none;
+  list-style: none;
+}
+
+.nav-item:hover {
+  color: #176bb9;
+}
+
 .logo {
   margin-bottom: 0px;
   color: #00407c;
@@ -72,6 +82,10 @@
 
 .d-flex {
   display: flex;
+}
+
+.align-items-center {
+  align-items: center;
 }
 
 .flex-wrap {
@@ -100,6 +114,14 @@
 
 .allergy-form {
   padding: 10px;
+}
+
+.table-header-icon {
+  margin-left: 4px;
+}
+
+.table-header-icon:hover {
+  color: #1682e8;
 }
 
 /* Loading Indicator */

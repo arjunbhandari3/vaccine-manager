@@ -68,9 +68,17 @@ export const refreshTokens = async (req, res, next) => {
  */
 export const signOut = async (req, res, next) => {
   try {
+    const { refreshToken } = req.body;
+
+    const result = await authService.signOut(refreshToken);
+
+    if (!result) {
+      throw new ErrorRes('Invalid refresh token', 400);
+    }
+
     req.user = null;
 
-    return res.status(HttpStatus.OK).json({ message: 'Successfully signed out.' });
+    return res.status(HttpStatus.OK).json(result);
   } catch (error) {
     next(error);
   }

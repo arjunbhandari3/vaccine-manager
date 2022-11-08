@@ -86,6 +86,7 @@ const VaccineForm = ({ vaccine, form, onClose, setIsSubmitting }) => {
       layout="vertical"
       onFinish={onSubmit}
       initialValues={{
+        numberOfDoses: 0,
         isMandatory: false,
         releaseDate: moment(),
         expirationDate: moment(),

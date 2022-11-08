@@ -92,3 +92,24 @@ export const refreshAccessToken = async refreshToken => {
     user: filteredUser,
   };
 };
+
+/**
+ * Sign out a user.
+ * @param {string} refreshToken
+ * @returns {Object}
+ */
+export const signOut = async refreshToken => {
+  logger.info('Signing out user');
+
+  const { id } = verifyToken(refreshToken, REFRESH_TOKEN);
+
+  const user = await User.getUserById(id);
+
+  if (!user) {
+    throw new ErrorRes('User not found!', 404);
+  }
+
+  return {
+    message: 'Signed out successfully!',
+  };
+};
