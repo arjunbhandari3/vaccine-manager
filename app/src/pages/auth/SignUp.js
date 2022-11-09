@@ -55,6 +55,7 @@ const SignUp = (props) => {
           name="basic"
           form={form}
           onFinish={onSubmit}
+          validateTrigger={["onSubmit", "onBlur"]}
           autoComplete="off"
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}

@@ -24,7 +24,10 @@ const VaccineFormModal = ({ vaccine, open, onCancel }) => {
   return (
     <Modal
       open={open}
-      onCancel={onCancel}
+      onCancel={() => {
+        onCancel();
+        form.resetFields();
+      }}
       closable={false}
       title={
         <h1 className="vaccines-header-title">
