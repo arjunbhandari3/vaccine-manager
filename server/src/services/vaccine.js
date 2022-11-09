@@ -114,10 +114,9 @@ export const updateVaccine = async (id, payload) => {
     const deletedAllergiesIds = existingAllergiesIds.filter(id => !newAllergiesIds.includes(id));
 
     if (deletedAllergiesIds.length > 0) {
-      const deleteAllergyPromises = deletedAllergiesIds.map(async allergyId => {
-        const deletedAllergy = await Allergy.deleteAllergy(allergyId);
-
-        return deletedAllergy;
+      const deleteAllergyPromises = await Allergy.updateAllergiesByIds(deletedAllergiesIds, {
+        deletedAt: new Date(),
+        deletedBy: payload.updatedBy,
       });
 
       await Promise.all(deleteAllergyPromises);
@@ -134,9 +133,10 @@ export const updateVaccine = async (id, payload) => {
 /**
  * Delete vaccine.
  * @param {Number} id
+ * @param {Object} payload
  * @returns {Object}
  */
-export const deleteVaccine = async id => {
+export const deleteVaccine = async (id, payload) => {
   logger.info('Deleting vaccine by id:' + id);
 
   const vaccine = await Vaccine.getVaccineById(id);
@@ -145,17 +145,18 @@ export const deleteVaccine = async id => {
     throw new ErrorRes('Vaccine does not exist!', 404);
   }
 
-  const deletedVaccine = await Vaccine.deleteVaccine(id);
+  const deletedVaccine = await Vaccine.updateVaccine(id, payload);
 
   if (deletedVaccine.photoUrl) {
     await deleteImageFromCloudinary(deletedVaccine.photoUrl);
   }
 
   if (deletedVaccine.allergies?.length > 0) {
-    const deleteAllergyPromises = deletedVaccine.allergies.map(async allergy => {
-      const deletedAllergy = await Allergy.deleteAllergy(allergy.id);
+    const deletedAllergiesIds = deletedVaccine.allergies.map(allergy => allergy.id);
 
-      return deletedAllergy;
+    const deleteAllergyPromises = await Allergy.updateAllergiesByIds(deletedAllergiesIds, {
+      deletedAt: new Date(),
+      deletedBy: payload.deletedBy,
     });
 
     const deletedAllergies = await Promise.all(deleteAllergyPromises);

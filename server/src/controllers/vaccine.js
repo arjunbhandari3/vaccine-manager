@@ -96,7 +96,11 @@ export const updateVaccine = async (req, res, next) => {
  */
 export const deleteVaccine = async (req, res, next) => {
   try {
-    const data = await vaccineService.deleteVaccine(req.params.id);
+    const { id } = req.params;
+
+    const payload = { deletedBy: req.user.id, deletedAt: new Date() };
+
+    const data = await vaccineService.deleteVaccine(id, payload);
 
     return res.status(HttpStatus.OK).json(data);
   } catch (error) {

@@ -37,6 +37,7 @@ class Vaccine {
   static async getAllVaccines() {
     const result = await this.qb()
       .select(`${TABLE_NAME_VACCINE}.*`, `allergies.allergies`)
+      .where(`${TABLE_NAME_VACCINE}.deleted_at`, null)
       .leftJoin(
         db
           .select(
@@ -44,6 +45,7 @@ class Vaccine {
             db.raw(`json_agg(jsonb_build_object('id',id,'allergy',allergy,'risk',risk)) as allergies`)
           )
           .from(`${TABLE_NAME_ALLERGY}`)
+          .where('deleted_at', null)
           .groupBy('vaccine_id')
           .as('allergies'),
         'allergies.vaccine_id',
@@ -74,6 +76,18 @@ class Vaccine {
    */
   static async updateVaccine(id, payload) {
     const [result] = await this.qb().returning('*').update(payload).where('id', id);
+
+    return result;
+  }
+
+  /**
+   * Update by vaccineIds.
+   * @param {Array} vaccineIds
+   * @param {Object} payload
+   * @returns {Promise}
+   */
+  static async updateByVaccineIds(vaccineIds, payload) {
+    const result = await this.qb().whereIn('id', vaccineIds).update(payload);
 
     return result;
   }

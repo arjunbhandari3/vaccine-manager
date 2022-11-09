@@ -64,6 +64,18 @@ class Allergy {
   }
 
   /**
+   * Update by allergyIds.
+   * @param {Array} allergyIds
+   * @param {Object} payload
+   * @returns {Promise}
+   */
+  static async updateAllergiesByIds(allergyIds, payload) {
+    const result = await this.qb().whereIn('id', allergyIds).update(payload).returning('*');
+
+    return result;
+  }
+
+  /**
    * Delete allergy.
    *
    * @param {number} id

@@ -23,6 +23,8 @@ export function up(knex) {
     table.integer('updated_by').unsigned().nullable();
     table.foreign('updated_by').references('id').inTable('user');
     table.timestamp('updated_at').notNull().defaultTo(knex.raw('now()'));
+    table.timestamp('deleted_at');
+    table.integer('deleted_by');
   });
 }
 
