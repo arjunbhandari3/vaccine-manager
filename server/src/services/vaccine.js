@@ -17,7 +17,7 @@ export const createVaccine = async payload => {
   logger.info('Creating vaccine');
 
   if (payload.photoUrl) {
-    const uploadUrl = await uploadImageToCloudinary(payload.photoUrl);
+    const uploadUrl = await uploadImageToCloudinary(payload.photoUrl, 'vaccines');
     payload.photoUrl = uploadUrl;
   }
 
@@ -81,7 +81,7 @@ export const updateVaccine = async (id, payload) => {
   }
 
   if (payload.photoUrl) {
-    const uploadUrl = await uploadImageToCloudinary(payload.photoUrl);
+    const uploadUrl = await uploadImageToCloudinary(payload.photoUrl, 'vaccines');
     payload.photoUrl = uploadUrl;
   }
 
