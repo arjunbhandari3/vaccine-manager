@@ -23,6 +23,7 @@ import { getAllVaccines } from "redux/actions/vaccineAction";
 
 import {
   REQUIRED,
+  DATE_FORMAT,
   INVALID_DATE,
   INVALID_EXPIRY_DATE,
   VACCINE_ADDED_MESSAGE,
@@ -37,8 +38,8 @@ const VaccineForm = ({ vaccine, form, onClose, setIsSubmitting }) => {
   const onSubmit = async (values) => {
     const data = {
       ...values,
-      releaseDate: moment(values.releaseDate).format("YYYY-MM-DD"),
-      expirationDate: moment(values.expirationDate).format("YYYY-MM-DD"),
+      releaseDate: moment(values.releaseDate).format(DATE_FORMAT),
+      expirationDate: moment(values.expirationDate).format(DATE_FORMAT),
     };
 
     if (file) {
@@ -125,6 +126,7 @@ const VaccineForm = ({ vaccine, form, onClose, setIsSubmitting }) => {
           <Label label="Release Date" isCompulsory />
           <Form.Item
             colon={false}
+            format={DATE_FORMAT}
             name="releaseDate"
             rules={[{ required: true, message: REQUIRED }]}
           >
@@ -136,7 +138,7 @@ const VaccineForm = ({ vaccine, form, onClose, setIsSubmitting }) => {
           <Label label="Expiration Date" isCompulsory />
           <Form.Item
             colon={false}
-            format="YYYY-MM-DD"
+            format={DATE_FORMAT}
             name="expirationDate"
             rules={[
               { required: true, message: REQUIRED },
@@ -195,6 +197,13 @@ const VaccineForm = ({ vaccine, form, onClose, setIsSubmitting }) => {
           return e && e.fileList;
         }}
       >
+        {vaccine?.photoUrl && (
+          <img
+            src={vaccine.photoUrl}
+            alt="vaccine"
+            style={{ width: "100px", height: "100px", marginRight: "10px" }}
+          />
+        )}
         <Upload
           name="photoUrl"
           listType="picture"

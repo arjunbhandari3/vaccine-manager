@@ -3,6 +3,10 @@ export const APP_TITLE = "Vaccine Manager";
 export const PRODUCTION = "production";
 export const DEVELOPMENT = "development";
 
+export const APP_ENVIRONMENT = process.env.REACT_APP_ENV || DEVELOPMENT;
+
+export const DATE_FORMAT = "YYYY-MM-DD";
+
 export const DEFAULT_PAGE_SIZE = 10;
 export const DEFAULT_PAGE_NUMBER = 1;
 

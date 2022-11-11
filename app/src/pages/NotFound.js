@@ -12,7 +12,7 @@ export const NotFound = (props) => {
         subTitle="Sorry, the page you visited does not exist."
         extra={
           <Link to={routes.HOME}>
-            <Button type="primary">Back Home</Button>{" "}
+            <Button type="primary">Back Home</Button>
           </Link>
         }
       />

@@ -9,14 +9,11 @@ import {
 
 import rootReducer from "./reducers/rootReducer";
 
-import { PRODUCTION } from "constants/common";
+import { APP_ENVIRONMENT, PRODUCTION } from "constants/common";
 
 const enhancers = [applyMiddleware(thunk, promise)];
 
-if (
-  process.env.REACT_APP_ENV !== PRODUCTION &&
-  window.__REDUX_DEVTOOLS_EXTENSION__
-) {
+if (APP_ENVIRONMENT !== PRODUCTION && window.__REDUX_DEVTOOLS_EXTENSION__) {
   enhancers.push(window.__REDUX_DEVTOOLS_EXTENSION__());
 }
 

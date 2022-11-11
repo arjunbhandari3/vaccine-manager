@@ -8,6 +8,8 @@ import { interpolate } from "utils/string";
 import { getAuthHeader } from "utils/token";
 import { sortVaccinesData } from "utils/array";
 
+import { DATE_FORMAT } from "constants/common";
+
 /**
  * Format the vaccine data.
  * @param {*} vaccines
@@ -16,8 +18,8 @@ import { sortVaccinesData } from "utils/array";
 const formatVaccineData = (vaccines) => {
   return vaccines.map((vaccine) => ({
     ...vaccine,
-    releaseDate: moment(vaccine.releaseDate).format("YYYY-MM-DD"),
-    expirationDate: moment(vaccine.expirationDate).format("YYYY-MM-DD"),
+    releaseDate: moment(vaccine.releaseDate).format(DATE_FORMAT),
+    expirationDate: moment(vaccine.expirationDate).format(DATE_FORMAT),
   }));
 };
 

@@ -66,19 +66,11 @@ export const signUp = async (email, password) => {
  *
  */
 export const signOut = async () => {
-  const { refreshToken, accessToken } = getTokenFromLocalStorage() || {};
+  const { refreshToken } = getTokenFromLocalStorage() || {};
 
-  const result = await http.post(
-    config.endpoints.auth.signOut,
-    {
-      refreshToken: refreshToken,
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  );
+  const result = await http.post(config.endpoints.auth.signOut, {
+    refreshToken,
+  });
 
   if (result.status === 200) {
     removeUserDataFromLocalStorage();

@@ -1,3 +1,9 @@
+/**
+ * Sort vaccines data
+ *
+ * @param {Array} data
+ * @returns {Array} sorted data
+ */
 export const sortVaccinesData = (data) => {
   const mandatoryVaccine = data.filter((vaccine) => vaccine.isMandatory);
   const optionalVaccine = data.filter((vaccine) => !vaccine.isMandatory);
@@ -8,8 +14,23 @@ export const sortVaccinesData = (data) => {
   ];
 };
 
-export const sortDataByKey = (data = [], key = "name") => {
-  return data.sort((a, b) => a[key].localeCompare(b[key]));
+/**
+ * Sort data by key
+ *
+ * @param {Array} data
+ * @param {string} key
+ * @param {string} order
+ * @returns {Array} sorted data
+ */
+
+export const sortDataByKey = (data, key = "name", order = "asc") => {
+  return data.sort((a, b) => {
+    if (order === "asc") {
+      return a[key].localeCompare(b[key]);
+    } else {
+      return b[key].localeCompare(a[key]);
+    }
+  });
 };
 
 /**

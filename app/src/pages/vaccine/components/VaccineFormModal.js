@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 
 import VaccineForm from "./VaccineForm";
 
+import { DATE_FORMAT } from "constants/common";
+
 const VaccineFormModal = ({ vaccine, open, onCancel }) => {
   const [form] = Form.useForm();
 
@@ -13,8 +15,8 @@ const VaccineFormModal = ({ vaccine, open, onCancel }) => {
     if (vaccine) {
       form.setFieldsValue({
         ...vaccine,
-        releaseDate: moment(vaccine.releaseDate, "YYYY-MM-DD"),
-        expirationDate: moment(vaccine.expirationDate, "YYYY-MM-DD"),
+        releaseDate: moment(vaccine.releaseDate, DATE_FORMAT),
+        expirationDate: moment(vaccine.expirationDate, DATE_FORMAT),
       });
     } else {
       form.resetFields();
