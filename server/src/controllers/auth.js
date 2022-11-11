@@ -73,7 +73,7 @@ export const signOut = async (req, res, next) => {
     const result = await authService.signOut(refreshToken);
 
     if (!result) {
-      throw new ErrorRes('Invalid refresh token', 400);
+      throw new CustomError('Invalid refresh token', 400);
     }
 
     req.user = null;

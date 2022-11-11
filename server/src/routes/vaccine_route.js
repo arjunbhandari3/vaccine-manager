@@ -1,15 +1,16 @@
 import { Router } from 'express';
 
 import * as multer from '../config/multer';
-import { validateCreateVaccine, validateUpdateVaccine } from '../validators/vaccine';
-import { createVaccine, deleteVaccine, getAllVaccines, getVaccine, updateVaccine } from '../controllers/vaccine';
+import * as vaccineController from '../controllers/vaccine';
+import { validateCreate, validateUpdate } from '../validators/vaccine';
 
 const router = Router();
 
-router.get('/', getAllVaccines);
-router.get('/:id', getVaccine);
-router.post('/', multer.single('photoUrl'), validateCreateVaccine, createVaccine);
-router.put('/:id', multer.single('photoUrl'), validateUpdateVaccine, updateVaccine);
-router.delete('/:id', deleteVaccine);
+router.get('/', vaccineController.getAllVaccines);
+router.post('/', multer.single('photoUrl'), validateCreate, vaccineController.createVaccine);
+
+router.get('/:id', vaccineController.getVaccineById);
+router.put('/:id', multer.single('photoUrl'), validateUpdate, vaccineController.updateVaccine);
+router.delete('/:id', vaccineController.deleteVaccine);
 
 module.exports = router;

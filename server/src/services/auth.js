@@ -1,9 +1,9 @@
 import User from '../models/user';
 
 import logger from '../utils/logger';
-import ErrorRes from '../utils/error';
+import CustomError from '../utils/error';
 import { withoutAttrs } from '../utils/object';
-import { getHashedPassword, compareHash, getSignedTokens, verifyToken } from '../utils/auth';
+import { getHashedPassword, comparePassword, getSignedTokens, verifyToken } from '../utils/auth';
 
 import { REFRESH_TOKEN } from '../constants';
 
@@ -18,10 +18,10 @@ export const signIn = async payload => {
 
   const { email, password } = payload;
 
-  const user = await User.getUserByEmail(email);
+  const user = await User.getByEmail(email);
 
-  if (!user || !(await compareHash(password, user.password))) {
-    throw new ErrorRes('Invalid credentials', 400);
+  if (!user || !(await comparePassword(password, user.password))) {
+    throw new CustomError('Invalid credentials', 400);
   }
 
   const { accessToken, refreshToken } = getSignedTokens({ id: user.id, email: user.email });
@@ -46,15 +46,15 @@ export const signUp = async payload => {
 
   const { email, password } = payload;
 
-  const user = await User.getUserByEmail(email);
+  const user = await User.getByEmail(email);
 
   if (user) {
-    throw new ErrorRes('User already exists!', 400);
+    throw new CustomError('User already exists!', 400);
   }
 
   const hashedPassword = await getHashedPassword(password);
 
-  const newUser = await User.createUser({
+  const newUser = await User.create({
     email,
     password: hashedPassword,
   });
@@ -77,10 +77,10 @@ export const refreshAccessToken = async refreshToken => {
 
   const { id } = verifyToken(refreshToken, REFRESH_TOKEN);
 
-  const user = await User.getUserById(id);
+  const user = await User.getById(id);
 
   if (!user) {
-    throw new ErrorRes('User not found!', 404);
+    throw new CustomError('User not found!', 404);
   }
 
   const { accessToken, refreshToken: newRefreshToken } = getSignedTokens({ id: user.id, email: user.email });
@@ -103,10 +103,10 @@ export const signOut = async refreshToken => {
 
   const { id } = verifyToken(refreshToken, REFRESH_TOKEN);
 
-  const user = await User.getUserById(id);
+  const user = await User.getById(id);
 
   if (!user) {
-    throw new ErrorRes('User not found!', 404);
+    throw new CustomError('User not found!', 404);
   }
 
   return {

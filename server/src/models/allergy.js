@@ -10,7 +10,7 @@ class Allergy {
    * @param {Number} id
    * @returns {Object}
    */
-  static async getAllergyById(id) {
+  static async getById(id) {
     const [result] = await this.qb().where('id', id).select('*');
 
     return result;
@@ -22,7 +22,7 @@ class Allergy {
    * @param {number} vaccineId
    * @returns {Promise}
    */
-  static async getAllergiesByVaccineId(vaccineId) {
+  static async getByVaccineId(vaccineId) {
     const result = await this.qb().select('*').where('vaccineId', vaccineId);
 
     return result;
@@ -32,7 +32,7 @@ class Allergy {
    * Get all allergies.
    * @returns {Object}
    */
-  static async getAllAllergies() {
+  static async getAll() {
     const result = await this.qb().select('*').orderBy('id');
 
     return result;
@@ -44,7 +44,7 @@ class Allergy {
    * @param {object} payload
    * @returns {Promise}
    */
-  static async createAllergy(payload) {
+  static async create(payload) {
     const [result] = await this.qb().insert(payload).returning('*');
 
     return result;
@@ -57,7 +57,7 @@ class Allergy {
    * @param {object} payload
    * @returns {Promise}
    */
-  static async updateAllergy(id, payload) {
+  static async update(id, payload) {
     const [result] = await this.qb().where('id', id).update(payload).returning('*');
 
     return result;
@@ -65,12 +65,12 @@ class Allergy {
 
   /**
    * Update by allergyIds.
-   * @param {Array} allergyIds
+   * @param {Array} ids
    * @param {Object} payload
    * @returns {Promise}
    */
-  static async updateAllergiesByIds(allergyIds, payload) {
-    const result = await this.qb().whereIn('id', allergyIds).update(payload).returning('*');
+  static async updateByIds(ids, payload) {
+    const result = await this.qb().whereIn('id', ids).update(payload).returning('*');
 
     return result;
   }
@@ -81,7 +81,7 @@ class Allergy {
    * @param {number} id
    * @returns {Promise}
    */
-  static async deleteAllergy(id) {
+  static async deleteById(id) {
     const [result] = await this.qb().where('id', id).del().returning('*');
 
     return result;

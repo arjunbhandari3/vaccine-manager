@@ -18,7 +18,7 @@ const vaccineData = {
   allergies: [{ risk: 'Medium', allergy: 'Allergy 1' }],
 };
 
-const updateVaccineData = {
+const updateData = {
   id: 4,
   name: 'Vaccine 1',
   description: 'Vaccine 1 desc',
@@ -60,7 +60,7 @@ describe('Vaccine API Test', () => {
   });
 
   it('should update vaccine', async () => {
-    const res = await request(app).put(`${url}/4`).set('Authorization', `Bearer ${token}`).send(updateVaccineData);
+    const res = await request(app).put(`${url}/4`).set('Authorization', `Bearer ${token}`).send(updateData);
 
     expect(res.status).to.equal(200);
     expect(res.body).to.be.an('array');

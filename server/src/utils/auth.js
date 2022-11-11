@@ -22,7 +22,7 @@ export const getHashedPassword = async password => {
  * @param {string} hashedPassword
  * @returns {boolean}
  */
-export const compareHash = async (password, hashedPassword) => {
+export const comparePassword = async (password, hashedPassword) => {
   return await bcrypt.compare(password, hashedPassword);
 };
 

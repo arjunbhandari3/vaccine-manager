@@ -2,7 +2,7 @@ import Joi from 'joi';
 
 import validate from '../utils/validate';
 
-const createVaccineSchema = Joi.object({
+const createSchema = Joi.object({
   name: Joi.string().required().label('Name'),
   description: Joi.string().required().label('Description'),
   numberOfDoses: Joi.number().required().label('Number of Doses'),
@@ -14,7 +14,7 @@ const createVaccineSchema = Joi.object({
   allergies: Joi.array().label('Allergies'),
 });
 
-const updateVaccineSchema = Joi.object({
+const updateSchema = Joi.object({
   name: Joi.string().label('Name'),
   description: Joi.string().label('Description'),
   numberOfDoses: Joi.number().label('Number of Doses'),
@@ -33,11 +33,11 @@ const updateVaccineSchema = Joi.object({
  * @param {Function} next
  * @returns {object}
  */
-export const validateCreateVaccine = async (req, res, next) => {
+export const validateCreate = async (req, res, next) => {
   if (req.body?.allergies?.length > 0) {
     req.body.allergies = JSON.parse(req.body.allergies);
   }
-  return await validate(req.body, createVaccineSchema)
+  return await validate(req.body, createSchema)
     .then(() => next())
     .catch(next);
 };
@@ -49,12 +49,12 @@ export const validateCreateVaccine = async (req, res, next) => {
  * @param {Function} next
  * @returns {object}
  */
-export const validateUpdateVaccine = async (req, res, next) => {
+export const validateUpdate = async (req, res, next) => {
   if (req.body?.allergies?.length > 0) {
     req.body.allergies = JSON.parse(req.body.allergies);
   }
 
-  return await validate(req.body, updateVaccineSchema)
+  return await validate(req.body, updateSchema)
     .then(() => next())
     .catch(next);
 };

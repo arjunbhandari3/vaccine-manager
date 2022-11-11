@@ -4,8 +4,8 @@ import Allergy from '../models/allergy';
 import * as allergyService from './allergy';
 
 import logger from '../utils/logger';
-import ErrorRes from '../utils/error';
-import { deleteImageFromCloudinary, uploadImageToCloudinary } from '../utils/fileUploader';
+import CustomError from '../utils/error';
+import { deleteImage, uploadImage } from '../utils/fileUploader';
 
 /**
  * Create a new vaccine.
@@ -17,17 +17,17 @@ export const createVaccine = async payload => {
   logger.info('Creating vaccine');
 
   if (payload.photoUrl) {
-    const uploadUrl = await uploadImageToCloudinary(payload.photoUrl, 'vaccines');
+    const uploadUrl = await uploadImage(payload.photoUrl, 'vaccines');
     payload.photoUrl = uploadUrl;
   }
 
   const { allergies, ...vaccine } = payload;
 
-  const newVaccine = await Vaccine.createVaccine(vaccine);
+  const newVaccine = await Vaccine.create(vaccine);
 
   if (allergies?.length > 0) {
     const allergyPromises = allergies.map(async allergy => {
-      const newAllergy = await Allergy.createAllergy({ ...allergy, vaccineId: newVaccine.id, createdAt: new Date() });
+      const newAllergy = await Allergy.create({ ...allergy, vaccineId: newVaccine.id, createdAt: new Date() });
 
       return newAllergy;
     });
@@ -48,7 +48,7 @@ export const createVaccine = async payload => {
 export const getVaccineById = async id => {
   logger.info('Getting vaccine by id:' + id);
 
-  const vaccine = await Vaccine.getVaccineById(id);
+  const vaccine = await Vaccine.getById(id);
 
   return vaccine;
 };
@@ -60,7 +60,7 @@ export const getVaccineById = async id => {
 export const getAllVaccines = async () => {
   logger.info('Getting all vaccines');
 
-  const vaccines = await Vaccine.getAllVaccines();
+  const vaccines = await Vaccine.getAll();
 
   return vaccines;
 };
@@ -74,34 +74,34 @@ export const getAllVaccines = async () => {
 export const updateVaccine = async (id, payload) => {
   logger.info('Updating vaccine by id:' + id);
 
-  const vaccine = await Vaccine.getVaccineById(id);
+  const vaccine = await Vaccine.getById(id);
 
   if (!vaccine) {
-    throw new ErrorRes('Vaccine does not exist!', 404);
+    throw new CustomError('Vaccine does not exist!', 404);
   }
 
-  if (payload.photoUrl) {
-    const uploadUrl = await uploadImageToCloudinary(payload.photoUrl, 'vaccines');
+  if (payload.photoUrl && payload.photoUrl !== vaccine.photoUrl) {
+    const uploadUrl = await uploadImage(payload.photoUrl, 'vaccines');
     payload.photoUrl = uploadUrl;
   }
 
-  if (vaccine.photoUrl) {
-    await deleteImageFromCloudinary(vaccine.photoUrl);
+  if (vaccine.photoUrl && payload.photoUrl !== vaccine.photoUrl) {
+    await deleteImage(vaccine.photoUrl, 'vaccines');
   }
 
   const { allergies, ...vaccinePayload } = payload;
 
-  const updatedVaccine = await Vaccine.updateVaccine(id, vaccinePayload);
+  const updatedVaccine = await Vaccine.update(id, vaccinePayload);
 
-  if (allergies?.length > 0) {
-    let existingAllergiesIds = [];
-    if (vaccine.allergies?.length > 0) {
-      existingAllergiesIds = vaccine.allergies.map(allergy => allergy.id);
-    }
+  let existingAllergiesIds = [];
+  if (vaccine?.allergies?.length > 0) {
+    existingAllergiesIds = vaccine.allergies.map(allergy => allergy.id);
+  }
 
-    const upsertAllergyPromises = [];
+  const upsertAllergyPromises = [];
 
-    const newAllergiesIds = allergies.reduce((acc, allergy) => {
+  const newAllergiesIds =
+    allergies?.reduce((acc, allergy) => {
       upsertAllergyPromises.push(allergyService.upsertAllergy(vaccine.id, allergy));
 
       if (allergy.id) {
@@ -109,23 +109,22 @@ export const updateVaccine = async (id, payload) => {
       }
 
       return acc;
-    }, []);
+    }, []) || [];
 
-    const deletedAllergiesIds = existingAllergiesIds.filter(id => !newAllergiesIds.includes(id));
+  const deletedAllergiesIds = existingAllergiesIds.filter(id => !newAllergiesIds.includes(id));
 
-    if (deletedAllergiesIds.length > 0) {
-      const deleteAllergyPromises = await Allergy.updateAllergiesByIds(deletedAllergiesIds, {
-        deletedAt: new Date(),
-        deletedBy: payload.updatedBy,
-      });
+  if (deletedAllergiesIds.length > 0) {
+    const deleteAllergyPromises = await Allergy.updateByIds(deletedAllergiesIds, {
+      deletedAt: new Date(),
+      deletedBy: payload.updatedBy,
+    });
 
-      await Promise.all(deleteAllergyPromises);
-    }
-
-    const upsertedAllergies = await Promise.all(upsertAllergyPromises);
-
-    updatedVaccine.allergies = upsertedAllergies;
+    await Promise.all(deleteAllergyPromises);
   }
+
+  const upsertedAllergies = await Promise.all(upsertAllergyPromises);
+
+  updatedVaccine.allergies = upsertedAllergies;
 
   return updatedVaccine;
 };
@@ -139,22 +138,22 @@ export const updateVaccine = async (id, payload) => {
 export const deleteVaccine = async (id, payload) => {
   logger.info('Deleting vaccine by id:' + id);
 
-  const vaccine = await Vaccine.getVaccineById(id);
+  const vaccine = await Vaccine.getById(id);
 
   if (!vaccine) {
-    throw new ErrorRes('Vaccine does not exist!', 404);
+    throw new CustomError('Vaccine does not exist!', 404);
   }
 
-  const deletedVaccine = await Vaccine.updateVaccine(id, payload);
+  const deletedVaccine = await Vaccine.update(id, payload);
 
   if (deletedVaccine.photoUrl) {
-    await deleteImageFromCloudinary(deletedVaccine.photoUrl);
+    await deleteImage(deletedVaccine.photoUrl, 'vaccines');
   }
 
-  if (deletedVaccine.allergies?.length > 0) {
-    const deletedAllergiesIds = deletedVaccine.allergies.map(allergy => allergy.id);
+  if (vaccine?.allergies?.length > 0) {
+    const deletedAllergiesIds = vaccine.allergies.map(allergy => allergy.id);
 
-    const deleteAllergyPromises = await Allergy.updateAllergiesByIds(deletedAllergiesIds, {
+    const deleteAllergyPromises = await Allergy.updateByIds(deletedAllergiesIds, {
       deletedAt: new Date(),
       deletedBy: payload.deletedBy,
     });

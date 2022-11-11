@@ -30,7 +30,7 @@ const authData = {
 
 describe('Auth Service tests', () => {
   it('should sign up user', async () => {
-    sinon.stub(User, 'createUser').returns(signUpResponse);
+    sinon.stub(User, 'create').returns(signUpResponse);
 
     const response = await authService.signUp(authData);
 
@@ -41,8 +41,8 @@ describe('Auth Service tests', () => {
   });
 
   it('should sign in user', async () => {
-    sinon.stub(User, 'getUserByEmail').returns(authResponse.user);
-    sinon.stub(authUtils, 'compareHash').returns(true);
+    sinon.stub(User, 'getByEmail').returns(authResponse.user);
+    sinon.stub(authUtils, 'comparePassword').returns(true);
     sinon.stub(authUtils, 'getSignedTokens').returns(authResponse);
 
     const response = await authService.signIn(authData);

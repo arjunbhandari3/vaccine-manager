@@ -3,7 +3,7 @@
  * @param {string} message - Error message
  * @param {number} statusCode - HTTP status code
  */
-class ErrorRes extends Error {
+class CustomError extends Error {
   constructor(message, statusCode) {
     super(message);
 
@@ -14,4 +14,4 @@ class ErrorRes extends Error {
   }
 }
 
-export default ErrorRes;
+export default CustomError;

@@ -10,7 +10,7 @@ class User {
    * @param {Number} id
    * @returns {Object}
    */
-  static async getUserById(id) {
+  static async getById(id) {
     const [result] = await this.qb().select('*').where('id', id);
 
     return result;
@@ -23,7 +23,7 @@ class User {
    * @returns {Promise}
    */
 
-  static async getUserByEmail(email) {
+  static async getByEmail(email) {
     const [result] = await this.qb().select('*').where('email', email);
 
     return result;
@@ -35,7 +35,7 @@ class User {
    * @param {object} payload
    * @returns {Promise}
    */
-  static async createUser(payload) {
+  static async create(payload) {
     const [result] = await this.qb().insert(payload, ['id', 'email', 'password']).returning('*');
 
     return result;

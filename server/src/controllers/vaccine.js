@@ -34,7 +34,7 @@ export const createVaccine = async (req, res, next) => {
  * @param {Function} next
  * @returns {Object}
  */
-export const getVaccine = async (req, res, next) => {
+export const getVaccineById = async (req, res, next) => {
   try {
     const data = await vaccineService.getVaccineById(req.params.id);
 

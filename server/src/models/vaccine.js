@@ -10,7 +10,7 @@ class Vaccine {
    * @param {Number} id
    * @returns {Object}
    */
-  static async getVaccineById(id) {
+  static async getById(id) {
     const [result] = await this.qb()
       .select(`${TABLE_NAME_VACCINE}.*`, `allergies.allergies`)
       .leftJoin(
@@ -20,6 +20,7 @@ class Vaccine {
             db.raw(`json_agg(jsonb_build_object('id',id,'allergy',allergy,'risk',risk)) as allergies`)
           )
           .from(`${TABLE_NAME_ALLERGY}`)
+          .where(`${TABLE_NAME_ALLERGY}.deleted_at`, null)
           .groupBy('vaccine_id')
           .as('allergies'),
         'allergies.vaccine_id',
@@ -34,7 +35,7 @@ class Vaccine {
    * Get all vaccines.
    * @returns {Object}
    */
-  static async getAllVaccines() {
+  static async getAll() {
     const result = await this.qb()
       .select(`${TABLE_NAME_VACCINE}.*`, `allergies.allergies`)
       .where(`${TABLE_NAME_VACCINE}.deleted_at`, null)
@@ -45,7 +46,7 @@ class Vaccine {
             db.raw(`json_agg(jsonb_build_object('id',id,'allergy',allergy,'risk',risk)) as allergies`)
           )
           .from(`${TABLE_NAME_ALLERGY}`)
-          .where('deleted_at', null)
+          .where(`${TABLE_NAME_ALLERGY}.deleted_at`, null)
           .groupBy('vaccine_id')
           .as('allergies'),
         'allergies.vaccine_id',
@@ -61,7 +62,7 @@ class Vaccine {
    * @param {object} payload
    * @returns {Promise}
    */
-  static async createVaccine(payload) {
+  static async create(payload) {
     const [result] = await this.qb().insert(payload).returning('*');
 
     return result;
@@ -74,7 +75,7 @@ class Vaccine {
    * @param {object} payload
    * @returns {Promise}
    */
-  static async updateVaccine(id, payload) {
+  static async update(id, payload) {
     const [result] = await this.qb().returning('*').update(payload).where('id', id);
 
     return result;
@@ -82,12 +83,12 @@ class Vaccine {
 
   /**
    * Update by vaccineIds.
-   * @param {Array} vaccineIds
+   * @param {Array} ids
    * @param {Object} payload
    * @returns {Promise}
    */
-  static async updateByVaccineIds(vaccineIds, payload) {
-    const result = await this.qb().whereIn('id', vaccineIds).update(payload);
+  static async updateByIds(ids, payload) {
+    const result = await this.qb().whereIn('id', ids).update(payload);
 
     return result;
   }
@@ -98,7 +99,7 @@ class Vaccine {
    * @param {number} id
    * @returns {Promise}
    */
-  static async deleteVaccine(id) {
+  static async deleteById(id) {
     const [result] = await this.qb().returning('*').del().where('id', id);
 
     return result;

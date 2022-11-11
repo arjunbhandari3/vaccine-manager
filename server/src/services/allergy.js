@@ -14,14 +14,14 @@ export const upsertAllergy = async (vaccineId, allergy) => {
   const allergyData = { ...allergy, vaccineId };
 
   if (allergy.id) {
-    const updatedAllergy = await Allergy.updateAllergy(allergy.id, {
+    const updatedAllergy = await Allergy.update(allergy.id, {
       ...allergyData,
       updatedAt: new Date(),
     });
 
     return updatedAllergy;
   } else {
-    const newAllergy = await Allergy.createAllergy({ ...allergyData, createdAt: new Date() });
+    const newAllergy = await Allergy.create({ ...allergyData, createdAt: new Date() });
 
     return newAllergy;
   }

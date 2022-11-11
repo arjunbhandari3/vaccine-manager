@@ -10,7 +10,7 @@ import cloudinary from '../config/cloudinary';
  * @param {string} folder - folder to upload the image to
  * @returns {Promise<string>} - url of the uploaded image
  */
-export const uploadImageToCloudinary = async (fileString, folder) => {
+export const uploadImage = async (fileString, folder) => {
   logger.info('Uploading image to cloudinary');
   try {
     if (!fs.existsSync(fileString)) {
@@ -38,16 +38,16 @@ export const uploadImageToCloudinary = async (fileString, folder) => {
 /**
  * Deletes an image from Cloudinary
  * @param {string} fileString - fileString from the request
- * @param {string} folder - folder to upload the image to
+ * @param {string} folder - folder in which the image is located
  * @returns {Promise<string>} - url of the uploaded image
  */
 
-export const deleteImageFromCloudinary = async fileString => {
+export const deleteImage = async (fileString, folder) => {
   logger.info('Deleting image from cloudinary');
   try {
     const assetId = getImageCloudinaryId(fileString);
     if (assetId !== 'default') {
-      const publicId = 'vaccines' + '/' + getImageCloudinaryId(fileString);
+      const publicId = folder + '/' + assetId;
       const deleteResponse = await cloudinary.uploader.destroy(publicId);
 
       return deleteResponse.result;

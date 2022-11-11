@@ -2,12 +2,12 @@ import Joi from 'joi';
 
 import validate from '../utils/validate';
 
-const userInputSchema = Joi.object({
+const userSchema = Joi.object({
   email: Joi.string().max(100).email().label('Email').required(),
   password: Joi.string().min(3).max(30).label('Password').required(),
 });
 
-const refreshTokenSchema = Joi.object({
+const tokenSchema = Joi.object({
   refreshToken: Joi.string().required(),
 });
 
@@ -19,7 +19,7 @@ const refreshTokenSchema = Joi.object({
  * @returns {object}
  */
 export const validateUserInput = async (req, res, next) => {
-  return await validate(req.body, userInputSchema)
+  return await validate(req.body, userSchema)
     .then(() => next())
     .catch(next);
 };
@@ -32,7 +32,7 @@ export const validateUserInput = async (req, res, next) => {
  * @returns {object}
  */
 export const validateRefreshToken = async (req, res, next) => {
-  return await validate(req.body, refreshTokenSchema)
+  return await validate(req.body, tokenSchema)
     .then(() => next())
     .catch(next);
 };
