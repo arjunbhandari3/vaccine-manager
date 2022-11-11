@@ -18,10 +18,10 @@ export function up(knex) {
     table.string('photo_url');
     table.boolean('is_mandatory').defaultTo(false);
     table.integer('created_by').unsigned().notNull();
-    table.foreign('created_by').references('id').inTable('user');
+    table.foreign('created_by').references('id').inTable('user').onDelete('CASCADE');
     table.timestamp('created_at').notNull().defaultTo(knex.raw('now()'));
     table.integer('updated_by').unsigned().nullable();
-    table.foreign('updated_by').references('id').inTable('user');
+    table.foreign('updated_by').references('id').inTable('user').onDelete('CASCADE');
     table.timestamp('updated_at').notNull().defaultTo(knex.raw('now()'));
     table.timestamp('deleted_at');
     table.integer('deleted_by');
