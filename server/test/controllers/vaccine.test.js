@@ -2,9 +2,11 @@ import { expect } from 'chai';
 import request from 'supertest';
 
 import app from '../../src/index';
+import config from '../../src/config/config';
 
 const url = '/api/vaccines';
-const token = process.env.TEST_TOKEN;
+
+const token = config.token.test;
 
 const vaccineData = {
   name: 'Vaccine 1',

@@ -17,3 +17,10 @@ export const DATE_TIME_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
 /** EXTENSIONS CONSTANTS **/
 export const IMG_EXTENSIONS = ['jpg', 'jpeg', 'png'];
+
+/** ENVIRONMENT CONSTANTS **/
+export const ENV = {
+  DEVELOPMENT: 'development',
+  PRODUCTION: 'production',
+  TEST: 'test',
+};

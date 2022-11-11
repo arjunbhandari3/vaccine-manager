@@ -4,6 +4,7 @@ import express from 'express';
 
 import router from './routes';
 import logger from './utils/logger';
+import config from './config/config';
 import errorHandler from './middlewares/errorHandler';
 
 // Environment setup
@@ -21,10 +22,8 @@ app.use('/', router);
 //Error handler
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => {
-  logger.info(`Server is running in ${process.env.NODE_ENV} mode on port ${PORT}`);
-});
+const PORT = config.port || 8000;
+app.listen(PORT, () => logger.info(`Server is running in ${config.env} mode on port ${PORT}`));
 
 // Catch unhandled rejections
 process.on('unhandledRejection', err => {

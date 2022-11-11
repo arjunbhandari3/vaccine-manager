@@ -12,7 +12,6 @@ export function seed(knex) {
     .then(async () =>
       knex(TABLE_NAME_ALLERGY).insert([
         {
-          id: 1,
           allergy: 'Allergy 1',
           risk: 'Low',
           vaccine_id: 1,
@@ -22,7 +21,6 @@ export function seed(knex) {
           deleted_by: null,
         },
         {
-          id: 2,
           allergy: 'Allergy 2',
           risk: 'High',
           vaccine_id: 1,
@@ -32,7 +30,6 @@ export function seed(knex) {
           deleted_by: null,
         },
         {
-          id: 3,
           allergy: 'Allergy 3',
           risk: 'Medium',
           vaccine_id: 2,

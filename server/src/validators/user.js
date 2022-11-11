@@ -2,9 +2,14 @@ import Joi from 'joi';
 
 import validate from '../utils/validate';
 
-const userSchema = Joi.object({
+const signUpSchema = Joi.object({
   email: Joi.string().max(100).email().label('Email').required(),
   password: Joi.string().min(3).max(30).label('Password').required(),
+});
+
+const signInSchema = Joi.object({
+  email: Joi.string().email().label('Email').required(),
+  password: Joi.string().label('Password').required(),
 });
 
 const tokenSchema = Joi.object({
@@ -12,14 +17,27 @@ const tokenSchema = Joi.object({
 });
 
 /**
- * Validates user input.
+ * Validates signUp input.
  * @param {object} req
  * @param {object} res
  * @param {Function} next
  * @returns {object}
  */
-export const validateUserInput = async (req, res, next) => {
-  return await validate(req.body, userSchema)
+export const validateSignUpInput = async (req, res, next) => {
+  return await validate(req.body, signUpSchema)
+    .then(() => next())
+    .catch(next);
+};
+
+/**
+ * Validates signIn input.
+ * @param {object} req
+ * @param {object} res
+ * @param {Function} next
+ * @returns {object}
+ */
+export const validateSignInInput = async (req, res, next) => {
+  return await validate(req.body, signInSchema)
     .then(() => next())
     .catch(next);
 };

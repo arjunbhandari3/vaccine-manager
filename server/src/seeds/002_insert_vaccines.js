@@ -12,7 +12,6 @@ export function seed(knex) {
     .then(async () =>
       knex(TABLE_NAME_VACCINE).insert([
         {
-          id: 1,
           name: 'Vaccine 1',
           description: 'vaccine 1 desc',
           number_of_doses: 2,
@@ -29,7 +28,6 @@ export function seed(knex) {
           deleted_by: null,
         },
         {
-          id: 2,
           name: 'Vaccine 2',
           description: 'vaccine 2 desc',
           number_of_doses: 3,
