@@ -1,4 +1,4 @@
-import HttpStatus from 'http-status-codes';
+import HttpStatus, { getReasonPhrase } from 'http-status-codes';
 
 import logger from '../utils/logger';
 
@@ -11,14 +11,14 @@ const errorHandler = (err, req, res, next) => {
     return res.status(HttpStatus.BAD_REQUEST).json({
       status: 'error',
       code: HttpStatus.BAD_REQUEST,
-      message: 'User already exists.',
+      message: getReasonPhrase(HttpStatus.BAD_REQUEST),
     });
   }
 
   res.status(statusCode || HttpStatus.INTERNAL_SERVER_ERROR).json({
     status: 'error',
     statusCode: statusCode || HttpStatus.INTERNAL_SERVER_ERROR,
-    message: message || 'Internal Server Error',
+    message: message || getReasonPhrase(HttpStatus.INTERNAL_SERVER_ERROR),
   });
 
   next();

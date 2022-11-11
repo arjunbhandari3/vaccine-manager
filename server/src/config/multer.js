@@ -1,5 +1,7 @@
 import multer from 'multer';
 
+import { IMG_EXTENSIONS } from '../constants';
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, `src/assets/uploads`);
@@ -8,7 +10,7 @@ const storage = multer.diskStorage({
 
 const getExtention = str => str.split('.').slice(-1)[0];
 
-const single = (fieldname, extentions = ['jpg', 'jpeg', 'png']) => {
+const single = (fieldname, extentions = IMG_EXTENSIONS) => {
   return multer({
     storage,
     fileFilter: (req, file, cb) => {

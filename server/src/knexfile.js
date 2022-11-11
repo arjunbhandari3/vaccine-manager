@@ -2,7 +2,6 @@ import dotenv from 'dotenv';
 
 dotenv.config({ path: `${__dirname}/../.env` });
 
-// TODO:change according to requirements.
 // Default configuration for database connection
 let connection = {
   port: process.env.DB_PORT,
