@@ -130,6 +130,27 @@ export const updateVaccine = async (id, payload) => {
 };
 
 /**
+ * Update mandatory status
+ *
+ * @param {Number} id
+ * @param {Object} payload
+ * @returns {Object}
+ */
+export const updateMandatoryStatus = async (id, payload) => {
+  logger.info('Updating vaccine mandatory status by id:' + id);
+
+  const vaccine = await Vaccine.getById(id);
+
+  if (!vaccine) {
+    throw new CustomError('Vaccine does not exist!', 404);
+  }
+
+  const updatedVaccine = await Vaccine.update(id, payload);
+
+  return updatedVaccine;
+};
+
+/**
  * Delete vaccine.
  * @param {Number} id
  * @param {Object} payload

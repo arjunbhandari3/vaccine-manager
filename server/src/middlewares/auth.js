@@ -1,3 +1,4 @@
+import User from '../models/user';
 import logger from '../utils/logger';
 import CustomError from '../utils/error';
 import { verifyToken } from '../utils/auth';
@@ -11,6 +12,13 @@ const auth = async (req, res, next) => {
     }
 
     const decoded = verifyToken(token);
+
+    const user = await User.getById(decoded.id);
+
+    if (!user) {
+      return next(new CustomError('Invalid Authorization Token', 401));
+    }
+
     req.user = decoded;
 
     next();

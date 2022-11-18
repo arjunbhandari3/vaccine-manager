@@ -26,6 +26,10 @@ const updateSchema = Joi.object({
   allergies: Joi.array().label('Allergies'),
 });
 
+const patchUpdateSchema = Joi.object({
+  isMandatory: Joi.boolean().label('Is Mandatory'),
+});
+
 /**
  * Validates create vaccine request.
  * @param {object} req
@@ -55,6 +59,19 @@ export const validateUpdate = async (req, res, next) => {
   }
 
   return await validate(req.body, updateSchema)
+    .then(() => next())
+    .catch(next);
+};
+
+/**
+ * Validates patch update vaccine request.
+ * @param {object} req
+ * @param {object} res
+ * @param {Function} next
+ * @returns {object}
+ */
+export const validatePatchUpdate = async (req, res, next) => {
+  return await validate(req.body, patchUpdateSchema)
     .then(() => next())
     .catch(next);
 };

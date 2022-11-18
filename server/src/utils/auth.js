@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import config from '../config/config';
 
 import { ACCESS_TOKEN } from '../constants';
 
@@ -33,12 +34,12 @@ export const comparePassword = async (password, hashedPassword) => {
  * @returns {object}
  */
 export const getSignedTokens = data => {
-  const accessToken = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN,
+  const accessToken = jwt.sign(data, config.token.access.secret, {
+    expiresIn: config.token.access.expiresIn,
   });
 
-  const refreshToken = jwt.sign(data, process.env.REFRESH_TOKEN_SECRET, {
-    expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN,
+  const refreshToken = jwt.sign(data, config.token.refresh.secret, {
+    expiresIn: config.token.refresh.expiresIn,
   });
 
   return { accessToken, refreshToken };
@@ -52,5 +53,7 @@ export const getSignedTokens = data => {
  * @returns {object}
  */
 export const verifyToken = (token, type = ACCESS_TOKEN) => {
-  return jwt.verify(token, type === ACCESS_TOKEN ? process.env.ACCESS_TOKEN_SECRET : process.env.REFRESH_TOKEN_SECRET);
+  const secret = type === ACCESS_TOKEN ? config.token.access.secret : config.token.refresh.secret;
+
+  return jwt.verify(token, secret);
 };

@@ -13,7 +13,7 @@ import { DATE_FORMAT } from "constants/common";
 /**
  * Format the vaccine data.
  * @param {*} vaccines
- * @returns
+ * @returns {Array}
  */
 const formatVaccineData = (vaccines) => {
   return vaccines.map((vaccine) => ({
@@ -69,6 +69,7 @@ export const addVaccine = async (vaccine) => {
 
 /**
  * Update a vaccine
+ * @param {string} id
  * @param {object} vaccine
  * @returns {Promise}
  */
@@ -83,6 +84,21 @@ export const updateVaccine = async (id, vaccine) => {
       Authorization: getAuthHeader(),
     },
   });
+
+  return data;
+};
+
+/**
+ * Update vaccine mandatory status
+
+ * @param {string} id
+ * @param {object} payload
+ * @returns {Promise}
+ */
+export const updateVaccineMandatoryStatus = async (id, payload) => {
+  const url = interpolate(config.endpoints.vaccine.one, { id: id });
+
+  const { data } = await http.patch(url, payload);
 
   return data;
 };

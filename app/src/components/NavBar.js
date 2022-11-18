@@ -18,9 +18,11 @@ export const Navbar = (props) => {
     <div className="navbar">
       <h1 className="logo">{APP_TITLE}</h1>
       <div className="nav-items">
-        <li className="nav-item cursor-pointer" onClick={handleLogout}>
-          Logout
-        </li>
+        <ul>
+          <li className="nav-item cursor-pointer" onClick={handleLogout}>
+            Logout
+          </li>
+        </ul>
       </div>
     </div>
   );

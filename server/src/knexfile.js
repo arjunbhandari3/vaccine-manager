@@ -1,24 +1,24 @@
-import dotenv from 'dotenv';
+import config from './config/config';
 
-dotenv.config({ path: `${__dirname}/../.env` });
+import { ENV } from './constants';
 
 // Default configuration for database connection
 let connection = {
-  port: process.env.DB_PORT,
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+  port: config.db.port,
+  host: config.db.host,
+  user: config.db.user,
+  password: config.db.password,
+  database: config.db.name,
 };
 
 // For test environment
-if (process.env.NODE_ENV === 'test') {
+if (config.env === ENV.TEST) {
   connection = {
-    port: process.env.TEST_DB_PORT,
-    host: process.env.TEST_DB_HOST,
-    user: process.env.TEST_DB_USER,
-    password: process.env.TEST_DB_PASSWORD,
-    database: process.env.TEST_DB_NAME,
+    port: config.db.test.port,
+    host: config.db.test.host,
+    user: config.db.test.user,
+    password: config.db.test.password,
+    database: config.db.test.name,
   };
 }
 
@@ -27,7 +27,7 @@ if (process.env.NODE_ENV === 'test') {
  */
 module.exports = {
   connection,
-  client: process.env.DB_CLIENT,
+  client: config.db.client,
   migrations: {
     tableName: 'migrations',
     directory: './migrations',

@@ -87,6 +87,25 @@ export const updateVaccine = async (req, res, next) => {
 };
 
 /**
+ * Update mandatoryStatus of vaccine
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Function} next
+ * @returns {Object}
+ */
+export const updateMandatoryStatus = async (req, res, next) => {
+  try {
+    const updatedVaccine = { ...req.body, updated_by: req.user.id, updated_at: new Date() };
+
+    const data = await vaccineService.updateMandatoryStatus(req.params.id, updatedVaccine);
+
+    return res.status(HttpStatus.OK).json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+/**
  * Delete vaccine.
  *
  * @param {Object} req

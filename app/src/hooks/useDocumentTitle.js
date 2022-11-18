@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 
-const useDocumentTitle = (title, defaultTitle = "Vaccine Manager") => {
+import { APP_TITLE } from "constants/common";
+
+const useDocumentTitle = (title, defaultTitle = APP_TITLE) => {
   useEffect(() => {
-    window.document.title = `${title} | Vaccine Manager`;
+    window.document.title = `${title} | ${APP_TITLE}`;
 
     return () => {
       window.document.title = defaultTitle;

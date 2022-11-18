@@ -2,9 +2,10 @@ import { expect } from 'chai';
 import request from 'supertest';
 
 import app from '../../src/index';
+import config from '../../src/config/config';
 
 const url = '/api/auth';
-const token = process.env.TEST_TOKEN;
+const token = config.token.test;
 
 const userData = {
   email: 'test@gmail.com',

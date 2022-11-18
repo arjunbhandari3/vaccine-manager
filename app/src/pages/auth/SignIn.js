@@ -34,12 +34,12 @@ const SignIn = (props) => {
 
       navigate(routes.HOME);
 
+      form.resetFields();
       showSuccessNotification(SUCCESSFULLY_SIGNED_IN);
     } catch (error) {
       handleError(error);
     } finally {
       setIsSubmitting(false);
-      form.resetFields();
     }
   };
 

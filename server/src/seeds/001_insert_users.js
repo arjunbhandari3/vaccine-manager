@@ -14,14 +14,12 @@ export function seed(knex) {
     .then(async () =>
       knex(TABLE_NAME_USER).insert([
         {
-          id: 1,
           email: 'test@gmail.com',
           password: await getHashedPassword('test123'),
           created_at: new Date(),
           updated_at: new Date(),
         },
         {
-          id: 2,
           email: 'user@gmail.com',
           password: await getHashedPassword('user123'),
           created_at: new Date(),

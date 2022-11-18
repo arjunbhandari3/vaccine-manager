@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import * as routes from "constants/routes";
 
-export const NotFound = (props) => {
+const NotFound = (props) => {
   return (
     <div className="error-page">
       <Result
@@ -19,3 +19,5 @@ export const NotFound = (props) => {
     </div>
   );
 };
+
+export default NotFound;
