@@ -5,13 +5,11 @@
  * @param {Array} notRequiredAttributes
  */
 export function withoutAttrs(obj, notRequiredAttributes = []) {
-  const result = {};
-
-  Object.keys(obj).forEach(key => {
+  return Object.keys(obj).reduce((result, key) => {
     if (!notRequiredAttributes.includes(key)) {
       result[key] = obj[key];
     }
-  });
 
-  return result;
+    return result;
+  }, {});
 }

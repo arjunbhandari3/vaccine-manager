@@ -1,15 +1,16 @@
 import axios from "axios";
 
-import { refreshToken } from "../services/auth";
 import {
   getTokenFromLocalStorage,
   removeUserDataFromLocalStorage,
 } from "../utils/token";
+import config from "config/config";
+import { refreshToken } from "../services/auth";
 
 import * as routes from "constants/routes";
 
 const http = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL,
+  baseURL: config.apiBaseURL,
   headers: {
     "Content-Type": "application/json",
   },

@@ -3,8 +3,8 @@ import Joi from 'joi';
 import validate from '../utils/validate';
 
 const signUpSchema = Joi.object({
-  email: Joi.string().max(100).email().label('Email').required(),
-  password: Joi.string().min(3).max(30).label('Password').required(),
+  email: Joi.string().email().label('Email').required(),
+  password: Joi.string().min(6).label('Password').required(),
 });
 
 const signInSchema = Joi.object({

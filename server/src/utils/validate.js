@@ -1,3 +1,5 @@
+import CustomError from './error';
+
 /**
  * Validate the input data with joi schema.
  *
@@ -11,8 +13,10 @@ const validate = async (data, schema) => {
 
     return value;
   } catch (error) {
-    throw error;
+    const message = error.message || 'Validation error';
+
+    throw new CustomError(message, 400);
   }
 };
 
-module.exports = validate;
+export default validate;

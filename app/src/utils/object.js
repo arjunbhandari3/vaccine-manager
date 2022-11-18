@@ -5,13 +5,13 @@
  * @param {*} acc
  */
 export function cleanObject(obj, acc) {
-  const cleaned = acc || {};
-
-  Object.keys(obj).forEach((key) => {
-    if (obj[key] !== undefined && obj[key] !== null) {
-      cleaned[key] = obj[key];
+  return Object.keys(obj).reduce((result, key) => {
+    if (obj[key] == null) {
+      return result;
     }
-  });
 
-  return cleaned;
+    result[key] = obj[key];
+
+    return result;
+  }, acc || {});
 }

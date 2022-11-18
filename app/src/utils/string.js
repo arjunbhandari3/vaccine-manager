@@ -11,11 +11,10 @@
  * @returns string
  */
 export const interpolate = (str, params = {}) => {
-  let formattedString = str;
-
-  Object.keys(params).forEach((key) => {
-    formattedString = formattedString.replace(`:${key}`, params[key]);
-  });
+  const formattedString = Object.keys(params).reduce(
+    (result, key) => result.replace(`:${key}`, params[key]),
+    str
+  );
 
   return formattedString;
 };
