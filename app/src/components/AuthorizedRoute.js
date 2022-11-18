@@ -7,7 +7,7 @@ import * as routes from "constants/routes";
 const AuthorizedRoute = () => {
   const isLoggedIn = isUserLoggedIn();
 
-  return isLoggedIn ? <Outlet /> : <Navigate to={routes.SIGN_IN} />;
+  return isLoggedIn ? <Outlet /> : <Navigate to={routes.SIGN_IN} replace />;
 };
 
 export default AuthorizedRoute;

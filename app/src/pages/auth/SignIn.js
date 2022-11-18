@@ -11,6 +11,7 @@ import { signIn } from "services/auth";
 import useDocumentTitle from "hooks/useDocumentTitle";
 
 import {
+  SUCCESS,
   REQUIRED,
   INVALID_EMAIL,
   SUCCESSFULLY_SIGNED_IN,
@@ -35,7 +36,7 @@ const SignIn = (props) => {
       navigate(routes.HOME);
 
       form.resetFields();
-      showSuccessNotification(SUCCESSFULLY_SIGNED_IN);
+      showSuccessNotification(SUCCESS, SUCCESSFULLY_SIGNED_IN);
     } catch (error) {
       handleError(error);
     } finally {

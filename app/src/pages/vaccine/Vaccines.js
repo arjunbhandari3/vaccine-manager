@@ -33,6 +33,7 @@ import { getAllVaccines } from "redux/actions/vaccineAction";
 import { deleteVaccine, updateVaccineMandatoryStatus } from "services/vaccine";
 
 import {
+  SUCCESS,
   DEFAULT_PAGE_SIZE,
   ALLERGY_RISK_COLOR,
   DEFAULT_PAGE_NUMBER,
@@ -77,7 +78,7 @@ const Vaccines = (props) => {
       });
       await dispatch(getAllVaccines());
 
-      showSuccessNotification(VACCINE_MANDATORY_UPDATE_MESSAGE);
+      showSuccessNotification(SUCCESS, VACCINE_MANDATORY_UPDATE_MESSAGE);
     } catch (err) {
       handleError(err);
     } finally {
@@ -94,7 +95,7 @@ const Vaccines = (props) => {
 
       await dispatch(getAllVaccines());
 
-      showSuccessNotification(VACCINE_DELETED_MESSAGE);
+      showSuccessNotification(SUCCESS, VACCINE_DELETED_MESSAGE);
     } catch (err) {
       handleError(err);
     } finally {

@@ -4,9 +4,7 @@ import _get from "lodash/get";
 import config from "config/config";
 import { showErrorNotification } from "./notification";
 
-import { PRODUCTION } from "constants/common";
-
-const GENERIC_ERROR = "Oops! Something went wrong";
+import { ERROR, GENERIC_ERROR, PRODUCTION } from "constants/common";
 
 /**
  * Generic error handler to handle error events.
@@ -37,7 +35,7 @@ export function handleError(event, options = {}, callbacks = {}) {
     message = errorMessage;
   }
 
-  showErrorNotification(title || "Error", message);
+  showErrorNotification(title || ERROR, message);
 
   if (onTrueNegative) {
     onTrueNegative(event);

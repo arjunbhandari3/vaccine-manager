@@ -2,7 +2,7 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 
 import "assets/css/app.css";
-import { AppRouter } from "Router";
+import AppRouter from "Router";
 import { store } from "./redux/store";
 
 const App = () => {

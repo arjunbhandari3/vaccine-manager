@@ -1,5 +1,7 @@
 import { notification } from "antd";
 
+import { ERROR, SUCCESS } from "constants/common";
+
 const showNotification = (type, title, message) => {
   notification[type]({
     message: title,
@@ -7,18 +9,10 @@ const showNotification = (type, title, message) => {
   });
 };
 
-export const showSuccessNotification = (title = "Success", message) => {
+export const showSuccessNotification = (title = SUCCESS, message) => {
   showNotification("success", title, message);
 };
 
-export const showErrorNotification = (title = "Error", message) => {
+export const showErrorNotification = (title = ERROR, message) => {
   showNotification("error", title, message);
-};
-
-export const showWarningNotification = (title, message) => {
-  showNotification("warning", title, message);
-};
-
-export const showInfoNotification = (title, message) => {
-  showNotification("info", title, message);
 };

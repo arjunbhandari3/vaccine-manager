@@ -1,9 +1,11 @@
+import config from "config/config";
+
 export const APP_TITLE = "Vaccine Manager";
 
 export const PRODUCTION = "production";
 export const DEVELOPMENT = "development";
 
-export const APP_ENVIRONMENT = process.env.REACT_APP_ENV || DEVELOPMENT;
+export const APP_ENVIRONMENT = config.env || DEVELOPMENT;
 
 export const DATE_FORMAT = "YYYY-MM-DD";
 
@@ -21,6 +23,10 @@ export const ALLERGY_RISK_COLOR = {
   [ALLERGY_RISK.MEDIUM]: "orange",
   [ALLERGY_RISK.HIGH]: "red",
 };
+
+export const SUCCESS = "Success";
+export const ERROR = "Error";
+export const GENERIC_ERROR = "Oops! Something went wrong";
 
 export const SUCCESSFULLY_SIGNED_IN = "Signed in Successfully!";
 export const SUCCESSFULLY_SIGNED_UP = "Signed up Successfully! Please Sign In.";

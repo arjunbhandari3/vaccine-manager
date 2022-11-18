@@ -23,6 +23,7 @@ import { addVaccine, updateVaccine } from "services/vaccine";
 import { getAllVaccines } from "redux/actions/vaccineAction";
 
 import {
+  SUCCESS,
   REQUIRED,
   DATE_FORMAT,
   INVALID_DATE,
@@ -55,10 +56,10 @@ const VaccineForm = ({ vaccine, form, onClose, setIsSubmitting }) => {
       setIsSubmitting(true);
       if (vaccine) {
         await updateVaccine(vaccine.id, data);
-        showSuccessNotification(VACCINE_EDITED_MESSAGE);
+        showSuccessNotification(SUCCESS, VACCINE_EDITED_MESSAGE);
       } else {
         await addVaccine(data);
-        showSuccessNotification(VACCINE_ADDED_MESSAGE);
+        showSuccessNotification(SUCCESS, VACCINE_ADDED_MESSAGE);
       }
 
       await dispatch(getAllVaccines());
@@ -170,7 +171,7 @@ const VaccineForm = ({ vaccine, form, onClose, setIsSubmitting }) => {
         </Col>
 
         <Col span={11}>
-          <Label label="Is Mandatory" isCompulsory />
+          <Label label="Is Mandatory" />
           <Form.Item colon={false} name="isMandatory" valuePropName="checked">
             <Switch checked={false} />
           </Form.Item>

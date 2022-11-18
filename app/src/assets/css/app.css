@@ -124,6 +124,10 @@
   color: #1682e8;
 }
 
+.ant-table-tbody > tr.ant-table-row:hover > td {
+  background-color: #dfd8d8;
+}
+
 .ant-table-cell .actions-container {
   display: none;
 }

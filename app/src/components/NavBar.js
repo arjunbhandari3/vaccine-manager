@@ -5,7 +5,7 @@ import * as authService from "services/auth";
 
 import { APP_TITLE } from "constants/common";
 
-export const Navbar = (props) => {
+const Navbar = (props) => {
   const handleLogout = async () => {
     try {
       await authService.signOut();
@@ -27,3 +27,5 @@ export const Navbar = (props) => {
     </div>
   );
 };
+
+export default Navbar;
