@@ -124,6 +124,16 @@
   color: #1682e8;
 }
 
+.ant-table-cell .actions-container {
+  display: none;
+}
+
+.ant-table-cell-row-hover .actions-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Loading Indicator */
 .loader {
   width: 50px;

@@ -15,9 +15,9 @@ import {
   StarOutlined,
   EditOutlined,
   DeleteOutlined,
+  HeatMapOutlined,
   LoadingOutlined,
   InfoCircleOutlined,
-  ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,7 +30,7 @@ import { showSuccessNotification } from "utils/notification";
 import useDocumentTitle from "hooks/useDocumentTitle";
 import VaccineFormModal from "./components/VaccineFormModal";
 import { getAllVaccines } from "redux/actions/vaccineAction";
-import { deleteVaccine, updateVaccine } from "services/vaccine";
+import { deleteVaccine, updateVaccineMandatoryStatus } from "services/vaccine";
 
 import {
   DEFAULT_PAGE_SIZE,
@@ -38,10 +38,10 @@ import {
   DEFAULT_PAGE_NUMBER,
   DEFAULT_VACCINE_IMAGE,
   VACCINE_DELETED_MESSAGE,
-  VACCINE_MANADATORY_UPDATE_MESSAGE,
+  VACCINE_MANDATORY_UPDATE_MESSAGE,
 } from "constants/common";
 
-export const Vaccines = (props) => {
+const Vaccines = (props) => {
   const dispatch = useDispatch();
 
   const vaccines = useSelector((state) => state.data.vaccine.vaccines);
@@ -72,10 +72,12 @@ export const Vaccines = (props) => {
     try {
       setIsUpdating(true);
 
-      await updateVaccine(vaccine.id, { isMandatory: !vaccine.isMandatory });
+      await updateVaccineMandatoryStatus(vaccine.id, {
+        isMandatory: !vaccine.isMandatory,
+      });
       await dispatch(getAllVaccines());
 
-      showSuccessNotification(VACCINE_MANADATORY_UPDATE_MESSAGE);
+      showSuccessNotification(VACCINE_MANDATORY_UPDATE_MESSAGE);
     } catch (err) {
       handleError(err);
     } finally {
@@ -103,7 +105,7 @@ export const Vaccines = (props) => {
   const showDeleteVaccineModal = (id) => {
     Modal.confirm({
       title: "Are you sure you want to delete this vaccine?",
-      icon: <ExclamationCircleOutlined />,
+      icon: <HeatMapOutlined style={{ color: "red" }} />,
       content: "This action cannot be undone.",
       okText: "Delete Vaccine",
       okType: "danger",
@@ -115,16 +117,29 @@ export const Vaccines = (props) => {
     });
   };
 
+  const searchVacccine = (input) => {
+    setValue(input);
+
+    if (!input) {
+      setVaccinesData(vaccines);
+      return;
+    }
+
+    const filteredVaccines = vaccines.filter((vaccine) => {
+      return (
+        vaccine.name.toLowerCase().includes(input.toLowerCase()) ||
+        vaccine.description.toLowerCase().includes(input.toLowerCase()) ||
+        vaccine.manufacturer.toLowerCase().includes(input.toLowerCase())
+      );
+    });
+
+    setVaccinesData(filteredVaccines);
+  };
+
   const { Column } = Table;
 
   return (
     <div className="vaccines-container">
-      <VaccineFormModal
-        vaccine={null}
-        open={showModal}
-        onCancel={() => setShowModal(false)}
-      />
-
       <PageHeader
         title={<h1 className="vaccines-header-title">All Vaccines</h1>}
         tags={[
@@ -137,28 +152,16 @@ export const Vaccines = (props) => {
           </Tag>,
         ]}
         extra={[
-          <Input
-            key={1}
-            placeholder="Search Vaccines"
-            value={value}
-            onChange={(e) => {
-              if (e.target.value === "") {
-                setVaccinesData(vaccines);
-              } else {
-                const filteredVaccines = vaccines.filter((vaccine) =>
-                  vaccine.name
-                    .toLowerCase()
-                    .includes(e.target.value.toLowerCase())
-                );
-                setVaccinesData(filteredVaccines);
-              }
-
-              setValue(e.target.value);
-            }}
-          />,
-          <Button key={2} type="primary" onClick={() => setShowModal(true)}>
+          <Button key={1} type="primary" onClick={() => setShowModal(true)}>
             Add vaccine
           </Button>,
+          <Input
+            key={2}
+            placeholder="Search Vaccines"
+            value={value}
+            allowClear
+            onChange={(e) => searchVacccine(e.target.value)}
+          />,
         ]}
       />
       <div>
@@ -314,8 +317,9 @@ export const Vaccines = (props) => {
             title="Action"
             key="action"
             dataIndex="id"
+            selections={false}
             render={(id, object) => (
-              <Space size="small">
+              <Space size="small" className="actions-container">
                 <Tooltip title="Edit Vaccine">
                   <div
                     className="cursor-pointer"
@@ -351,3 +355,5 @@ export const Vaccines = (props) => {
     </div>
   );
 };
+
+export default Vaccines;

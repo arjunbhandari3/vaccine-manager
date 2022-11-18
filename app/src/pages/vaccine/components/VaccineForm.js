@@ -14,6 +14,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { UploadOutlined } from "@ant-design/icons";
 
+import Label from "./Label";
 import AllergyForm from "./AllergyForm";
 
 import { handleError } from "utils/error";
@@ -70,15 +71,6 @@ const VaccineForm = ({ vaccine, form, onClose, setIsSubmitting }) => {
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const Label = ({ label, isCompulsory = false }) => {
-    return (
-      <div className="form-label">
-        {label}
-        {isCompulsory && <span className="form-label--required">*</span>}
-      </div>
-    );
   };
 
   return (
