@@ -1,4 +1,4 @@
-import { TABLE_NAME_VACCINE } from '../constants';
+import { TABLE_NAME_VACCINE } from '../../constants';
 
 /**
  * Create table `vaccine`.
@@ -17,14 +17,9 @@ export function up(knex) {
     table.date('expiration_date').notNullable();
     table.string('photo_url');
     table.boolean('is_mandatory').defaultTo(false);
-    table.integer('created_by').unsigned().notNull();
-    table.foreign('created_by').references('id').inTable('user').onDelete('CASCADE');
     table.timestamp('created_at').notNull().defaultTo(knex.raw('now()'));
-    table.integer('updated_by').unsigned().nullable();
-    table.foreign('updated_by').references('id').inTable('user').onDelete('CASCADE');
     table.timestamp('updated_at').notNull().defaultTo(knex.raw('now()'));
     table.timestamp('deleted_at');
-    table.integer('deleted_by');
   });
 }
 

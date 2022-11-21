@@ -1,3 +1,5 @@
+import React from "react";
+
 const Label = ({ label, isCompulsory = false }) => {
   return (
     <div className="form-label">

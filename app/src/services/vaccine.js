@@ -8,34 +8,71 @@ import { interpolate } from "utils/string";
 import { getAuthHeader } from "utils/token";
 import { sortVaccinesData } from "utils/array";
 
-import { DATE_FORMAT } from "constants/common";
+import { DATE_FORMAT, VACCINE_METADATA } from "constants/common";
 
 /**
  * Format the vaccine data.
- * @param {*} vaccines
- * @returns {Array}
+ * @param {*} vaccine
+ * @returns {Object}
  */
-const formatVaccineData = (vaccines) => {
-  return vaccines.map((vaccine) => ({
+export const formatVaccineData = (vaccine) => {
+  return {
     ...vaccine,
     releaseDate: moment(vaccine.releaseDate).format(DATE_FORMAT),
     expirationDate: moment(vaccine.expirationDate).format(DATE_FORMAT),
-  }));
+  };
+};
+
+/**
+ * Format the vaccines data.
+ * @param {*} vaccines
+ * @returns {Array}
+ */
+const formatVaccinesData = (vaccines) => {
+  return vaccines.map((vaccine) => formatVaccineData(vaccine));
+};
+
+/**
+ * check vaccine mandatory.
+ * @param {*} mandatory
+ * @returns
+ */
+const getMandatory = (mandatory) => {
+  return mandatory === VACCINE_METADATA.TOTAL
+    ? null
+    : mandatory === VACCINE_METADATA.MANDATORY;
 };
 
 /**
  * Get all vaccines
  *
+ * @param {Object} filters
  * @returns {Promise}
  */
-export const getAllVaccines = async () => {
-  const url = interpolate(config.endpoints.vaccine.all);
+export const getAllVaccines = async (filters) => {
+  const query = {
+    search: filters.search,
+    mandatory: getMandatory(filters.mandatory),
+  };
 
-  const { data } = await http.get(url);
+  const params = cleanObject(query);
 
-  const sortedData = sortVaccinesData(formatVaccineData(data));
+  const { data } = await http.get(config.endpoints.vaccine.all, { params });
+
+  const sortedData = sortVaccinesData(formatVaccinesData(data));
 
   return sortedData;
+};
+
+/**
+ * Get vaccine count data.
+ *
+ * @returns {Promise}
+ */
+export const getVaccineCount = async () => {
+  const { data } = await http.get(config.endpoints.vaccine.count);
+
+  return data;
 };
 
 /**
@@ -76,9 +113,7 @@ export const addVaccine = async (vaccine) => {
 export const updateVaccine = async (id, vaccine) => {
   const url = interpolate(config.endpoints.vaccine.one, { id: id });
 
-  const vaccineData = cleanObject(vaccine);
-
-  const { data } = await http.put(url, vaccineData, {
+  const { data } = await http.put(url, vaccine, {
     headers: {
       "content-type": "multipart/form-data",
       Authorization: getAuthHeader(),

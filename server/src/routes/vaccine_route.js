@@ -7,6 +7,7 @@ import { validateCreate, validateUpdate, validatePatchUpdate } from '../validato
 const router = Router();
 
 router.get('/', vaccineController.getAllVaccines);
+router.get('/count', vaccineController.getCount);
 router.post('/', multer.single('photoUrl'), validateCreate, vaccineController.createVaccine);
 
 router.get('/:id', vaccineController.getVaccineById);

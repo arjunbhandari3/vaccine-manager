@@ -1,4 +1,4 @@
-import { TABLE_NAME_ALLERGY } from '../constants';
+import { TABLE_NAME_ALLERGY } from '../../constants';
 
 /**
  * Delete existing entries and seed values for `allergy`.
@@ -18,7 +18,6 @@ export function seed(knex) {
           created_at: new Date(),
           updated_at: new Date(),
           deleted_at: null,
-          deleted_by: null,
         },
         {
           allergy: 'Allergy 2',
@@ -27,7 +26,6 @@ export function seed(knex) {
           created_at: new Date(),
           updated_at: new Date(),
           deleted_at: null,
-          deleted_by: null,
         },
         {
           allergy: 'Allergy 3',
@@ -36,7 +34,6 @@ export function seed(knex) {
           created_at: new Date(),
           updated_at: new Date(),
           deleted_at: null,
-          deleted_by: null,
         },
       ])
     );

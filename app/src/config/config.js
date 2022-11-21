@@ -14,6 +14,7 @@ const config = {
     vaccine: {
       all: "/api/vaccines",
       one: "/api/vaccines/:id",
+      count: "/api/vaccines/count",
     },
   },
 };

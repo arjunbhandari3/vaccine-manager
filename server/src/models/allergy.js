@@ -1,9 +1,9 @@
-import db from '../db';
+import knex from '../db';
 
 import { TABLE_NAME_ALLERGY } from '../constants';
 
 class Allergy {
-  static qb = () => db(TABLE_NAME_ALLERGY);
+  static qb = () => knex(TABLE_NAME_ALLERGY);
 
   /**
    * Get allergy by id.

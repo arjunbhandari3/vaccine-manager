@@ -29,15 +29,11 @@ export const refreshToken = async () => {
 
 /**
  * Sign in user
- * @param {string} email
- * @param {string} password
+ * @param {Object} payload
  * @returns {Promise}
  */
-export const signIn = async (email, password) => {
-  const { data } = await http.post(config.endpoints.auth.signIn, {
-    email,
-    password,
-  });
+export const signIn = async (payload) => {
+  const { data } = await http.post(config.endpoints.auth.signIn, payload);
 
   const { accessToken, refreshToken, user } = data;
 
@@ -48,15 +44,11 @@ export const signIn = async (email, password) => {
 
 /**
  * Sign up user
- * @param {string} email
- * @param {string} password
+ * @param {Object} payload
  * @returns {Promise}
  */
-export const signUp = async (email, password) => {
-  const { data } = await http.post(config.endpoints.auth.signUp, {
-    email,
-    password,
-  });
+export const signUp = async (payload) => {
+  const { data } = await http.post(config.endpoints.auth.signUp, payload);
 
   return data;
 };

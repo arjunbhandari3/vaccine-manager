@@ -11,6 +11,7 @@ export const DATE_FORMAT = "YYYY-MM-DD";
 
 export const DEFAULT_PAGE_SIZE = 10;
 export const DEFAULT_PAGE_NUMBER = 1;
+export const MIN_DEBOUNCE_TIME = 1000;
 
 export const DEFAULT_VACCINE_IMAGE =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPtjpM7aoR4kbaH9c6j-uKN4SDiuiekzLTgA&usqp=CAU";
@@ -22,6 +23,28 @@ export const ALLERGY_RISK_COLOR = {
   [ALLERGY_RISK.LOW]: "green",
   [ALLERGY_RISK.MEDIUM]: "orange",
   [ALLERGY_RISK.HIGH]: "red",
+};
+
+export const VACCINE_METADATA = {
+  TOTAL: "Total",
+  MANDATORY: "Mandatory",
+  OPTIONAL: "Optional",
+};
+
+export const VACCINE_METADATA_ENUM = Object.values(VACCINE_METADATA);
+
+export const VACCINE_INITIAL_METADATA = { total: 0, mandatory: 0, optional: 0 };
+
+export const VACCINE_METADATA_COLOR = {
+  [VACCINE_METADATA.TOTAL]: "blue",
+  [VACCINE_METADATA.MANDATORY]: "red",
+  [VACCINE_METADATA.OPTIONAL]: "green",
+};
+
+export const VACCINE_METADATA_COLOR_CODE = {
+  [VACCINE_METADATA.TOTAL]: "#1890ff",
+  [VACCINE_METADATA.MANDATORY]: "#d62728",
+  [VACCINE_METADATA.OPTIONAL]: "#2ca02c",
 };
 
 export const SUCCESS = "Success";

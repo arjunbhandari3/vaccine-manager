@@ -1,4 +1,4 @@
-import { TABLE_NAME_VACCINE } from '../constants';
+import { TABLE_NAME_VACCINE } from '../../constants';
 
 /**
  * Delete existing entries and seed values for `vaccine`.
@@ -20,12 +20,9 @@ export function seed(knex) {
           release_date: '2022-11-08T18:15:00.000Z',
           expiration_date: '2022-11-29T18:15:00.000Z',
           photo_url: null,
-          created_by: 1,
           created_at: new Date(),
-          updated_by: 1,
           updated_at: new Date(),
           deleted_at: null,
-          deleted_by: null,
         },
         {
           name: 'Vaccine 2',
@@ -36,12 +33,9 @@ export function seed(knex) {
           release_date: '2022-11-10T18:15:00.000Z',
           expiration_date: '2022-11-29T18:15:00.000Z',
           photo_url: null,
-          created_by: 1,
           created_at: new Date(),
-          updated_by: 1,
           updated_at: new Date(),
           deleted_at: null,
-          deleted_by: null,
         },
       ])
     );
