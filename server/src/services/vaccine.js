@@ -27,7 +27,7 @@ export const createVaccine = async payload => {
 
   if (allergies?.length > 0) {
     const allergyPromises = allergies.map(async allergy => {
-      const newAllergy = await Allergy.create({ ...allergy, vaccineId: newVaccine.id, createdAt: new Date() });
+      const newAllergy = await Allergy.create({ ...allergy, vaccineId: newVaccine.id });
 
       return newAllergy;
     });
@@ -55,14 +55,27 @@ export const getVaccineById = async id => {
 
 /**
  * Get all vaccines.
+ * @param {Object} filters
  * @returns {Object}
  */
-export const getAllVaccines = async () => {
+export const getAllVaccines = async filters => {
   logger.info('Getting all vaccines');
 
-  const vaccines = await Vaccine.getAll();
+  const vaccines = await Vaccine.getAll(filters);
 
   return vaccines;
+};
+
+/**
+ * Get count data.
+ * @returns {Promise}
+ */
+export const getCount = async () => {
+  logger.info('Getting count data');
+
+  const count = await Vaccine.getCount();
+
+  return count;
 };
 
 /**
@@ -91,7 +104,7 @@ export const updateVaccine = async (id, payload) => {
 
   const { allergies, ...vaccinePayload } = payload;
 
-  const updatedVaccine = await Vaccine.update(id, vaccinePayload);
+  const updatedVaccine = await Vaccine.update(id, { ...vaccinePayload, updatedAt: new Date() });
 
   let existingAllergiesIds = [];
   if (vaccine?.allergies?.length > 0) {
@@ -114,10 +127,7 @@ export const updateVaccine = async (id, payload) => {
   const deletedAllergiesIds = existingAllergiesIds.filter(id => !newAllergiesIds.includes(id));
 
   if (deletedAllergiesIds.length > 0) {
-    const deleteAllergyPromises = await Allergy.updateByIds(deletedAllergiesIds, {
-      deletedAt: new Date(),
-      deletedBy: payload.updatedBy,
-    });
+    const deleteAllergyPromises = await Allergy.updateByIds(deletedAllergiesIds, { deletedAt: new Date() });
 
     await Promise.all(deleteAllergyPromises);
   }
@@ -145,7 +155,7 @@ export const updateMandatoryStatus = async (id, payload) => {
     throw new CustomError('Vaccine does not exist!', 404);
   }
 
-  const updatedVaccine = await Vaccine.update(id, payload);
+  const updatedVaccine = await Vaccine.update(id, { ...payload, updatedAt: new Date() });
 
   return updatedVaccine;
 };
@@ -153,10 +163,9 @@ export const updateMandatoryStatus = async (id, payload) => {
 /**
  * Delete vaccine.
  * @param {Number} id
- * @param {Object} payload
  * @returns {Object}
  */
-export const deleteVaccine = async (id, payload) => {
+export const deleteVaccine = async id => {
   logger.info('Deleting vaccine by id:' + id);
 
   const vaccine = await Vaccine.getById(id);
@@ -165,7 +174,7 @@ export const deleteVaccine = async (id, payload) => {
     throw new CustomError('Vaccine does not exist!', 404);
   }
 
-  const deletedVaccine = await Vaccine.update(id, payload);
+  const deletedVaccine = await Vaccine.update(id, { deletedAt: new Date() });
 
   if (deletedVaccine.photoUrl) {
     await deleteImage(deletedVaccine.photoUrl, 'vaccines');
@@ -174,10 +183,7 @@ export const deleteVaccine = async (id, payload) => {
   if (vaccine?.allergies?.length > 0) {
     const deletedAllergiesIds = vaccine.allergies.map(allergy => allergy.id);
 
-    const deleteAllergyPromises = await Allergy.updateByIds(deletedAllergiesIds, {
-      deletedAt: new Date(),
-      deletedBy: payload.deletedBy,
-    });
+    const deleteAllergyPromises = await Allergy.updateByIds(deletedAllergiesIds, { deletedAt: new Date() });
 
     const deletedAllergies = await Promise.all(deleteAllergyPromises);
 

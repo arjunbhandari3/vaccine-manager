@@ -1,14 +1,10 @@
 import cors from 'cors';
-import dotenv from 'dotenv';
 import express from 'express';
 
 import router from './routes';
-import logger from './utils/logger';
 import config from './config/config';
+import logger from './utils/logger';
 import errorHandler from './middlewares/errorHandler';
-
-// Environment setup
-dotenv.config();
 
 const app = express();
 

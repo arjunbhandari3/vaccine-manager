@@ -1,9 +1,9 @@
-import db from '../db';
+import knex from '../db';
 
 import { TABLE_NAME_USER } from '../constants';
 
 class User {
-  static qb = () => db(TABLE_NAME_USER);
+  static qb = () => knex(TABLE_NAME_USER);
 
   /**
    * Get user by id.
@@ -36,7 +36,7 @@ class User {
    * @returns {Promise}
    */
   static async create(payload) {
-    const [result] = await this.qb().insert(payload, ['id', 'email', 'password']).returning('*');
+    const [result] = await this.qb().insert(payload, ['id', 'name', 'email', 'password']).returning('*');
 
     return result;
   }

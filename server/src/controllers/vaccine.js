@@ -16,9 +16,7 @@ export const createVaccine = async (req, res, next) => {
       req.body.photoUrl = req.file.path;
     }
 
-    const vaccinePayload = { ...req.body, created_by: req.user.id, created_at: new Date() };
-
-    const data = await vaccineService.createVaccine(vaccinePayload);
+    const data = await vaccineService.createVaccine(req.body);
 
     return res.status(HttpStatus.CREATED).json(data);
   } catch (error) {
@@ -54,7 +52,24 @@ export const getVaccineById = async (req, res, next) => {
  */
 export const getAllVaccines = async (req, res, next) => {
   try {
-    const data = await vaccineService.getAllVaccines();
+    const data = await vaccineService.getAllVaccines(req.query);
+
+    return res.status(HttpStatus.OK).json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Get count data.
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Function} next
+ * @returns {Object}
+ */
+export const getCount = async (req, res, next) => {
+  try {
+    const data = await vaccineService.getCount();
 
     return res.status(HttpStatus.OK).json(data);
   } catch (error) {
@@ -76,9 +91,7 @@ export const updateVaccine = async (req, res, next) => {
       req.body.photoUrl = req.file.path;
     }
 
-    const updatedVaccine = { ...req.body, updated_by: req.user.id, updated_at: new Date() };
-
-    const data = await vaccineService.updateVaccine(req.params.id, updatedVaccine);
+    const data = await vaccineService.updateVaccine(req.params.id, req.body);
 
     return res.status(HttpStatus.OK).json(data);
   } catch (error) {
@@ -96,9 +109,7 @@ export const updateVaccine = async (req, res, next) => {
  */
 export const updateMandatoryStatus = async (req, res, next) => {
   try {
-    const updatedVaccine = { ...req.body, updated_by: req.user.id, updated_at: new Date() };
-
-    const data = await vaccineService.updateMandatoryStatus(req.params.id, updatedVaccine);
+    const data = await vaccineService.updateMandatoryStatus(req.params.id, req.body);
 
     return res.status(HttpStatus.OK).json(data);
   } catch (error) {
@@ -117,9 +128,7 @@ export const deleteVaccine = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const payload = { deletedBy: req.user.id, deletedAt: new Date() };
-
-    const data = await vaccineService.deleteVaccine(id, payload);
+    const data = await vaccineService.deleteVaccine(id);
 
     return res.status(HttpStatus.OK).json(data);
   } catch (error) {

@@ -30,11 +30,11 @@ module.exports = {
   client: config.db.client,
   migrations: {
     tableName: 'migrations',
-    directory: './migrations',
-    stub: './stubs/migration.stub',
+    directory: 'database/migrations',
+    stub: 'database/stubs/migration.stub',
   },
   seeds: {
-    directory: './seeds',
-    stub: './stubs/seed.stub',
+    directory: 'database/seeds',
+    stub: 'database/stubs/seed.stub',
   },
 };

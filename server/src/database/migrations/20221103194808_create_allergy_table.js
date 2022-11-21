@@ -1,4 +1,4 @@
-import { ALLERGY_RISK_ENUM, TABLE_NAME_ALLERGY, TABLE_NAME_VACCINE } from '../constants';
+import { ALLERGY_RISK_ENUM, TABLE_NAME_ALLERGY, TABLE_NAME_VACCINE } from '../../constants';
 
 /**
  * Create table `allergy`.
@@ -16,7 +16,6 @@ export function up(knex) {
     table.timestamp('created_at').notNull().defaultTo(knex.raw('now()'));
     table.timestamp('updated_at').notNull().defaultTo(knex.raw('now()'));
     table.timestamp('deleted_at');
-    table.integer('deleted_by');
   });
 }
 

@@ -1,9 +1,9 @@
-import db from '../db';
+import knex from '../db';
 
 import { TABLE_NAME_ALLERGY, TABLE_NAME_VACCINE } from '../constants';
 
 class Vaccine {
-  static qb = () => db(TABLE_NAME_VACCINE);
+  static qb = () => knex(TABLE_NAME_VACCINE);
 
   /**
    * Get vaccine by id.
@@ -14,10 +14,10 @@ class Vaccine {
     const [result] = await this.qb()
       .select(`${TABLE_NAME_VACCINE}.*`, `allergies.allergies`)
       .leftJoin(
-        db
+        knex
           .select(
             'vaccine_id',
-            db.raw(`json_agg(jsonb_build_object('id',id,'allergy',allergy,'risk',risk)) as allergies`)
+            knex.raw(`json_agg(jsonb_build_object('id',id,'allergy',allergy,'risk',risk)) as allergies`)
           )
           .from(`${TABLE_NAME_ALLERGY}`)
           .where(`${TABLE_NAME_ALLERGY}.deleted_at`, null)
@@ -33,17 +33,18 @@ class Vaccine {
 
   /**
    * Get all vaccines.
+   *
+   * @param {Object} filters
    * @returns {Object}
    */
-  static async getAll() {
-    const result = await this.qb()
+  static async getAll(filters) {
+    const query = this.qb()
       .select(`${TABLE_NAME_VACCINE}.*`, `allergies.allergies`)
-      .where(`${TABLE_NAME_VACCINE}.deleted_at`, null)
       .leftJoin(
-        db
+        knex
           .select(
             'vaccine_id',
-            db.raw(`json_agg(jsonb_build_object('id',id,'allergy',allergy,'risk',risk)) as allergies`)
+            knex.raw(`json_agg(jsonb_build_object('id',id,'allergy',allergy,'risk',risk)) as allergies`)
           )
           .from(`${TABLE_NAME_ALLERGY}`)
           .where(`${TABLE_NAME_ALLERGY}.deleted_at`, null)
@@ -51,7 +52,41 @@ class Vaccine {
           .as('allergies'),
         'allergies.vaccine_id',
         'vaccine.id'
-      );
+      )
+      .where(`${TABLE_NAME_VACCINE}.deleted_at`, null);
+
+    if (filters.mandatory) {
+      query.where(`${TABLE_NAME_VACCINE}.is_mandatory`, filters.mandatory);
+    }
+
+    if (filters.search) {
+      const search = `%${filters.search}%`;
+
+      query
+        .where(`${TABLE_NAME_VACCINE}.name`, 'ilike', search)
+        .orWhere(`${TABLE_NAME_VACCINE}.description`, 'ilike', search)
+        .orWhere(`${TABLE_NAME_VACCINE}.manufacturer`, 'ilike', search);
+    }
+
+    const result = await query;
+
+    return result;
+  }
+
+  /**
+   * Get count data.
+   * @returns {Promise}
+   */
+  static async getCount() {
+    const [result] = await this.qb()
+      .select(
+        knex.raw(
+          `count(*) as total, 
+          count (*) filter(where is_mandatory = true) as mandatory,
+          count (*) filter(where is_mandatory = false) as optional`
+        )
+      )
+      .where(`${TABLE_NAME_VACCINE}.deleted_at`, null);
 
     return result;
   }

@@ -3,6 +3,7 @@ import Joi from 'joi';
 import validate from '../utils/validate';
 
 const signUpSchema = Joi.object({
+  name: Joi.string().label('Name').required(),
   email: Joi.string().email().label('Email').required(),
   password: Joi.string().min(6).label('Password').required(),
 });
