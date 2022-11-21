@@ -29,9 +29,8 @@ const SignIn = (props) => {
   const onSubmit = async (values) => {
     try {
       setIsSubmitting(true);
-      const { email, password } = values;
 
-      await signIn(email, password);
+      await signIn(values);
 
       navigate(routes.HOME);
 

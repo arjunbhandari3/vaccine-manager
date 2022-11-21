@@ -19,17 +19,12 @@ const INITIAL_STATE = {
 export const vaccineReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case GET_ALL_VACCINES_PENDING:
-      return {
-        ...state,
-        isVaccinesLoading: true,
-      };
+      return { ...state, isVaccinesLoading: true };
 
     case GET_ALL_VACCINES_FULFILLED:
     case GET_ALL_VACCINES_REJECTED:
-      return {
-        ...state,
-        isVaccinesLoading: false,
-      };
+      return { ...state, isVaccinesLoading: false };
+
     default:
       return state;
   }

@@ -1,7 +1,11 @@
-import { GET_ALL_VACCINES_FULFILLED } from "redux/constants/constants";
+import {
+  GET_ALL_VACCINES_FULFILLED,
+  GET_VACCINE_COUNT_FULFILLED,
+} from "redux/constants/constants";
 
 const INITIAL_STATE = {
   vaccines: [],
+  vaccineCount: {},
 };
 
 /**
@@ -15,10 +19,11 @@ const INITIAL_STATE = {
 export const vaccineReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case GET_ALL_VACCINES_FULFILLED:
-      return {
-        ...state,
-        vaccines: action.payload,
-      };
+      return { ...state, vaccines: action.payload };
+
+    case GET_VACCINE_COUNT_FULFILLED:
+      return { ...state, vaccineCount: action.payload };
+
     default:
       return state;
   }

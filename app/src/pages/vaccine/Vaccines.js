@@ -19,6 +19,7 @@ import {
   LoadingOutlined,
   InfoCircleOutlined,
 } from "@ant-design/icons";
+import debounce from "lodash/debounce";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -29,16 +30,21 @@ import { showSuccessNotification } from "utils/notification";
 
 import useDocumentTitle from "hooks/useDocumentTitle";
 import VaccineFormModal from "./components/VaccineFormModal";
-import { getAllVaccines } from "redux/actions/vaccineAction";
+import { getAllVaccines, getVaccineCount } from "redux/actions/vaccineAction";
 import { deleteVaccine, updateVaccineMandatoryStatus } from "services/vaccine";
 
 import {
   SUCCESS,
+  VACCINE_METADATA,
+  MIN_DEBOUNCE_TIME,
   DEFAULT_PAGE_SIZE,
   ALLERGY_RISK_COLOR,
   DEFAULT_PAGE_NUMBER,
   DEFAULT_VACCINE_IMAGE,
+  VACCINE_METADATA_ENUM,
+  VACCINE_METADATA_COLOR,
   VACCINE_DELETED_MESSAGE,
+  VACCINE_METADATA_COLOR_CODE,
   VACCINE_MANDATORY_UPDATE_MESSAGE,
 } from "constants/common";
 
@@ -49,24 +55,25 @@ const Vaccines = (props) => {
   const isVaccinesLoading = useSelector(
     (state) => state.ui.vaccine.isVaccinesLoading
   );
+  const vaccineCount = useSelector((state) => state.data.vaccine.vaccineCount);
 
   useDocumentTitle("Vaccines");
 
   const [showModal, setShowModal] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [searchValue, setSearchValue] = useState(null);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [selectedVaccine, setSelectedVaccine] = useState(null);
   const [pageNumber, setPageNumber] = useState(DEFAULT_PAGE_NUMBER);
-  const [value, setValue] = useState("");
-  const [vaccinesData, setVaccinesData] = useState(vaccines);
+  const [metaQuery, setMetaQuery] = useState(VACCINE_METADATA.TOTAL);
 
   useEffect(() => {
-    setVaccinesData(vaccines);
-  }, [vaccines]);
+    dispatch(getAllVaccines({ mandatory: metaQuery, search: searchValue }));
+  }, [dispatch, metaQuery, searchValue]);
 
   useEffect(() => {
-    dispatch(getAllVaccines());
+    dispatch(getVaccineCount());
   }, [dispatch]);
 
   const handleUpdateMandatory = async (vaccine) => {
@@ -76,7 +83,11 @@ const Vaccines = (props) => {
       await updateVaccineMandatoryStatus(vaccine.id, {
         isMandatory: !vaccine.isMandatory,
       });
-      await dispatch(getAllVaccines());
+
+      await dispatch(
+        getAllVaccines({ mandatory: metaQuery, search: searchValue })
+      );
+      await dispatch(getVaccineCount());
 
       showSuccessNotification(SUCCESS, VACCINE_MANDATORY_UPDATE_MESSAGE);
     } catch (err) {
@@ -93,7 +104,10 @@ const Vaccines = (props) => {
 
       await deleteVaccine(id);
 
-      await dispatch(getAllVaccines());
+      await dispatch(
+        getAllVaccines({ mandatory: metaQuery, search: searchValue })
+      );
+      await dispatch(getVaccineCount());
 
       showSuccessNotification(SUCCESS, VACCINE_DELETED_MESSAGE);
     } catch (err) {
@@ -118,40 +132,29 @@ const Vaccines = (props) => {
     });
   };
 
-  const searchVacccine = (input) => {
-    setValue(input);
-
-    if (!input) {
-      setVaccinesData(vaccines);
-      return;
-    }
-
-    const filteredVaccines = vaccines.filter((vaccine) => {
-      return (
-        vaccine.name.toLowerCase().includes(input.toLowerCase()) ||
-        vaccine.description.toLowerCase().includes(input.toLowerCase()) ||
-        vaccine.manufacturer.toLowerCase().includes(input.toLowerCase())
-      );
-    });
-
-    setVaccinesData(filteredVaccines);
-  };
-
   const { Column } = Table;
 
   return (
     <div className="vaccines-container">
       <PageHeader
         title={<h1 className="vaccines-header-title">All Vaccines</h1>}
-        tags={[
-          <Tag>Total: {vaccinesData.length}</Tag>,
-          <Tag color="red">
-            Mandatory: {vaccinesData.filter((v) => v.isMandatory).length}
-          </Tag>,
-          <Tag color="blue">
-            Optional: {vaccinesData.filter((v) => !v.isMandatory).length}
-          </Tag>,
-        ]}
+        tags={
+          vaccineCount.total > 0 &&
+          VACCINE_METADATA_ENUM.map((meta, index) => (
+            <Tag
+              key={index}
+              color={
+                meta === metaQuery
+                  ? VACCINE_METADATA_COLOR_CODE[meta]
+                  : VACCINE_METADATA_COLOR[meta]
+              }
+              style={{ cursor: "pointer" }}
+              onClick={() => setMetaQuery(meta)}
+            >
+              {meta}: {vaccineCount[meta.toLowerCase()]}
+            </Tag>
+          ))
+        }
         extra={[
           <Button key={1} type="primary" onClick={() => setShowModal(true)}>
             Add vaccine
@@ -159,15 +162,17 @@ const Vaccines = (props) => {
           <Input
             key={2}
             placeholder="Search Vaccines"
-            value={value}
+            value={searchValue}
             allowClear
-            onChange={(e) => searchVacccine(e.target.value)}
+            onChange={(e) =>
+              debounce(setSearchValue(e.target.value), MIN_DEBOUNCE_TIME)
+            }
           />,
         ]}
       />
       <div>
         <Table
-          dataSource={vaccinesData}
+          dataSource={vaccines}
           pagination={{
             onChange(current, pageSize) {
               setPageNumber(current);
@@ -280,10 +285,7 @@ const Vaccines = (props) => {
                     title="Allergies have their own risk among 'High', 'Medium' and 'Low' and color coded accordingly as 
                   'Red', 'Orange' and 'Green' respectively."
                   >
-                    <InfoCircleOutlined
-                      className="ml-2 cursor-pointer"
-                      onClick={() => dispatch(getAllVaccines())}
-                    />
+                    <InfoCircleOutlined className="ml-2 cursor-pointer" />
                   </Tooltip>
                 </div>
               </div>
@@ -315,7 +317,7 @@ const Vaccines = (props) => {
             }}
           />
           <Column
-            title="Action"
+            title=""
             key="action"
             dataIndex="id"
             selections={false}

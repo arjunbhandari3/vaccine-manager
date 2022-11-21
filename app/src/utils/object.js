@@ -6,7 +6,7 @@
  */
 export function cleanObject(obj, acc) {
   return Object.keys(obj).reduce((result, key) => {
-    if (obj[key] == null) {
+    if (obj[key] == null || obj[key] === "") {
       return result;
     }
 

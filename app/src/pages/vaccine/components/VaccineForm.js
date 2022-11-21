@@ -18,9 +18,9 @@ import Label from "./Label";
 import AllergyForm from "./AllergyForm";
 
 import { handleError } from "utils/error";
-import { showSuccessNotification } from "utils/notification";
-import { addVaccine, updateVaccine } from "services/vaccine";
 import { getAllVaccines } from "redux/actions/vaccineAction";
+import { showSuccessNotification } from "utils/notification";
+import { addVaccine, formatVaccineData, updateVaccine } from "services/vaccine";
 
 import {
   SUCCESS,
@@ -38,11 +38,7 @@ const VaccineForm = ({ vaccine, form, onClose, setIsSubmitting }) => {
   const [file, setFile] = useState(null);
 
   const onSubmit = async (values) => {
-    const data = {
-      ...values,
-      releaseDate: moment(values.releaseDate).format(DATE_FORMAT),
-      expirationDate: moment(values.expirationDate).format(DATE_FORMAT),
-    };
+    const data = formatVaccineData(values);
 
     if (file) {
       data.photoUrl = file;

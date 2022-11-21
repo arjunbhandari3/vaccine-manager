@@ -31,9 +31,10 @@ const SignUp = (props) => {
   const onSubmit = async (values) => {
     try {
       setIsSubmitting(true);
-      const { email, password } = values;
 
-      await signUp(email, password);
+      const { confirmPassword, ...rest } = values;
+
+      await signUp(rest);
 
       navigate(routes.SIGN_IN);
       form.resetFields();
@@ -61,6 +62,17 @@ const SignUp = (props) => {
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
         >
+          <div className="label">
+            <p>Name</p>
+          </div>
+          <Form.Item
+            colon={false}
+            name="name"
+            rules={[{ required: true, message: REQUIRED }]}
+          >
+            <Input />
+          </Form.Item>
+
           <div className="label">
             <p>Email</p>
           </div>
@@ -96,7 +108,7 @@ const SignUp = (props) => {
             <p>Confirm Password</p>
           </div>
           <Form.Item
-            name="confirm-password"
+            name="confirmPassword"
             colon={false}
             rules={[
               { required: true, message: REQUIRED },
