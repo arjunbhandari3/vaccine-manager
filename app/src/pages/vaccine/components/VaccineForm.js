@@ -32,7 +32,9 @@ import {
   VACCINE_EDITED_MESSAGE,
 } from "constants/common";
 
-const VaccineForm = ({ vaccine, form, onClose, setIsSubmitting }) => {
+const VaccineForm = (props) => {
+  const { vaccine, form, onClose, isSubmitting, setIsSubmitting } = props;
+
   const dispatch = useDispatch();
 
   const [file, setFile] = useState(null);
@@ -74,7 +76,7 @@ const VaccineForm = ({ vaccine, form, onClose, setIsSubmitting }) => {
     <Form
       form={form}
       layout="vertical"
-      onFinish={onSubmit}
+      onFinish={!isSubmitting && onSubmit}
       initialValues={{
         numberOfDoses: 0,
         isMandatory: false,
@@ -162,7 +164,7 @@ const VaccineForm = ({ vaccine, form, onClose, setIsSubmitting }) => {
             name="numberOfDoses"
             rules={[{ required: true, message: REQUIRED }]}
           >
-            <InputNumber min={0} initialValues={0} />
+            <InputNumber min={0} />
           </Form.Item>
         </Col>
 

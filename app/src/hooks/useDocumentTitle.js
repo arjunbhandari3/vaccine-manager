@@ -4,7 +4,7 @@ import { APP_TITLE } from "constants/common";
 
 const useDocumentTitle = (title, defaultTitle = APP_TITLE) => {
   useEffect(() => {
-    window.document.title = `${title} | ${APP_TITLE}`;
+    window.document.title = `${title} | ${defaultTitle}`;
 
     return () => {
       window.document.title = defaultTitle;

@@ -20,9 +20,9 @@ export const ALLERGY_RISK = { LOW: "Low", MEDIUM: "Medium", HIGH: "High" };
 export const ALLERGY_RISK_ENUM = Object.values(ALLERGY_RISK);
 
 export const ALLERGY_RISK_COLOR = {
-  [ALLERGY_RISK.LOW]: "green",
-  [ALLERGY_RISK.MEDIUM]: "orange",
-  [ALLERGY_RISK.HIGH]: "red",
+  [ALLERGY_RISK.LOW]: "#00C851",
+  [ALLERGY_RISK.MEDIUM]: "#f0ad4e",
+  [ALLERGY_RISK.HIGH]: "#d62728",
 };
 
 export const VACCINE_METADATA = {

@@ -39,6 +39,7 @@ const VaccineFormModal = ({ vaccine, open, onCancel }) => {
         form={form}
         vaccine={vaccine}
         onClose={onCancel}
+        isSubmitting={isSubmitting}
         setIsSubmitting={setIsSubmitting}
       />
     </Modal>
