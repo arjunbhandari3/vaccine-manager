@@ -5,10 +5,6 @@ import {
 } from "utils/token";
 import http from "utils/http";
 import config from "config/config";
-import { showSuccessNotification } from "utils/notification";
-
-import * as routes from "constants/routes";
-import { SUCCESS, SUCCESSFULLY_SIGNED_OUT } from "constants/common";
 
 /**
  * Get token
@@ -66,8 +62,7 @@ export const signOut = async () => {
 
   if (result.status === 200) {
     removeUserDataFromLocalStorage();
-    window.location.href = routes.SIGN_IN;
-
-    showSuccessNotification(SUCCESS, SUCCESSFULLY_SIGNED_OUT);
   }
+
+  return result;
 };

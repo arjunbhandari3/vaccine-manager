@@ -1,9 +1,11 @@
 import { Row, Button, Form, Input, Select, Divider } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 
-import { ALLERGY_RISK_ENUM } from "constants/common";
+import { ALLERGY_RISK_ENUM, REQUIRED } from "constants/common";
 
-const AllergyForm = () => {
+const AllergyForm = (props) => {
+  const { form } = props;
+
   return (
     <Form.List name="allergies">
       {(fields, { add, remove }, { errors }) => (
@@ -25,6 +27,7 @@ const AllergyForm = () => {
                     width: "calc(50% - 8px)",
                     marginRight: 16,
                   }}
+                  rules={[{ required: true, message: REQUIRED }]}
                 >
                   <Input.TextArea
                     placeholder="Allergy"
@@ -34,7 +37,11 @@ const AllergyForm = () => {
                   />
                 </Form.Item>
 
-                <Form.Item key="risk" name={[field.name, "risk"]}>
+                <Form.Item
+                  key="risk"
+                  name={[field.name, "risk"]}
+                  rules={[{ required: true, message: REQUIRED }]}
+                >
                   <Select
                     placeholder="Select risk level"
                     style={{ width: 150 }}
@@ -61,7 +68,19 @@ const AllergyForm = () => {
           <Form.Item wrapperCol={{ offset: 4 }}>
             <Button
               type="dashed"
-              onClick={() => add()}
+              onClick={() => {
+                const allergies = form.getFieldValue(`allergies`) || [];
+                const allergiesCount = allergies?.length;
+                const lastItem = allergies?.[allergiesCount - 1];
+
+                if (
+                  allergiesCount === 0 ||
+                  (allergiesCount !== 0 &&
+                    (lastItem?.allergy || lastItem?.risk))
+                ) {
+                  add();
+                }
+              }}
               style={{ width: "60%" }}
               icon={<PlusOutlined />}
             >

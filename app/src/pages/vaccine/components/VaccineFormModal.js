@@ -31,8 +31,9 @@ const VaccineFormModal = ({ vaccine, open, onCancel }) => {
           {vaccine ? "Edit vaccine" : "Add vaccine"}
         </h1>
       }
-      onOk={() => form.submit()}
+      onOk={() => !isSubmitting && form.submit()}
       okText={vaccine ? "Update Vaccine" : "Add Vaccine"}
+      okButtonProps={{ disabled: isSubmitting }}
       confirmLoading={isSubmitting}
     >
       <VaccineForm

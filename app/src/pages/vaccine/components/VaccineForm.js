@@ -198,7 +198,7 @@ const VaccineForm = (props) => {
           <Button icon={<UploadOutlined />}>Click to upload</Button>
         </Upload>
       </Form.Item>
-      <AllergyForm />
+      <AllergyForm form={form} />
     </Form>
   );
 };

@@ -85,7 +85,13 @@ const SignIn = (props) => {
             <Input.Password />
           </Form.Item>
           <Form.Item className="button">
-            <Button type="primary" htmlType="submit" size="large" block>
+            <Button
+              type="primary"
+              htmlType="submit"
+              size="large"
+              block
+              disabled={isSubmitting}
+            >
               {isSubmitting ? <Loading /> : "Sign In"}
             </Button>
           </Form.Item>
