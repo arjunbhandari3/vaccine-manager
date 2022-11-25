@@ -55,6 +55,23 @@ class Vaccine {
       )
       .where(`${TABLE_NAME_VACCINE}.deleted_at`, null);
 
+    if (filters) {
+      this.appendFilter(query, filters);
+    }
+
+    const result = await query;
+
+    return result;
+  }
+
+  /**
+   * Append Filter.
+   *
+   * @param {Object} query
+   * @param {Object} filters
+   * @returns {Object}
+   */
+  static appendFilter(query, filters) {
     if (filters.mandatory) {
       query.where(`${TABLE_NAME_VACCINE}.is_mandatory`, filters.mandatory);
     }
@@ -67,10 +84,6 @@ class Vaccine {
         .orWhere(`${TABLE_NAME_VACCINE}.description`, 'ilike', search)
         .orWhere(`${TABLE_NAME_VACCINE}.manufacturer`, 'ilike', search);
     }
-
-    const result = await query;
-
-    return result;
   }
 
   /**
