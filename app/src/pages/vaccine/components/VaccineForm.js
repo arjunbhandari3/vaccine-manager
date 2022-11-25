@@ -40,18 +40,15 @@ const VaccineForm = (props) => {
   const [file, setFile] = useState(null);
 
   const onSubmit = async (values) => {
-    const data = formatVaccineData(values);
-
     if (file) {
-      data.photoUrl = file;
-    }
-
-    if (data?.allergies?.length > 0) {
-      data.allergies = JSON.stringify(data.allergies);
+      values.photoUrl = file;
     }
 
     try {
       setIsSubmitting(true);
+
+      const data = formatVaccineData(values, "submit");
+
       if (vaccine) {
         await updateVaccine(vaccine.id, data);
         showSuccessNotification(SUCCESS, VACCINE_EDITED_MESSAGE);
@@ -77,12 +74,7 @@ const VaccineForm = (props) => {
       form={form}
       layout="vertical"
       onFinish={!isSubmitting && onSubmit}
-      initialValues={{
-        numberOfDoses: 0,
-        isMandatory: false,
-        releaseDate: moment(),
-        expirationDate: moment(),
-      }}
+      initialValues={{ numberOfDoses: 0, isMandatory: false, allergies: [] }}
       autoComplete="off"
     >
       <Label label="Name" isCompulsory />
@@ -117,11 +109,10 @@ const VaccineForm = (props) => {
           <Label label="Release Date" isCompulsory />
           <Form.Item
             colon={false}
-            format={DATE_FORMAT}
             name="releaseDate"
             rules={[{ required: true, message: REQUIRED }]}
           >
-            <DatePicker />
+            <DatePicker format={DATE_FORMAT} />
           </Form.Item>
         </Col>
 
@@ -129,7 +120,6 @@ const VaccineForm = (props) => {
           <Label label="Expiration Date" isCompulsory />
           <Form.Item
             colon={false}
-            format={DATE_FORMAT}
             name="expirationDate"
             rules={[
               { required: true, message: REQUIRED },
@@ -151,7 +141,7 @@ const VaccineForm = (props) => {
               }),
             ]}
           >
-            <DatePicker />
+            <DatePicker format={DATE_FORMAT} />
           </Form.Item>
         </Col>
       </Row>

@@ -19,6 +19,7 @@ import {
   LoadingOutlined,
   InfoCircleOutlined,
 } from "@ant-design/icons";
+import moment from "moment";
 import debounce from "lodash/debounce";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,6 +36,7 @@ import { deleteVaccine, updateVaccineMandatoryStatus } from "services/vaccine";
 
 import {
   SUCCESS,
+  DATE_FORMAT,
   VACCINE_METADATA,
   MIN_DEBOUNCE_TIME,
   DEFAULT_PAGE_SIZE,
@@ -270,11 +272,15 @@ const Vaccines = (props) => {
             title="Release Date"
             dataIndex="releaseDate"
             key="releaseDate"
+            render={(releaseDate) => moment(releaseDate).format(DATE_FORMAT)}
           />
           <Column
             title="Expiration Date"
             dataIndex="expirationDate"
             key="expirationDate"
+            render={(expirationDate) =>
+              moment(expirationDate).format(DATE_FORMAT)
+            }
           />
           <Column
             title={

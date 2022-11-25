@@ -16,7 +16,7 @@ const AllergyForm = () => {
               <div className="form-label" style={{ marginBottom: 4 }}>
                 {index === 0 ? "Allergies" : ""}
               </div>
-              <Row>
+              <Row style={{ alignItems: "flex-start" }}>
                 <Form.Item
                   key="allergy"
                   name={[field.name, "allergy"]}

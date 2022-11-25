@@ -15,11 +15,20 @@ import { DATE_FORMAT, VACCINE_METADATA } from "constants/common";
  * @param {*} vaccine
  * @returns {Object}
  */
-export const formatVaccineData = (vaccine) => {
+export const formatVaccineData = (vaccine, action) => {
+  if (action === "submit") {
+    return {
+      ...vaccine,
+      releaseDate: moment(vaccine.releaseDate).format(DATE_FORMAT),
+      expirationDate: moment(vaccine.expirationDate).format(DATE_FORMAT),
+      allergies: JSON.stringify(vaccine.allergies || []),
+    };
+  }
+
   return {
     ...vaccine,
-    releaseDate: moment(vaccine.releaseDate).format(DATE_FORMAT),
-    expirationDate: moment(vaccine.expirationDate).format(DATE_FORMAT),
+    releaseDate: moment(vaccine.releaseDate),
+    expirationDate: moment(vaccine.expirationDate),
   };
 };
 
@@ -38,9 +47,11 @@ const formatVaccinesData = (vaccines) => {
  * @returns
  */
 const getMandatory = (mandatory) => {
-  return mandatory === VACCINE_METADATA.TOTAL
-    ? null
-    : mandatory === VACCINE_METADATA.MANDATORY;
+  if (!mandatory || mandatory === VACCINE_METADATA.TOTAL) {
+    return null;
+  }
+
+  return mandatory === VACCINE_METADATA.MANDATORY;
 };
 
 /**
@@ -50,10 +61,9 @@ const getMandatory = (mandatory) => {
  * @returns {Promise}
  */
 export const getAllVaccines = async (filters) => {
-  const query = {
-    search: filters.search,
-    mandatory: getMandatory(filters.mandatory),
-  };
+  const { search, mandatory } = filters || {};
+
+  const query = { search, mandatory: getMandatory(mandatory) };
 
   const params = cleanObject(query);
 
