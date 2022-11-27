@@ -5,7 +5,7 @@ import * as allergyService from './allergy';
 
 import logger from '../utils/logger';
 import CustomError from '../utils/error';
-import { deleteImage, uploadImage } from '../utils/fileUploader';
+import { deleteImage, getImageFileName, uploadImage } from '../utils/fileUploader';
 
 /**
  * Create a new vaccine.
@@ -21,9 +21,11 @@ export const createVaccine = async payload => {
     payload.photoUrl = uploadUrl;
   }
 
-  const { allergies, ...vaccine } = payload;
+  const { allergies: allergiesData, ...vaccine } = payload;
 
   const newVaccine = await Vaccine.create(vaccine);
+
+  const allergies = JSON.parse(allergiesData);
 
   if (allergies?.length > 0) {
     const allergyPromises = allergies.map(async allergy => {
@@ -93,18 +95,24 @@ export const updateVaccine = async (id, payload) => {
     throw new CustomError('Vaccine does not exist!', 404);
   }
 
-  if (payload.photoUrl && payload.photoUrl !== vaccine.photoUrl) {
-    const uploadUrl = await uploadImage(payload.photoUrl, 'vaccines');
-    payload.photoUrl = uploadUrl;
+  if (payload.photoUrl) {
+    if (getImageFileName(vaccine.photoUrl) !== getImageFileName(payload.photoUrl)) {
+      const uploadUrl = await uploadImage(payload.photoUrl, 'vaccines');
+      payload.photoUrl = uploadUrl;
+
+      if (vaccine.photoUrl) {
+        await deleteImage(vaccine.photoUrl, 'vaccines');
+      }
+    } else {
+      delete payload.photoUrl;
+    }
   }
 
-  if (vaccine.photoUrl && payload.photoUrl !== vaccine.photoUrl) {
-    await deleteImage(vaccine.photoUrl, 'vaccines');
-  }
-
-  const { allergies, ...vaccinePayload } = payload;
+  const { allergies: allergiesData, ...vaccinePayload } = payload;
 
   const updatedVaccine = await Vaccine.update(id, { ...vaccinePayload, updatedAt: new Date() });
+
+  const allergies = JSON.parse(allergiesData);
 
   let existingAllergiesIds = [];
   if (vaccine?.allergies?.length > 0) {

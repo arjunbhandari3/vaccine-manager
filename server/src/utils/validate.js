@@ -7,15 +7,20 @@ import CustomError from './error';
  * @param {object} schema
  * @returns {object}
  */
-const validate = async (data, schema) => {
-  try {
-    const value = await schema.validateAsync(data, { abortEarly: false });
+const validate = schema => async (req, res, next) => {
+  const options = {
+    abortEarly: false, // include all errors
+    allowUnknown: true, // ignore unknown props
+    stripUnknown: true, // remove unknown props
+  };
 
-    return value;
+  try {
+    const value = await schema.validateAsync(req.body, options);
+    req.body = value;
+    next();
   } catch (error) {
     const message = error.message || 'Validation error';
-
-    throw new CustomError(message, 400);
+    next(new CustomError(message, 400));
   }
 };
 

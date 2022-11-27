@@ -52,7 +52,7 @@ export const deleteImage = async (fileString, folder) => {
 
       return deleteResponse.result;
     }
-    return 'ok';
+    return 'default';
   } catch {
     logger.error('Failed to delete');
     throw new Error('Failed to delete');
@@ -68,4 +68,19 @@ export const deleteImage = async (fileString, folder) => {
 export const getImageCloudinaryId = imageUrl => {
   const publicId = imageUrl.split('/').pop().split('.').shift();
   return publicId;
+};
+
+/**
+ * Get the file name of an image from its url
+ * @param {string} imageUrl - url of the image
+ * @returns {string} - file name of the image
+ *
+ * @example
+ * getImageFileName('https://images/1593640000-1-vaccine.jpg')
+ * => 1-vaccine.jpg
+ */
+export const getImageFileName = fileString => {
+  const fileName = fileString.split('/').pop().split('-').pop();
+
+  return fileName;
 };

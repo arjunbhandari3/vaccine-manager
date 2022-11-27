@@ -11,7 +11,7 @@ const createSchema = Joi.object({
   expirationDate: Joi.date().required().label('Expiration Date'),
   photoUrl: Joi.string().label('Photo URL').allow(null, ''),
   isMandatory: Joi.boolean().label('Is Mandatory'),
-  allergies: Joi.array().label('Allergies'),
+  allergies: Joi.string().label('Allergies'),
 });
 
 const updateSchema = Joi.object({
@@ -23,55 +23,13 @@ const updateSchema = Joi.object({
   expirationDate: Joi.date().label('Expiration Date'),
   photoUrl: Joi.string().label('Photo URL').allow(null, ''),
   isMandatory: Joi.boolean().label('Is Mandatory'),
-  allergies: Joi.array().label('Allergies'),
+  allergies: Joi.string().label('Allergies'),
 });
 
 const patchUpdateSchema = Joi.object({
   isMandatory: Joi.boolean().label('Is Mandatory'),
 });
 
-/**
- * Validates create vaccine request.
- * @param {object} req
- * @param {object} res
- * @param {Function} next
- * @returns {object}
- */
-export const validateCreate = async (req, res, next) => {
-  if (req.body?.allergies?.length > 0) {
-    req.body.allergies = JSON.parse(req.body.allergies);
-  }
-  return await validate(req.body, createSchema)
-    .then(() => next())
-    .catch(next);
-};
-
-/**
- * Validates update vaccine request.
- * @param {object} req
- * @param {object} res
- * @param {Function} next
- * @returns {object}
- */
-export const validateUpdate = async (req, res, next) => {
-  if (req.body?.allergies?.length > 0) {
-    req.body.allergies = JSON.parse(req.body.allergies);
-  }
-
-  return await validate(req.body, updateSchema)
-    .then(() => next())
-    .catch(next);
-};
-
-/**
- * Validates patch update vaccine request.
- * @param {object} req
- * @param {object} res
- * @param {Function} next
- * @returns {object}
- */
-export const validatePatchUpdate = async (req, res, next) => {
-  return await validate(req.body, patchUpdateSchema)
-    .then(() => next())
-    .catch(next);
-};
+export const validateCreate = validate(createSchema);
+export const validateUpdate = validate(updateSchema);
+export const validatePatchUpdate = validate(patchUpdateSchema);

@@ -2,8 +2,8 @@ import cors from 'cors';
 import express from 'express';
 
 import router from './routes';
-import config from './config/config';
 import logger from './utils/logger';
+import config from './config/config';
 import errorHandler from './middlewares/errorHandler';
 
 const app = express();
