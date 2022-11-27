@@ -288,8 +288,18 @@ const Vaccines = (props) => {
                 <div>Allergies</div>
                 <div className="table-header-icon">
                   <Tooltip
-                    title="Allergies have their own risk among 'High', 'Medium' and 'Low' and color coded accordingly as 
-                  'Red', 'Orange' and 'Green' respectively."
+                    title={
+                      <>
+                        <div>Allergies have their own risk: </div>
+                        <div>
+                          <ul>
+                            <li>{`High --> Red`}</li>
+                            <li>{`Medium --> Orange`}</li>
+                            <li>{`Low --> Green`}</li>
+                          </ul>
+                        </div>
+                      </>
+                    }
                   >
                     <InfoCircleOutlined className="ml-2 cursor-pointer" />
                   </Tooltip>

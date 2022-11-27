@@ -4,7 +4,7 @@ import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { ALLERGY_RISK_ENUM, REQUIRED } from "constants/common";
 
 const AllergyForm = (props) => {
-  const { form } = props;
+  const { isLastAllergyEmpty } = props;
 
   return (
     <Form.List name="allergies">
@@ -54,11 +54,8 @@ const AllergyForm = (props) => {
                   </Select>
                 </Form.Item>
                 <MinusCircleOutlined
-                  style={{
-                    margin: "8px",
-                    fontSize: 18,
-                    color: "red",
-                  }}
+                  className="delete-button"
+                  style={{ margin: "8px", fontSize: 18 }}
                   onClick={() => remove(field.name)}
                 />
               </Row>
@@ -68,21 +65,10 @@ const AllergyForm = (props) => {
           <Form.Item wrapperCol={{ offset: 4 }}>
             <Button
               type="dashed"
-              onClick={() => {
-                const allergies = form.getFieldValue(`allergies`) || [];
-                const allergiesCount = allergies?.length;
-                const lastItem = allergies?.[allergiesCount - 1];
-
-                if (
-                  allergiesCount === 0 ||
-                  (allergiesCount !== 0 &&
-                    (lastItem?.allergy || lastItem?.risk))
-                ) {
-                  add();
-                }
-              }}
+              onClick={() => !isLastAllergyEmpty && add()}
               style={{ width: "60%" }}
               icon={<PlusOutlined />}
+              disabled={isLastAllergyEmpty}
             >
               Add Allergy
             </Button>

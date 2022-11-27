@@ -11,12 +11,14 @@ const VaccineFormModal = ({ vaccine, open, onCancel }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    if (vaccine) {
-      form.setFieldsValue(formatVaccineData(vaccine));
-    } else {
-      form.resetFields();
+    if (open) {
+      if (vaccine) {
+        form.setFieldsValue(formatVaccineData(vaccine));
+      } else {
+        form.resetFields();
+      }
     }
-  }, [vaccine, form]);
+  }, [vaccine, form, open]);
 
   return (
     <Modal

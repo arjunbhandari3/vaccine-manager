@@ -10,9 +10,10 @@ import {
   InputNumber,
 } from "antd";
 import moment from "moment";
-import React, { useState } from "react";
+import ImgCrop from "antd-img-crop";
 import { useDispatch } from "react-redux";
 import { UploadOutlined } from "@ant-design/icons";
+import React, { useEffect, useState } from "react";
 
 import Label from "./Label";
 import AllergyForm from "./AllergyForm";
@@ -37,7 +38,25 @@ const VaccineForm = (props) => {
 
   const dispatch = useDispatch();
 
+  const allergies = Form.useWatch("allergies", form);
+
   const [file, setFile] = useState(null);
+  const [isLastAllergyEmpty, setIsLastAllergyEmpty] = useState(false);
+
+  useEffect(() => {
+    if (allergies?.length === 0) {
+      setIsLastAllergyEmpty(false);
+    }
+
+    if (allergies?.length > 0) {
+      const lastAllergy = allergies[allergies.length - 1];
+      if (lastAllergy?.allergy || lastAllergy?.risk) {
+        setIsLastAllergyEmpty(false);
+      } else {
+        setIsLastAllergyEmpty(true);
+      }
+    }
+  }, [allergies]);
 
   const onSubmit = async (values) => {
     if (file) {
@@ -76,6 +95,7 @@ const VaccineForm = (props) => {
       onFinish={!isSubmitting && onSubmit}
       initialValues={{ numberOfDoses: 0, isMandatory: false, allergies: [] }}
       autoComplete="off"
+      scrollToFirstError={true}
     >
       <Label label="Name" isCompulsory />
       <Form.Item
@@ -185,20 +205,25 @@ const VaccineForm = (props) => {
             style={{ width: "100px", height: "100px", marginRight: "10px" }}
           />
         )}
-        <Upload
-          name="photoUrl"
-          listType="picture"
-          maxCount={1}
-          accept="image/*"
-          beforeUpload={(file) => {
-            setFile(file);
-            return false;
-          }}
-        >
-          <Button icon={<UploadOutlined />}>Click to upload</Button>
-        </Upload>
+        <ImgCrop rotate>
+          <Upload
+            name="photoUrl"
+            listType="picture"
+            maxCount={1}
+            accept="image/*"
+            beforeUpload={(file) => {
+              setFile(file);
+              return false;
+            }}
+            onRemove={() => setFile(null)}
+          >
+            <Button icon={<UploadOutlined />} disabled={file}>
+              Click to upload
+            </Button>
+          </Upload>
+        </ImgCrop>
       </Form.Item>
-      <AllergyForm form={form} />
+      <AllergyForm isLastAllergyEmpty={isLastAllergyEmpty} />
     </Form>
   );
 };

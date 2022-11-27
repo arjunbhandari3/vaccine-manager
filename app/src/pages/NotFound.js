@@ -5,7 +5,7 @@ import * as routes from "constants/routes";
 
 const NotFound = (props) => {
   return (
-    <div className="error-page">
+    <div className="wrapper">
       <Result
         status="404"
         title="404"

@@ -27,6 +27,7 @@ export const formatVaccineData = (vaccine, action) => {
 
   return {
     ...vaccine,
+    key: vaccine.id,
     releaseDate: moment(vaccine.releaseDate),
     expirationDate: moment(vaccine.expirationDate),
   };
