@@ -293,9 +293,9 @@ const Vaccines = (props) => {
                         <div>Allergies have their own risk: </div>
                         <div>
                           <ul>
-                            <li>{`High --> Red`}</li>
-                            <li>{`Medium --> Orange`}</li>
-                            <li>{`Low --> Green`}</li>
+                            <li>{`Red -> High`}</li>
+                            <li>{`Orange -> Medium`}</li>
+                            <li>{`Green -> Low`}</li>
                           </ul>
                         </div>
                       </>

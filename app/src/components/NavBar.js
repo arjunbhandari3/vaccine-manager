@@ -7,6 +7,7 @@ import { handleError } from "utils/error";
 import * as authService from "services/auth";
 import { showSuccessNotification } from "utils/notification";
 
+import * as routes from "constants/routes";
 import { APP_TITLE, SUCCESS, SUCCESSFULLY_SIGNED_OUT } from "constants/common";
 
 const Navbar = (props) => {
@@ -19,7 +20,7 @@ const Navbar = (props) => {
       setIsLoggingOut(true);
       await authService.signOut();
 
-      navigate("/signin");
+      navigate(routes.SIGN_IN, { replace: true });
 
       showSuccessNotification(SUCCESS, SUCCESSFULLY_SIGNED_OUT);
     } catch (error) {

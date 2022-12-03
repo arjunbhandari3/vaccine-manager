@@ -9,15 +9,20 @@ import AuthorizedRoute from "components/AuthorizedRoute";
 
 import * as routes from "constants/routes";
 
-const AppRouter = (props) => {
+const AppRouter = () => {
   return (
     <Routes>
       <Route path={routes.SIGN_IN} element={<SignIn />} />
       <Route path={routes.SIGN_UP} element={<SignUp />} />
 
-      <Route path={routes.HOME} element={<AuthorizedRoute />}>
-        <Route path={routes.HOME} element={<Home />} />
-      </Route>
+      <Route
+        path={routes.HOME}
+        element={
+          <AuthorizedRoute>
+            <Home />
+          </AuthorizedRoute>
+        }
+      />
 
       <Route path={routes.NOT_FOUND} element={<NotFound />} />
     </Routes>

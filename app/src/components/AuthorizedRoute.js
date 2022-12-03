@@ -1,13 +1,13 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 import { isUserLoggedIn } from "utils/token";
 
 import * as routes from "constants/routes";
 
-const AuthorizedRoute = () => {
+const AuthorizedRoute = ({ children }) => {
   const isLoggedIn = isUserLoggedIn();
 
-  return isLoggedIn ? <Outlet /> : <Navigate to={routes.SIGN_IN} replace />;
+  return isLoggedIn ? children : <Navigate to={routes.SIGN_IN} replace />;
 };
 
 export default AuthorizedRoute;

@@ -150,6 +150,10 @@
   justify-content: center;
 }
 
+.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover {
+  z-index: 0;
+}
+
 /* Loading Indicator */
 .loader {
   width: 50px;
