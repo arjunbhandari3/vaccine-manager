@@ -11,7 +11,7 @@ export const DATE_FORMAT = "YYYY-MM-DD";
 
 export const DEFAULT_PAGE_SIZE = 10;
 export const DEFAULT_PAGE_NUMBER = 1;
-export const MIN_DEBOUNCE_TIME = 1000;
+export const MIN_DEBOUNCE_TIME = 500;
 
 export const DEFAULT_VACCINE_IMAGE =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPtjpM7aoR4kbaH9c6j-uKN4SDiuiekzLTgA&usqp=CAU";

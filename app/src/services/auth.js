@@ -1,16 +1,12 @@
-import {
-  getTokenFromLocalStorage,
-  setUserDataToLocalStorage,
-  removeUserDataFromLocalStorage,
-} from "utils/token";
 import http from "utils/http";
 import config from "config/config";
+import { getAuthToken, removeAuthUserData, setAuthUserData } from "utils/token";
 
 /**
  * Get token
  */
 export const refreshToken = async () => {
-  const { refreshToken } = getTokenFromLocalStorage() || {};
+  const { refreshToken } = getAuthToken() || {};
 
   const { data } = await http.post(config.endpoints.auth.refreshToken, {
     refreshToken,
@@ -19,7 +15,7 @@ export const refreshToken = async () => {
   if (data) {
     const { accessToken, refreshToken, user } = data;
 
-    setUserDataToLocalStorage(accessToken, refreshToken, user.id);
+    setAuthUserData(accessToken, refreshToken, user.id);
   }
 };
 
@@ -33,7 +29,7 @@ export const signIn = async (payload) => {
 
   const { accessToken, refreshToken, user } = data;
 
-  setUserDataToLocalStorage(accessToken, refreshToken, user.id);
+  setAuthUserData(accessToken, refreshToken, user.id);
 
   return data;
 };
@@ -54,14 +50,14 @@ export const signUp = async (payload) => {
  *
  */
 export const signOut = async () => {
-  const { refreshToken } = getTokenFromLocalStorage() || {};
+  const { refreshToken } = getAuthToken() || {};
 
   const result = await http.post(config.endpoints.auth.signOut, {
     refreshToken,
   });
 
   if (result.status === 200) {
-    removeUserDataFromLocalStorage();
+    removeAuthUserData();
   }
 
   return result;

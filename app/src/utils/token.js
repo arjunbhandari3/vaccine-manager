@@ -1,8 +1,4 @@
-import {
-  setDataToLocalStorage,
-  getDataFromLocalStorage,
-  removeDataFromLocalStorage,
-} from "./localStorage";
+import localStorage from "./localStorage";
 
 /**
  * Get Auth Header
@@ -21,15 +17,11 @@ export const getAuthHeader = () => {
  * @param {string} refreshToken
  * @param {Number} userId
  */
-export const setUserDataToLocalStorage = (
-  accessToken,
-  refreshToken,
-  userId
-) => {
+export const setAuthUserData = (accessToken, refreshToken, userId) => {
   const token = { accessToken, refreshToken };
 
-  setDataToLocalStorage("token", token, true);
-  setDataToLocalStorage("userId", userId);
+  localStorage.set("token", token, true);
+  localStorage.set("userId", userId);
 };
 
 /**
@@ -37,17 +29,17 @@ export const setUserDataToLocalStorage = (
  * @returns {string}
  */
 export const getAccessToken = () => {
-  const token = getDataFromLocalStorage("token", true);
+  const { accessToken } = localStorage.get("token", true) || {};
 
-  return token.accessToken;
+  return accessToken;
 };
 
 /**
  * Get tokens from local storage
  * @returns {Object} {accessToken, refreshToken}
  */
-export const getTokenFromLocalStorage = () => {
-  const token = getDataFromLocalStorage("token", true);
+export const getAuthToken = () => {
+  const token = localStorage.get("token", true);
 
   return token;
 };
@@ -56,8 +48,8 @@ export const getTokenFromLocalStorage = () => {
  * Fetch user from local storage
  * @returns {Number} userId
  */
-export const getUserFromLocalStorage = () => {
-  const userId = getDataFromLocalStorage("userId");
+export const getAuthUser = () => {
+  const userId = localStorage.get("userId");
 
   return userId;
 };
@@ -67,8 +59,8 @@ export const getUserFromLocalStorage = () => {
  * @returns {Boolean}
  */
 export const isUserLoggedIn = () => {
-  const { accessToken } = getTokenFromLocalStorage() || {};
-  const userId = getUserFromLocalStorage();
+  const accessToken = getAccessToken();
+  const userId = getAuthUser();
 
   return accessToken && userId;
 };
@@ -76,7 +68,7 @@ export const isUserLoggedIn = () => {
 /**
  * Remove data from local storage
  */
-export const removeUserDataFromLocalStorage = () => {
-  removeDataFromLocalStorage("token");
-  removeDataFromLocalStorage("userId");
+export const removeAuthUserData = () => {
+  localStorage.remove("token");
+  localStorage.remove("userId");
 };
