@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { APP_TITLE } from "constants/common";
+import { APP_TITLE } from "constants/messages";
 
 const useDocumentTitle = (title, defaultTitle = APP_TITLE) => {
   useEffect(() => {

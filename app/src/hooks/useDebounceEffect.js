@@ -1,7 +1,7 @@
 import { debounce } from "lodash";
 import { useCallback, useState } from "react";
 
-import { MIN_DEBOUNCE_TIME } from "constants/common";
+import { MIN_DEBOUNCE_TIME } from "constants/date";
 
 const useDebounceEffect = (code = "") => {
   const [debounceCode, setDebounceCode] = useState(code);

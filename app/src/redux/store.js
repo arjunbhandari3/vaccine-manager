@@ -9,7 +9,7 @@ import {
 
 import rootReducer from "./reducers/rootReducer";
 
-import { APP_ENVIRONMENT, PRODUCTION } from "constants/common";
+import { APP_ENVIRONMENT, PRODUCTION } from "constants/env";
 
 const enhancers = [applyMiddleware(thunk, promise)];
 

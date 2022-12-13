@@ -4,7 +4,8 @@ import _get from "lodash/get";
 import config from "config/config";
 import { showErrorNotification } from "./notification";
 
-import { ERROR, GENERIC_ERROR, PRODUCTION } from "constants/common";
+import { PRODUCTION } from "constants/env";
+import { ERROR, GENERIC_ERROR } from "constants/messages";
 
 /**
  * Generic error handler to handle error events.

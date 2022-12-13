@@ -22,14 +22,13 @@ import { deleteVaccine, updateVaccineMandatoryStatus } from "services/vaccine";
 
 import {
   SUCCESS,
-  DATE_FORMAT,
-  DEFAULT_PAGE_SIZE,
-  ALLERGY_RISK_COLOR,
-  DEFAULT_PAGE_NUMBER,
-  DEFAULT_VACCINE_IMAGE,
   VACCINE_DELETED_MESSAGE,
   VACCINE_MANDATORY_UPDATE_MESSAGE,
-} from "constants/common";
+} from "constants/messages";
+import { DATE_FORMAT } from "constants/date";
+import { ALLERGY_RISK_COLOR } from "constants/common";
+import { DEFAULT_VACCINE_IMAGE } from "constants/urls";
+import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_NUMBER } from "constants/pagination";
 
 const VaccineTable = (props) => {
   const { query, setShowModal, selectedVaccine, setSelectedVaccine } = props;

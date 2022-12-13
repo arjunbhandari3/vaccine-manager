@@ -1,6 +1,6 @@
 import { notification } from "antd";
 
-import { ERROR, SUCCESS } from "constants/common";
+import { ERROR, SUCCESS } from "constants/messages";
 
 const showNotification = (type, title, message) => {
   notification[type]({

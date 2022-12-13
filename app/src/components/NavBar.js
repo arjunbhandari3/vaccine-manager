@@ -7,8 +7,12 @@ import { handleError } from "utils/error";
 import * as authService from "services/auth";
 import { showSuccessNotification } from "utils/notification";
 
+import {
+  SUCCESS,
+  APP_TITLE,
+  SUCCESSFULLY_SIGNED_OUT,
+} from "constants/messages";
 import * as routes from "constants/routes";
-import { APP_TITLE, SUCCESS, SUCCESSFULLY_SIGNED_OUT } from "constants/common";
 
 const Navbar = (props) => {
   const navigate = useNavigate();

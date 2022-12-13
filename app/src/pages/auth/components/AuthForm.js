@@ -17,7 +17,7 @@ import {
   SUCCESSFULLY_SIGNED_IN,
   SUCCESSFULLY_SIGNED_UP,
   INVALID_CONFIRM_PASSWORD,
-} from "constants/common";
+} from "constants/messages";
 import * as routes from "constants/routes";
 
 const AuthForm = (props) => {

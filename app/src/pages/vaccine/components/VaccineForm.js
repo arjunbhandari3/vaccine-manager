@@ -26,12 +26,12 @@ import { addVaccine, formatVaccineData, updateVaccine } from "services/vaccine";
 import {
   SUCCESS,
   REQUIRED,
-  DATE_FORMAT,
   INVALID_DATE,
   INVALID_EXPIRY_DATE,
   VACCINE_ADDED_MESSAGE,
   VACCINE_EDITED_MESSAGE,
-} from "constants/common";
+} from "constants/messages";
+import { DATE_FORMAT } from "constants/date";
 
 const VaccineForm = (props) => {
   const { vaccine, form, onClose, isSubmitting, setIsSubmitting } = props;

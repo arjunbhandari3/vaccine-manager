@@ -8,7 +8,8 @@ import { interpolate } from "utils/string";
 import { getAuthHeader } from "utils/token";
 import { sortVaccinesData } from "utils/array";
 
-import { DATE_FORMAT, VACCINE_METADATA } from "constants/common";
+import { DATE_FORMAT } from "constants/date";
+import { VACCINE_METADATA } from "constants/common";
 
 /**
  * Format the vaccine data.

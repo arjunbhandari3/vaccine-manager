@@ -1,7 +1,8 @@
 import { Row, Button, Form, Input, Select, Divider } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 
-import { ALLERGY_RISK_ENUM, REQUIRED } from "constants/common";
+import { REQUIRED } from "constants/messages";
+import { ALLERGY_RISK_ENUM } from "constants/common";
 
 const AllergyForm = (props) => {
   const { isLastAllergyEmpty } = props;
