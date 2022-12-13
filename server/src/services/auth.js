@@ -24,7 +24,8 @@ export const signIn = async payload => {
     throw new CustomError('Invalid credentials', 400);
   }
 
-  const { accessToken, refreshToken } = getSignedTokens({ id: user.id, email: user.email });
+  const { id, name } = user;
+  const { accessToken, refreshToken } = getSignedTokens({ id, name, email });
 
   const filteredUser = withoutAttrs(user, ['password']);
 
@@ -44,7 +45,7 @@ export const signIn = async payload => {
 export const signUp = async payload => {
   logger.info('Signing up user');
 
-  const { email, password } = payload;
+  const { name, email, password } = payload;
 
   const user = await User.getByEmail(email);
 
@@ -55,6 +56,7 @@ export const signUp = async payload => {
   const hashedPassword = await getHashedPassword(password);
 
   const newUser = await User.create({
+    name,
     email,
     password: hashedPassword,
   });
@@ -83,7 +85,8 @@ export const refreshAccessToken = async refreshToken => {
     throw new CustomError('User not found!', 404);
   }
 
-  const { accessToken, refreshToken: newRefreshToken } = getSignedTokens({ id: user.id, email: user.email });
+  const { name, email } = user;
+  const { accessToken, refreshToken: newRefreshToken } = getSignedTokens({ id, name, email });
   const filteredUser = withoutAttrs(user, ['password']);
 
   return {
