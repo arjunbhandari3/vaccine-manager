@@ -14,7 +14,8 @@
     "make:seed": "yarn knex seed:make --knexfile src/knexfile.js",
     "lint": "prettier --check .",
     "format": "prettier --write .",
-    "test": "cross-env NODE_ENV=test PORT=9949 mocha --exit --recursive --require @babel/register test"
+    "test": "cross-env NODE_ENV=test PORT=9949 mocha --exit --recursive --require @babel/register test",
+    "test:coverage": "cross-env NODE_ENV=test nyc --require @babel/register --reporter lcov --reporter text mocha --exit --recursive test"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -62,6 +63,7 @@
     "cross-env": "^7.0.3",
     "husky": "4.2.5",
     "lint-staged": "^13.0.3",
+    "nyc": "^15.1.0",
     "prettier": "2.7.1"
   },
   "engines": {

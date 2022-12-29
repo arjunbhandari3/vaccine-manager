@@ -96,7 +96,9 @@ export const updateVaccine = async (id, payload) => {
   }
 
   if (payload.photoUrl) {
-    if (getImageFileName(vaccine.photoUrl) !== getImageFileName(payload.photoUrl)) {
+    const existing = vaccine.photoUrl ? getImageFileName(vaccine.photoUrl) : '';
+
+    if (existing !== getImageFileName(payload.photoUrl)) {
       const uploadUrl = await uploadImage(payload.photoUrl, 'vaccines');
       payload.photoUrl = uploadUrl;
 

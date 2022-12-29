@@ -66,7 +66,8 @@ export const deleteImage = async (fileString, folder) => {
  * @returns {string} - publicId of the image
  */
 export const getImageCloudinaryId = imageUrl => {
-  const publicId = imageUrl.split('/').pop().split('.').shift();
+  const publicId = imageUrl?.split(/[/\\]/)?.pop()?.split('.')?.shift();
+
   return publicId;
 };
 

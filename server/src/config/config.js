@@ -42,7 +42,8 @@ const config = {
       expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN,
     },
 
-    test: process.env.TEST_TOKEN,
+    testAccessToken: process.env.TEST_ACCESS_TOKEN,
+    testRefreshToken: process.env.TEST_REFRESH_TOKEN,
   },
 
   // Cloudinary

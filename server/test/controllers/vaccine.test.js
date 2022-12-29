@@ -6,7 +6,7 @@ import config from '../../src/config/config';
 
 const url = '/api/vaccines';
 
-const token = config.token.test;
+let token = config.token.testAccessToken;
 
 const vaccineData = {
   name: 'Vaccine 1',
@@ -17,11 +17,11 @@ const vaccineData = {
   expirationDate: '2022-10-17T18:15:00.000Z',
   photoUrl: null,
   isMandatory: true,
-  allergies: [{ risk: 'Medium', allergy: 'Allergy 1' }],
+  allergies: '[{"risk":"High","allergy":"Allergy 1"},{"risk":"Low","allergy":"Allergy 2"}]',
 };
 
 const updateData = {
-  id: 4,
+  id: 1,
   name: 'Vaccine 1',
   description: 'Vaccine 1 desc',
   numberOfDoses: 1,
@@ -30,13 +30,21 @@ const updateData = {
   expirationDate: '2022-10-17T18:15:00.000Z',
   photoUrl: null,
   isMandatory: true,
-  allergies: [{ risk: 'High', allergy: 'Allergy 1' }],
+  allergies: '[{"risk":"High","allergy":"Allergy 1"}]',
 };
 
 /**
  * Tests for '/api/auth'.
  */
 describe('Vaccine API Test', () => {
+  before(async () => {
+    const res = await request(app).post('/api/auth/signin').send({
+      email: 'test@gmail.com',
+      password: 'test123',
+    });
+    token = res.body.accessToken;
+  });
+
   it('should create new vaccine', async () => {
     const res = await request(app).post(`${url}`).set('Authorization', `Bearer ${token}`).send(vaccineData);
 
@@ -54,7 +62,7 @@ describe('Vaccine API Test', () => {
   });
 
   it('should get vaccine by id', async () => {
-    const res = await request(app).get(`${url}/4`).set('Authorization', `Bearer ${token}`);
+    const res = await request(app).get(`${url}/1`).set('Authorization', `Bearer ${token}`);
 
     expect(res.status).to.equal(200);
     expect(res.body).to.be.an('object');
@@ -62,17 +70,15 @@ describe('Vaccine API Test', () => {
   });
 
   it('should update vaccine', async () => {
-    const res = await request(app).put(`${url}/4`).set('Authorization', `Bearer ${token}`).send(updateData);
-
+    const res = await request(app).put(`${url}/1`).set('Authorization', `Bearer ${token}`).send(updateData);
     expect(res.status).to.equal(200);
-    expect(res.body).to.be.an('array');
-    expect(res.body[0]).to.be.an('object');
-    expect(res.body[0].name).to.be.an('string');
-    expect(res.body[0].isMandatory).to.be.an('boolean');
+    expect(res.body).to.be.an('object');
+    expect(res.body.name).to.be.an('string');
+    expect(res.body.isMandatory).to.be.an('boolean');
   });
 
   it('should delete vaccine', async () => {
-    const res = await request(app).delete(`${url}/28`).set('Authorization', `Bearer ${token}`);
+    const res = await request(app).delete(`${url}/3`).set('Authorization', `Bearer ${token}`);
 
     expect(res.status).to.equal(200);
     expect(res.body).to.be.an('object');

@@ -15,18 +15,17 @@ const storage = multer.diskStorage({
 
 const getExtension = str => str.split('.').slice(-1)[0];
 
-const single = (fieldName, extensions = IMG_EXTENSIONS) => {
+export const single = (fieldName, extensions = IMG_EXTENSIONS) => {
   return multer({
     storage,
     fileFilter: (req, file, cb) => {
       const error = !file
         ? 'File not found!'
         : !extensions.includes(getExtension(file.originalname))
-        ? `Only files with extensions: ${extensions.map(ex => `${ex} `)} are allowed`
-        : !file.fieldname === fieldName
+        ? `Only files with extensions: ${extensions.join(', ')} are allowed`
+        : file.fieldname !== fieldName
         ? 'Field Name does not match'
-        : undefined;
-
+        : null;
       if (error) {
         return cb(new CustomError(error, 400), false);
       }
@@ -34,5 +33,3 @@ const single = (fieldName, extensions = IMG_EXTENSIONS) => {
     },
   }).single(fieldName);
 };
-
-export { single };

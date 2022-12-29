@@ -3,7 +3,6 @@ import CustomError from './error';
 /**
  * Validate the input data with joi schema.
  *
- * @param {object} data
  * @param {object} schema
  * @returns {object}
  */

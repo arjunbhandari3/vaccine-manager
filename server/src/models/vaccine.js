@@ -128,30 +128,6 @@ class Vaccine {
 
     return result;
   }
-
-  /**
-   * Update by vaccineIds.
-   * @param {Array} ids
-   * @param {Object} payload
-   * @returns {Promise}
-   */
-  static async updateByIds(ids, payload) {
-    const result = await this.qb().whereIn('id', ids).update(payload);
-
-    return result;
-  }
-
-  /**
-   * Delete vaccine.
-   *
-   * @param {number} id
-   * @returns {Promise}
-   */
-  static async deleteById(id) {
-    const [result] = await this.qb().returning('*').del().where('id', id);
-
-    return result;
-  }
 }
 
 export default Vaccine;
