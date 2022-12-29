@@ -23,11 +23,7 @@ const Vaccines = (props) => {
   const [selectedVaccine, setSelectedVaccine] = useState(null);
   const [metaQuery, setMetaQuery] = useState(VACCINE_METADATA.TOTAL);
 
-  const [searchQuery, setSearchQuery] = useDebounceEffect(searchValue);
-
-  useEffect(() => {
-    setSearchQuery(searchValue);
-  }, [searchValue, setSearchQuery]);
+  const searchQuery = useDebounceEffect(searchValue);
 
   useEffect(() => {
     dispatch(getAllVaccines({ mandatory: metaQuery, search: searchQuery }));
