@@ -8,7 +8,7 @@ import cloudinary from '../config/cloudinary';
  *
  * @param {string} fileString - fileString from the request
  * @param {string} folder - folder to upload the image to
- * @returns {Promise<string>} - url of the uploaded image
+ * @returns {Object} -  response from Cloudinary
  */
 export const uploadImage = async (fileString, folder) => {
   logger.info('Uploading image to cloudinary');
@@ -25,13 +25,12 @@ export const uploadImage = async (fileString, folder) => {
       resource_type: 'image',
     });
 
-    fs.unlinkSync(fileString);
-
-    return upload.secure_url;
+    return upload;
   } catch (error) {
     logger.error('Failed to upload');
-    fs.unlinkSync(fileString);
     throw error;
+  } finally {
+    fs.unlinkSync(fileString);
   }
 };
 
@@ -39,7 +38,7 @@ export const uploadImage = async (fileString, folder) => {
  * Deletes an image from Cloudinary
  * @param {string} fileString - fileString from the request
  * @param {string} folder - folder in which the image is located
- * @returns {Promise<string>} - url of the uploaded image
+ * @returns {Object}  - response from Cloudinary
  */
 
 export const deleteImage = async (fileString, folder) => {
@@ -50,7 +49,7 @@ export const deleteImage = async (fileString, folder) => {
       const publicId = folder + '/' + assetId;
       const deleteResponse = await cloudinary.uploader.destroy(publicId);
 
-      return deleteResponse.result;
+      return deleteResponse;
     }
     return 'default';
   } catch {

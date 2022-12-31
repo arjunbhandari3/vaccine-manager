@@ -6,11 +6,13 @@ import bcrypt from 'bcryptjs';
 import config from '../../src/config/config';
 import { getHashedPassword, getSignedTokens, verifyToken } from '../../src/utils/auth';
 
+const password = 'password';
+let hashedPassword = '';
+
 describe('auth', () => {
   describe('getHashedPassword', () => {
     it('should return a hashed password', async () => {
-      const password = 'password';
-      const hashedPassword = await getHashedPassword(password);
+      hashedPassword = await getHashedPassword(password);
       expect(hashedPassword).to.be.a('string');
       expect(hashedPassword).to.not.equal(password);
     });
@@ -18,14 +20,11 @@ describe('auth', () => {
 
   describe('comparePassword', () => {
     it('should return true for a matching password and hashed password', async () => {
-      const password = 'password';
-      const hashedPassword = await getHashedPassword(password);
       const result = await bcrypt.compare(password, hashedPassword);
       expect(result).to.be.true;
     });
 
     it('should return false for a non-matching password and hashed password', async () => {
-      const hashedPassword = await getHashedPassword('password');
       const result = await bcrypt.compare('invalidPassword', hashedPassword);
       expect(result).to.be.false;
     });
@@ -33,7 +32,7 @@ describe('auth', () => {
 
   describe('getSignedTokens', () => {
     it('should return signed access and refresh tokens', () => {
-      const data = { id: '123' };
+      const data = { id: 1 };
       const tokens = getSignedTokens(data);
       expect(tokens).to.have.property('accessToken').that.is.a('string');
       expect(tokens).to.have.property('refreshToken').that.is.a('string');
@@ -42,7 +41,7 @@ describe('auth', () => {
 
   describe('verifyToken', () => {
     it('should verify an access token', () => {
-      const data = { id: '123' };
+      const data = { id: 1 };
       const accessToken = jwt.sign(data, config.token.access.secret, {
         expiresIn: config.token.access.expiresIn,
       });
@@ -51,7 +50,7 @@ describe('auth', () => {
     });
 
     it('should verify a refresh token', () => {
-      const data = { id: '123' };
+      const data = { id: 1 };
       const refreshToken = jwt.sign(data, config.token.refresh.secret, {
         expiresIn: config.token.refresh.expiresIn,
       });

@@ -17,8 +17,8 @@ export const createVaccine = async payload => {
   logger.info('Creating vaccine');
 
   if (payload.photoUrl) {
-    const uploadUrl = await uploadImage(payload.photoUrl, 'vaccines');
-    payload.photoUrl = uploadUrl;
+    const { secure_url } = await uploadImage(payload.photoUrl, 'vaccines');
+    payload.photoUrl = secure_url;
   }
 
   const { allergies: allergiesData, ...vaccine } = payload;
@@ -96,14 +96,13 @@ export const updateVaccine = async (id, payload) => {
   }
 
   if (payload.photoUrl) {
-    const existing = vaccine.photoUrl ? getImageFileName(vaccine.photoUrl) : '';
-
+    const { photoUrl } = vaccine;
+    const existing = photoUrl ? getImageFileName(photoUrl) : '';
     if (existing !== getImageFileName(payload.photoUrl)) {
-      const uploadUrl = await uploadImage(payload.photoUrl, 'vaccines');
-      payload.photoUrl = uploadUrl;
-
-      if (vaccine.photoUrl) {
-        await deleteImage(vaccine.photoUrl, 'vaccines');
+      const { secure_url } = await uploadImage(payload.photoUrl, 'vaccines');
+      payload.photoUrl = secure_url;
+      if (photoUrl) {
+        await deleteImage(photoUrl, 'vaccines');
       }
     } else {
       delete payload.photoUrl;
@@ -138,7 +137,6 @@ export const updateVaccine = async (id, payload) => {
 
   if (deletedAllergiesIds.length > 0) {
     const deleteAllergyPromises = await Allergy.updateByIds(deletedAllergiesIds, { deletedAt: new Date() });
-
     await Promise.all(deleteAllergyPromises);
   }
 

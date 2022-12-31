@@ -54,4 +54,25 @@ describe('Auth Service tests', () => {
     expect(response.user.id).to.be.an('number');
     expect(response.user.password).to.be.undefined;
   });
+
+  it('should refresh access token', async () => {
+    sinon.stub(authUtils, 'verifyToken').returns(authResponse.user);
+
+    const response = await authService.refreshAccessToken(authResponse.refreshToken);
+
+    expect(response).to.be.an('object');
+    expect(response.accessToken).to.be.an('string');
+    expect(response.refreshToken).to.be.an('string');
+    expect(response.user).to.be.an('object');
+    expect(response.user.id).to.be.an('number');
+    expect(response.user.password).to.be.undefined;
+  });
+
+  it('should sign out user', async () => {
+    const response = await authService.signOut(authResponse.refreshToken);
+
+    expect(response).to.be.an('object');
+    expect(response.message).to.be.an('string');
+    expect(response.message).to.equal('Signed out successfully!');
+  });
 });

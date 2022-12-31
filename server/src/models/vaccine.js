@@ -1,5 +1,7 @@
 import knex from '../db';
 
+import CustomError from '../utils/error';
+
 import { TABLE_NAME_ALLERGY, TABLE_NAME_VACCINE } from '../constants';
 
 class Vaccine {
@@ -7,8 +9,9 @@ class Vaccine {
 
   /**
    * Get vaccine by id.
-   * @param {Number} id
-   * @returns {Object}
+   *
+   * @param {number} id
+   * @returns  {Object}
    */
   static async getById(id) {
     const [result] = await this.qb()
@@ -28,6 +31,10 @@ class Vaccine {
       )
       .where(`${TABLE_NAME_VACCINE}.id`, id);
 
+    if (!result) {
+      throw new CustomError('Vaccine not found.', 404);
+    }
+
     return result;
   }
 
@@ -39,7 +46,8 @@ class Vaccine {
    */
   static async getAll(filters) {
     const query = this.qb()
-      .select(`${TABLE_NAME_VACCINE}.*`, `allergies.allergies`)
+      .select(`v.*`, `a.allergies`)
+      .from(`${TABLE_NAME_VACCINE} as v`)
       .leftJoin(
         knex
           .select(
@@ -49,11 +57,11 @@ class Vaccine {
           .from(`${TABLE_NAME_ALLERGY}`)
           .where(`${TABLE_NAME_ALLERGY}.deleted_at`, null)
           .groupBy('vaccine_id')
-          .as('allergies'),
-        'allergies.vaccine_id',
-        'vaccine.id'
+          .as('a'),
+        'a.vaccine_id',
+        'v.id'
       )
-      .where(`${TABLE_NAME_VACCINE}.deleted_at`, null);
+      .where(`v.deleted_at`, null);
 
     if (filters) {
       this.appendFilter(query, filters);
@@ -73,16 +81,13 @@ class Vaccine {
    */
   static appendFilter(query, filters) {
     if (filters.mandatory) {
-      query.where(`${TABLE_NAME_VACCINE}.is_mandatory`, filters.mandatory);
+      query.where(`v.is_mandatory`, filters.mandatory);
     }
 
     if (filters.search) {
       const search = `%${filters.search}%`;
 
-      query
-        .where(`${TABLE_NAME_VACCINE}.name`, 'ilike', search)
-        .orWhere(`${TABLE_NAME_VACCINE}.description`, 'ilike', search)
-        .orWhere(`${TABLE_NAME_VACCINE}.manufacturer`, 'ilike', search);
+      query.whereRaw(`(v.name ilike ? or v.description ilike ? or v.manufacturer ilike ?)`, [search, search, search]);
     }
   }
 

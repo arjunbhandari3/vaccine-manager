@@ -19,6 +19,11 @@ Vaccine Management Application where a logged in user can view, add, update and 
 - Start the server using `yarn start:dev` or `npm run start:dev`.
 - Server will be started on port 8000: [http://localhost:8000/](http://localhost:8000/)
 
+- ##### To run Test Cases:
+  - Start testing using `yarn test` or `npm run test`
+- ##### To get Test coverage
+  - Use `yarn test:coverage` or `npm run test:coverage`
+
 #### To run Frontend:
 
 - Go to server folder using `cd app`

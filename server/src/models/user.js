@@ -1,5 +1,7 @@
 import knex from '../db';
 
+import CustomError from '../utils/error';
+
 import { TABLE_NAME_USER } from '../constants';
 
 class User {
@@ -7,12 +9,15 @@ class User {
 
   /**
    * Get user by id.
-   * @param {Number} id
-   * @returns {Object}
+   *
+   * @param {number} id
+   * @returns  {Object}
    */
   static async getById(id) {
     const [result] = await this.qb().select('*').where('id', id);
-
+    if (!result) {
+      throw new CustomError('User not found.', 404);
+    }
     return result;
   }
 

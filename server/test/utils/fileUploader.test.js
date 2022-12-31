@@ -6,29 +6,33 @@ import { expect } from 'chai';
 import { uploadImage, deleteImage, getImageCloudinaryId, getImageFileName } from '../../src/utils/fileUploader';
 
 describe('uploadImage', () => {
-  beforeEach(() => {
+  before(() => {
     sinon.stub(fs, 'existsSync').returns(true);
     sinon.stub(fs, 'unlinkSync');
   });
 
-  afterEach(() => {
+  after(() => {
     fs.existsSync.restore();
     fs.unlinkSync.restore();
   });
 
-  it('should upload an image to Cloudinary and delete the local image', async () => {
-    const file = '../../src/assets/images/vaccine.png';
-    const fileString = path.join(__dirname, file);
-    const folder = 'vaccine';
-    const upload = await uploadImage(fileString, folder);
-    expect(fs.unlinkSync.calledOnce).to.be.true;
-    expect(upload).to.be.a('string');
+  it('should upload an image to Cloudinary and delete the local image', done => {
+    const fileString = path.join(__dirname, '../../src/assets/images/test.png');
+    const folder = 'test';
+
+    uploadImage(fileString, folder).then(result => {
+      expect(result).to.be.an('object');
+      expect(result).to.have.property('public_id');
+      expect(result).to.have.property('secure_url');
+
+      done();
+    });
   });
 
   it('should throw an error if the file is not found', async () => {
     fs.existsSync.returns(false);
-    const fileString = path.join(__dirname, '../../src/assets/images/test.jpg');
-    const folder = 'vaccine';
+    const fileString = path.join(__dirname, '../../src/assets/images/test.pdf');
+    const folder = 'test';
 
     try {
       await uploadImage(fileString, folder);
@@ -40,13 +44,17 @@ describe('uploadImage', () => {
   });
 });
 describe('deleteImage', () => {
-  it('should delete an image from Cloudinary', async () => {
-    const file = '../../src/assets/images/vaccine.png';
-    const fileString = path.join(__dirname, file);
+  it('should delete an image from Cloudinary', done => {
+    const fileString = 'src/assets/images/test/test.png';
     const folder = 'test';
-    const deleteResponse = await deleteImage(fileString, folder);
-    expect(deleteResponse).to.equal('deleted');
-  });
+
+    deleteImage(fileString, folder).then(result => {
+      expect(result).to.be.an('object');
+      expect(result).to.have.property('result');
+      expect(result.result).to.equal('ok');
+      done();
+    });
+  }, 10000);
 
   it('should return "default" if the assetId is "default"', async () => {
     const fileString = 'default';
@@ -54,20 +62,6 @@ describe('deleteImage', () => {
     const deleteResponse = await deleteImage(fileString, folder);
 
     expect(deleteResponse).to.equal('default');
-  });
-
-  it('should throw an error if the image cannot be deleted', async () => {
-    const file = '../../src/assets/images/vaccine.png';
-    const fileString = path.join(__dirname, file);
-    const folder = 'test';
-
-    try {
-      await deleteImage(fileString, folder);
-      expect.fail('Error was not thrown');
-    } catch (error) {
-      expect(error).to.be.an('error');
-      expect(error.message).to.equal('Failed to delete');
-    }
   });
 });
 
