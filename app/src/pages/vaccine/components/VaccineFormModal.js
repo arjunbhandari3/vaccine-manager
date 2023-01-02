@@ -5,7 +5,9 @@ import VaccineForm from "./VaccineForm";
 
 import { formatVaccineData } from "services/vaccine";
 
-const VaccineFormModal = ({ vaccine, open, onCancel }) => {
+const VaccineFormModal = (props) => {
+  const { vaccine, open, onCancel } = props;
+
   const [form] = Form.useForm();
 
   const [isSubmitting, setIsSubmitting] = useState(false);

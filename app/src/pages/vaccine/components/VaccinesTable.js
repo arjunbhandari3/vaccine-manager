@@ -12,9 +12,9 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Tag, Spin, Space, Table, Modal, Avatar, Tooltip } from "antd";
 
-import { truncate } from "utils/string";
 import { handleError } from "utils/error";
 import { truncateArray } from "utils/array";
+import { interpolate, truncate } from "utils/string";
 import { showSuccessNotification } from "utils/notification";
 
 import { getAllVaccines, getVaccineCount } from "redux/actions/vaccineAction";
@@ -56,7 +56,11 @@ const VaccineTable = (props) => {
       await dispatch(getAllVaccines(query));
       await dispatch(getVaccineCount());
 
-      showSuccessNotification(SUCCESS, VACCINE_MANDATORY_UPDATE_MESSAGE);
+      const message = interpolate(VACCINE_MANDATORY_UPDATE_MESSAGE, {
+        status: vaccine.isMandatory ? "optional" : "mandatory",
+      });
+
+      showSuccessNotification(SUCCESS, message);
     } catch (err) {
       handleError(err);
     } finally {
@@ -145,7 +149,9 @@ const VaccineTable = (props) => {
               indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />}
             />
           ) : (
-            <Tooltip title={"Change Mandatory Status"}>
+            <Tooltip
+              title={isMandatory ? "Change to optional" : "Change to mandatory"}
+            >
               <div
                 className="cursor-pointer"
                 onClick={() => {
