@@ -19,11 +19,6 @@ Vaccine Management Application where a logged in user can view, add, update and 
 - Start the server using `yarn start:dev` or `npm run start:dev`.
 - Server will be started on port 8000: [http://localhost:8000/](http://localhost:8000/)
 
-- ##### To run Test Cases:
-  - Start testing using `yarn test` or `npm run test`
-- ##### To get Test coverage
-  - Use `yarn test:coverage` or `npm run test:coverage`
-
 #### To run Frontend:
 
 - Go to server folder using `cd app`
@@ -31,3 +26,8 @@ Vaccine Management Application where a logged in user can view, add, update and 
 - Copy `.env.example` as `.env` file using `cp .env.example .env`. Update the environment variables.
 - Start the server using `yarn start` or `npm run start`.
 - Server will be started on port 3000: [http://localhost:3000/](http://localhost:3000/)
+
+## Tests
+
+- Run test cases using `yarn test` or `npm run test`
+- Run tests with coverage using: `yarn test:coverage` or `npm run test:coverage`
