@@ -52,6 +52,8 @@ const AuthForm = (props) => {
     }
   };
 
+  const FormItem = Form.Item;
+
   return (
     <Form
       name="basic"
@@ -61,76 +63,66 @@ const AuthForm = (props) => {
       autoComplete="off"
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 16 }}
+      layout="vertical"
+      requiredMark={false}
     >
       {isSignUp && (
-        <>
-          <div className="label">
-            <p>Name</p>
-          </div>
-          <Form.Item
-            colon={false}
-            name="name"
-            rules={[{ required: true, message: REQUIRED }]}
-          >
-            <Input />
-          </Form.Item>
-        </>
+        <FormItem
+          colon={false}
+          name="name"
+          label="Name"
+          rules={[{ required: true, message: REQUIRED }]}
+        >
+          <Input />
+        </FormItem>
       )}
 
-      <div className="label">
-        <p>Email</p>
-      </div>
-      <Form.Item
+      <FormItem
         colon={false}
         name="email"
+        label="Email"
         rules={[
           { required: true, message: REQUIRED },
           { type: "email", message: INVALID_EMAIL },
         ]}
       >
         <Input />
-      </Form.Item>
+      </FormItem>
 
-      <div className="label">
-        <p>Password</p>
-      </div>
-      <Form.Item
+      <FormItem
         name="password"
         colon={false}
+        label="Password"
         rules={[
           { required: true, message: REQUIRED },
           ...(isSignUp ? [{ min: 6, message: INVALID_PASSWORD }] : []),
         ]}
       >
         <Input.Password />
-      </Form.Item>
+      </FormItem>
 
       {isSignUp && (
-        <>
-          <div className="label">
-            <p>Confirm Password</p>
-          </div>
-          <Form.Item
-            name="confirmPassword"
-            colon={false}
-            rules={[
-              { required: true, message: REQUIRED },
-              ({ getFieldValue }) => ({
-                validator(_, value) {
-                  if (!value || getFieldValue("password") === value) {
-                    return Promise.resolve();
-                  }
-                  return Promise.reject(INVALID_CONFIRM_PASSWORD);
-                },
-              }),
-            ]}
-          >
-            <Input.Password />
-          </Form.Item>
-        </>
+        <FormItem
+          name="confirmPassword"
+          colon={false}
+          label="Confirm Password"
+          rules={[
+            { required: true, message: REQUIRED },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue("password") === value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(INVALID_CONFIRM_PASSWORD);
+              },
+            }),
+          ]}
+        >
+          <Input.Password />
+        </FormItem>
       )}
 
-      <Form.Item className="button">
+      <FormItem className="button">
         <Button
           type="primary"
           htmlType="submit"
@@ -140,7 +132,7 @@ const AuthForm = (props) => {
         >
           {isSubmitting ? <Loading /> : isSignUp ? "Sign Up" : "Sign In"}
         </Button>
-      </Form.Item>
+      </FormItem>
     </Form>
   );
 };

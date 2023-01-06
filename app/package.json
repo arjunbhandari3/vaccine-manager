@@ -10,6 +10,7 @@
     "antd-img-crop": "^4.5.1",
     "axios": "^0.27.2",
     "moment": "^2.29.4",
+    "msw": "^0.49.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.4",
@@ -26,6 +27,17 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
+  },
+  "jest": {
+    "coveragePathIgnorePatterns": [
+      "node_modules/",
+      "src/index.js",
+      "src/setupTests.js",
+      "src/redux/store.js",
+      "src/services/",
+      "src/components/NavBar.js",
+      "src/components/AuthorizedRoute.js"
+    ]
   },
   "eslintConfig": {
     "extends": [

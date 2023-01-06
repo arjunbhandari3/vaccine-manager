@@ -1,5 +1,4 @@
 import thunk from "redux-thunk";
-import { persistStore } from "redux-persist";
 import promise from "redux-promise-middleware";
 import {
   compose,
@@ -19,6 +18,4 @@ if (APP_ENVIRONMENT !== PRODUCTION && window.__REDUX_DEVTOOLS_EXTENSION__) {
 
 const store = createStore(rootReducer, compose(...enhancers));
 
-const persistor = persistStore(store);
-
-export { store, persistor };
+export default store;

@@ -7,6 +7,8 @@ import { ALLERGY_RISK_ENUM } from "constants/common";
 const AllergyForm = (props) => {
   const { isLastAllergyEmpty } = props;
 
+  const FormItem = Form.Item;
+
   return (
     <Form.List name="allergies">
       {(fields, { add, remove }, { errors }) => (
@@ -20,7 +22,7 @@ const AllergyForm = (props) => {
                 {index === 0 ? "Allergies" : ""}
               </div>
               <Row style={{ alignItems: "flex-start" }}>
-                <Form.Item
+                <FormItem
                   key="allergy"
                   name={[field.name, "allergy"]}
                   style={{
@@ -36,9 +38,9 @@ const AllergyForm = (props) => {
                     showCount={true}
                     maxLength={100}
                   />
-                </Form.Item>
+                </FormItem>
 
-                <Form.Item
+                <FormItem
                   key="risk"
                   name={[field.name, "risk"]}
                   rules={[{ required: true, message: REQUIRED }]}
@@ -53,7 +55,7 @@ const AllergyForm = (props) => {
                       </Select.Option>
                     ))}
                   </Select>
-                </Form.Item>
+                </FormItem>
                 <MinusCircleOutlined
                   className="delete-button"
                   style={{ margin: "8px", fontSize: 18 }}
@@ -63,7 +65,7 @@ const AllergyForm = (props) => {
               <Divider style={{ margin: "8px 0" }} />
             </>
           ))}
-          <Form.Item wrapperCol={{ offset: 4 }}>
+          <FormItem wrapperCol={{ offset: 4 }}>
             <Button
               type="dashed"
               onClick={() => !isLastAllergyEmpty && add()}
@@ -74,7 +76,7 @@ const AllergyForm = (props) => {
               Add Allergy
             </Button>
             <Form.ErrorList errors={errors} />
-          </Form.Item>
+          </FormItem>
         </div>
       )}
     </Form.List>

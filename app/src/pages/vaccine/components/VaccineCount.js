@@ -22,7 +22,7 @@ const VaccineCount = (props) => {
   }, [dispatch]);
 
   return (
-    vaccineCount.total > 0 &&
+    vaccineCount?.total > 0 &&
     VACCINE_METADATA_ENUM.map((meta, index) => {
       return (
         <Tag

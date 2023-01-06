@@ -88,6 +88,8 @@ const VaccineForm = (props) => {
     }
   };
 
+  const FormItem = Form.Item;
+
   return (
     <Form
       form={form}
@@ -98,47 +100,47 @@ const VaccineForm = (props) => {
       scrollToFirstError={true}
     >
       <Label label="Name" isCompulsory />
-      <Form.Item
+      <FormItem
         colon={false}
         name="name"
         rules={[{ required: true, message: REQUIRED }]}
       >
         <Input placeholder="Vaccine name" />
-      </Form.Item>
+      </FormItem>
 
       <Label label="Description" isCompulsory />
-      <Form.Item
+      <FormItem
         colon={false}
         name="description"
         rules={[{ required: true, message: REQUIRED }]}
       >
         <Input.TextArea rows={4} placeholder="Vaccine description" />
-      </Form.Item>
+      </FormItem>
 
       <Label label="Manufacturer" isCompulsory />
-      <Form.Item
+      <FormItem
         colon={false}
         name="manufacturer"
         rules={[{ required: true, message: REQUIRED }]}
       >
         <Input placeholder="Vaccine manufacturer" />
-      </Form.Item>
+      </FormItem>
 
       <Row justify="start">
         <Col span={11}>
           <Label label="Release Date" isCompulsory />
-          <Form.Item
+          <FormItem
             colon={false}
             name="releaseDate"
             rules={[{ required: true, message: REQUIRED }]}
           >
             <DatePicker format={DATE_FORMAT} />
-          </Form.Item>
+          </FormItem>
         </Col>
 
         <Col span={11}>
           <Label label="Expiration Date" isCompulsory />
-          <Form.Item
+          <FormItem
             colon={false}
             name="expirationDate"
             rules={[
@@ -162,32 +164,32 @@ const VaccineForm = (props) => {
             ]}
           >
             <DatePicker format={DATE_FORMAT} />
-          </Form.Item>
+          </FormItem>
         </Col>
       </Row>
 
       <Row justify="start">
         <Col span={11}>
           <Label label="Number of Doses" isCompulsory />
-          <Form.Item
+          <FormItem
             colon={false}
             name="numberOfDoses"
             rules={[{ required: true, message: REQUIRED }]}
           >
             <InputNumber min={0} />
-          </Form.Item>
+          </FormItem>
         </Col>
 
         <Col span={11}>
           <Label label="Is Mandatory" />
-          <Form.Item colon={false} name="isMandatory" valuePropName="checked">
+          <FormItem colon={false} name="isMandatory" valuePropName="checked">
             <Switch checked={false} />
-          </Form.Item>
+          </FormItem>
         </Col>
       </Row>
 
       <Label label="Image" />
-      <Form.Item
+      <FormItem
         name="photoUrl"
         valuePropName="file"
         getValueFromEvent={(e) => {
@@ -222,7 +224,7 @@ const VaccineForm = (props) => {
             </Button>
           </Upload>
         </ImgCrop>
-      </Form.Item>
+      </FormItem>
       <AllergyForm isLastAllergyEmpty={isLastAllergyEmpty} />
     </Form>
   );
