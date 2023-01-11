@@ -27,6 +27,7 @@ const VaccineCount = (props) => {
       return (
         <Tag
           key={index}
+          data-testid={`${meta.toLowerCase()}-count`}
           color={
             meta === metaQuery
               ? VACCINE_METADATA_COLOR_CODE[meta]

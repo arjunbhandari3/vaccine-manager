@@ -40,7 +40,7 @@ export const formatVaccineData = (vaccine, action) => {
  * @returns {Array}
  */
 const formatVaccinesData = (vaccines) => {
-  return vaccines.map((vaccine) => formatVaccineData(vaccine));
+  return vaccines?.map((vaccine) => formatVaccineData(vaccine));
 };
 
 /**

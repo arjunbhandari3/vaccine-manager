@@ -271,6 +271,7 @@ const VaccineTable = (props) => {
             <Tooltip title="Edit Vaccine">
               <div
                 className="cursor-pointer"
+                data-testid={`edit-vaccine-${id}`}
                 onClick={() => {
                   setShowModal(true);
                   setSelectedVaccine(object);
@@ -282,6 +283,7 @@ const VaccineTable = (props) => {
             <Tooltip title="Delete Vaccine">
               <div
                 className="cursor-pointer"
+                data-testid={`delete-vaccine-${id}`}
                 onClick={() => showDeleteVaccineModal(id)}
               >
                 <DeleteOutlined style={{ fontSize: 20, color: "red" }} />

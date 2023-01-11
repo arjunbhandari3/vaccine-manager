@@ -12,7 +12,7 @@ import promise from "redux-promise-middleware";
 import { render } from "@testing-library/react";
 import { MemoryRouter as Router } from "react-router-dom";
 
-import reducers from "tests/reducers";
+import reducers from "redux/reducers/rootReducer";
 
 const enhancer = compose(...[applyMiddleware(thunk, promise)]);
 
@@ -33,4 +33,8 @@ const renderWithStore = (
   );
 };
 
-export default renderWithStore;
+// re-export everything
+export * from "@testing-library/react";
+
+// override render method
+export { renderWithStore as render };

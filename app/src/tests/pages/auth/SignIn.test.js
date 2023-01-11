@@ -1,24 +1,25 @@
 import React from "react";
 import { setupServer } from "msw/node";
 
-import SignIn from "pages/auth/SignIn";
 import { signInResponse } from "tests/handlers";
+import { screen, render, fireEvent, cleanup, waitFor } from "tests/render";
 
-import renderWithStore from "tests/render";
-import { screen, fireEvent, cleanup, waitFor } from "@testing-library/react";
+import SignIn from "pages/auth/SignIn";
 
 const server = setupServer(signInResponse);
 
 describe("Sign In Page", () => {
   beforeAll(() => server.listen());
+
   afterEach(() => {
     server.resetHandlers();
     cleanup();
   });
+
   afterAll(() => server.close());
 
   it("should render the sign in page", async () => {
-    renderWithStore(<SignIn />);
+    render(<SignIn />);
 
     const pageTitle = screen.getByRole("heading");
     expect(pageTitle).toBeDefined();
@@ -35,7 +36,7 @@ describe("Sign In Page", () => {
   });
 
   it("should show validation errors on submitting invalid data.", async () => {
-    renderWithStore(<SignIn />);
+    render(<SignIn />);
 
     const emailInput = screen.getByLabelText("Email");
     const passwordInput = screen.getByLabelText("Password");
@@ -53,7 +54,7 @@ describe("Sign In Page", () => {
   });
 
   it("should redirect to home page when logged in successfully", async () => {
-    renderWithStore(<SignIn />);
+    render(<SignIn />);
 
     const emailInput = screen.getByLabelText("Email");
     const passwordInput = screen.getByLabelText("Password");
@@ -75,7 +76,7 @@ describe("Sign In Page", () => {
   });
 
   it("Sign In Page snapshot", () => {
-    const { asFragment } = renderWithStore(<SignIn />);
+    const { asFragment } = render(<SignIn />);
     expect(asFragment()).toMatchSnapshot();
   });
 });

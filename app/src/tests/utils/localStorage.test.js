@@ -24,7 +24,7 @@ describe("localStorageObject", () => {
   it("should clear local storage", () => {
     localStorageObject.set("key1", "value1");
     localStorageObject.set("key2", "value2");
-    localStorageObject.clear();
+    localStorageObject.clear(); // clear local storage
     expect(localStorageObject.get("key1")).toBeNull();
     expect(localStorageObject.get("key2")).toBeNull();
   });

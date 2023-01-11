@@ -15,7 +15,6 @@ import { useDispatch } from "react-redux";
 import { UploadOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 
-import Label from "./Label";
 import AllergyForm from "./AllergyForm";
 
 import { handleError } from "utils/error";
@@ -99,28 +98,28 @@ const VaccineForm = (props) => {
       autoComplete="off"
       scrollToFirstError={true}
     >
-      <Label label="Name" isCompulsory />
       <FormItem
         colon={false}
         name="name"
+        label="Name"
         rules={[{ required: true, message: REQUIRED }]}
       >
         <Input placeholder="Vaccine name" />
       </FormItem>
 
-      <Label label="Description" isCompulsory />
       <FormItem
         colon={false}
         name="description"
+        label="Description"
         rules={[{ required: true, message: REQUIRED }]}
       >
         <Input.TextArea rows={4} placeholder="Vaccine description" />
       </FormItem>
 
-      <Label label="Manufacturer" isCompulsory />
       <FormItem
         colon={false}
         name="manufacturer"
+        label="Manufacturer"
         rules={[{ required: true, message: REQUIRED }]}
       >
         <Input placeholder="Vaccine manufacturer" />
@@ -128,10 +127,10 @@ const VaccineForm = (props) => {
 
       <Row justify="start">
         <Col span={11}>
-          <Label label="Release Date" isCompulsory />
           <FormItem
             colon={false}
             name="releaseDate"
+            label="Release Date"
             rules={[{ required: true, message: REQUIRED }]}
           >
             <DatePicker format={DATE_FORMAT} />
@@ -139,10 +138,10 @@ const VaccineForm = (props) => {
         </Col>
 
         <Col span={11}>
-          <Label label="Expiration Date" isCompulsory />
           <FormItem
             colon={false}
             name="expirationDate"
+            label="Expiration Date"
             rules={[
               { required: true, message: REQUIRED },
               {
@@ -170,10 +169,10 @@ const VaccineForm = (props) => {
 
       <Row justify="start">
         <Col span={11}>
-          <Label label="Number of Doses" isCompulsory />
           <FormItem
             colon={false}
             name="numberOfDoses"
+            label="Number of Doses"
             rules={[{ required: true, message: REQUIRED }]}
           >
             <InputNumber min={0} />
@@ -181,16 +180,20 @@ const VaccineForm = (props) => {
         </Col>
 
         <Col span={11}>
-          <Label label="Is Mandatory" />
-          <FormItem colon={false} name="isMandatory" valuePropName="checked">
+          <FormItem
+            colon={false}
+            name="isMandatory"
+            label="Is Mandatory"
+            valuePropName="checked"
+          >
             <Switch checked={false} />
           </FormItem>
         </Col>
       </Row>
 
-      <Label label="Image" />
       <FormItem
         name="photoUrl"
+        label="Image"
         valuePropName="file"
         getValueFromEvent={(e) => {
           if (Array.isArray(e)) {
@@ -219,7 +222,11 @@ const VaccineForm = (props) => {
             }}
             onRemove={() => setFile(null)}
           >
-            <Button icon={<UploadOutlined />} disabled={file}>
+            <Button
+              icon={<UploadOutlined />}
+              disabled={file}
+              data-testid="upload"
+            >
               Click to upload
             </Button>
           </Upload>

@@ -1,12 +1,11 @@
 import React from "react";
+import { screen, render, fireEvent, waitFor } from "tests/render";
 
 import NotFound from "pages/NotFound";
-import renderWithStore from "tests/render";
-import { screen, fireEvent, waitFor } from "@testing-library/react";
 
 describe("NotFound Page", () => {
   it("should render the not found page", async () => {
-    renderWithStore(<NotFound />);
+    render(<NotFound />);
 
     expect(screen.getByText("404")).toBeInTheDocument();
     expect(
@@ -23,7 +22,7 @@ describe("NotFound Page", () => {
   });
 
   it("not found page in snapshot", () => {
-    const { asFragment } = renderWithStore(<NotFound />);
+    const { asFragment } = render(<NotFound />);
     expect(asFragment()).toMatchSnapshot();
   });
 });

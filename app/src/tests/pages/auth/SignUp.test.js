@@ -1,11 +1,10 @@
 import React from "react";
 import { setupServer } from "msw/node";
 
-import SignUp from "pages/auth/SignUp";
 import { signUpResponse } from "tests/handlers";
+import { screen, render, fireEvent, cleanup, waitFor } from "tests/render";
 
-import renderWithStore from "tests/render";
-import { screen, fireEvent, cleanup, waitFor } from "@testing-library/react";
+import SignUp from "pages/auth/SignUp";
 
 const server = setupServer(signUpResponse);
 const email =
@@ -15,14 +14,16 @@ const email =
 
 describe("Sign Up Page", () => {
   beforeAll(() => server.listen());
+
   afterEach(() => {
     server.resetHandlers();
     cleanup();
   });
+
   afterAll(() => server.close());
 
   it("should render the sign up page", async () => {
-    renderWithStore(<SignUp />);
+    render(<SignUp />);
 
     const pageTitle = screen.getByRole("heading");
     expect(pageTitle).toBeDefined();
@@ -40,7 +41,7 @@ describe("Sign Up Page", () => {
   });
 
   it("should show validation errors on submitting invalid data.", async () => {
-    renderWithStore(<SignUp />);
+    render(<SignUp />);
 
     const nameInput = screen.getByLabelText("Name");
     const emailInput = screen.getByLabelText("Email");
@@ -62,7 +63,7 @@ describe("Sign Up Page", () => {
   });
 
   it("should show sign up success message when signed up successfully", async () => {
-    renderWithStore(<SignUp />);
+    render(<SignUp />);
 
     const nameInput = screen.getByLabelText("Name");
     const emailInput = screen.getByLabelText("Email");
@@ -91,7 +92,7 @@ describe("Sign Up Page", () => {
   });
 
   it("Sign Up Page snapshot", () => {
-    const { asFragment } = renderWithStore(<SignUp />);
+    const { asFragment } = render(<SignUp />);
     expect(asFragment()).toMatchSnapshot();
   });
 });
