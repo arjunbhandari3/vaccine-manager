@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Sign Up Page Sign Up Page snapshot 1`] = `
+exports[`Sign Up Page should match snapshot of Sign Up Page 1`] = `
 <DocumentFragment>
   <div
     class="auth-container"

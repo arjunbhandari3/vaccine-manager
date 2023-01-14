@@ -75,8 +75,9 @@ describe("Sign In Page", () => {
     });
   });
 
-  it("Sign In Page snapshot", () => {
+  it("should match snapshot of Sign In Page", () => {
     const { asFragment } = render(<SignIn />);
+
     expect(asFragment()).toMatchSnapshot();
   });
 });

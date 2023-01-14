@@ -44,7 +44,7 @@ export const allVaccinesResponseData = [
     description: "vaccine 2 desc",
     numberOfDoses: 3,
     manufacturer: "ABC",
-    releaseDate: "2022-11-09T18:15:00.000Z",
+    releaseDate: "2022-11-01T18:15:00.000Z",
     expirationDate: "2022-11-28T18:15:00.000Z",
     photoUrl: null,
     isMandatory: false,

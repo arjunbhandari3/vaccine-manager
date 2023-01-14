@@ -36,5 +36,5 @@ const renderWithStore = (
 // re-export everything
 export * from "@testing-library/react";
 
-// override render method
+// override render method with custom render
 export { renderWithStore as render };

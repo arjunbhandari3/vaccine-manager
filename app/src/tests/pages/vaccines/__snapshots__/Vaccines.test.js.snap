@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Vaccines should match snapshot 1`] = `
+exports[`Vaccines should match snapshot of Vaccines page 1`] = `
 <DocumentFragment>
   <div
     class="vaccines-container"
@@ -515,7 +515,7 @@ exports[`Vaccines should match snapshot 1`] = `
                         <td
                           class="ant-table-cell"
                         >
-                          2022-11-10
+                          2022-11-02
                         </td>
                         <td
                           class="ant-table-cell"

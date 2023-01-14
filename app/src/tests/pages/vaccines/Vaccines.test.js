@@ -9,28 +9,22 @@ import {
   fireEvent,
   waitForElementToBeRemoved,
 } from "tests/render";
+import { handlers } from "tests/handlers";
 
 import Vaccines from "pages/vaccine/Vaccines";
 import VaccineFormModal from "pages/vaccine/components/VaccineFormModal";
-import {
-  vaccineResponse,
-  allVaccinesResponse,
-  vaccineCountResponse,
-} from "tests/handlers";
 
-jest.mock(
-  "antd-img-crop",
-  () =>
-    ({ children }) =>
-      children
-);
+jest.mock("antd-img-crop", () => {
+  return {
+    __esModule: true,
+    default: ({ children }) => children,
+  };
+});
+
+jest.mock("react-redux", () => jest.requireActual("react-redux"));
 
 // setup server
-const server = setupServer(
-  allVaccinesResponse,
-  vaccineCountResponse,
-  vaccineResponse
-);
+const server = setupServer(...handlers);
 
 describe("Vaccines", () => {
   beforeAll(() => server.listen());
@@ -62,7 +56,9 @@ describe("Vaccines", () => {
   });
 
   it("should render vaccine count", async () => {
-    await render(<Vaccines />);
+    render(<Vaccines />);
+
+    await waitForElementToBeRemoved(screen.queryByText("No data"));
 
     expect(await screen.getByTestId("total-count").textContent).toBe(
       "Total: 2"
@@ -76,7 +72,9 @@ describe("Vaccines", () => {
   });
 
   it("should highlight mandatory tab when mandatory tab is clicked", async () => {
-    await render(<Vaccines />);
+    render(<Vaccines />);
+
+    await waitForElementToBeRemoved(screen.queryByText("No data"));
 
     const mandatoryButton = screen.getByTestId("mandatory-count");
     expect(mandatoryButton.textContent).toBe("Mandatory: 1");
@@ -200,10 +198,10 @@ describe("Vaccines", () => {
   });
 
   //snapshot
-  it("should match snapshot", async () => {
+  it("should match snapshot of Vaccines page", async () => {
     const { asFragment } = await render(<Vaccines />);
 
-    // await waitForElementToBeRemoved(screen.queryByText("No data"));
+    await waitForElementToBeRemoved(screen.queryByText("No data"));
 
     expect(await asFragment()).toMatchSnapshot();
   });

@@ -62,7 +62,7 @@ export const isUserLoggedIn = () => {
   const accessToken = getAccessToken();
   const userId = getAuthUser();
 
-  return accessToken && userId;
+  return !!accessToken && !!userId;
 };
 
 /**

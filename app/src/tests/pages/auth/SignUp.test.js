@@ -7,6 +7,7 @@ import { screen, render, fireEvent, cleanup, waitFor } from "tests/render";
 import SignUp from "pages/auth/SignUp";
 
 const server = setupServer(signUpResponse);
+
 const email =
   Math.random().toString(36).substring(2, 15) +
   Math.random().toString(36).substring(2, 15) +
@@ -91,8 +92,9 @@ describe("Sign Up Page", () => {
     });
   });
 
-  it("Sign Up Page snapshot", () => {
+  it("should match snapshot of Sign Up Page", () => {
     const { asFragment } = render(<SignUp />);
+
     expect(asFragment()).toMatchSnapshot();
   });
 });

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`NotFound Page not found page in snapshot 1`] = `
+exports[`NotFound Page should match snapshot of Not found page 1`] = `
 <DocumentFragment>
   <div
     class="wrapper"

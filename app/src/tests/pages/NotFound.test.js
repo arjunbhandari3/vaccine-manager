@@ -21,8 +21,9 @@ describe("NotFound Page", () => {
     });
   });
 
-  it("not found page in snapshot", () => {
+  it("should match snapshot of Not found page", () => {
     const { asFragment } = render(<NotFound />);
+
     expect(asFragment()).toMatchSnapshot();
   });
 });

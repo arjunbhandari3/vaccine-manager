@@ -25,8 +25,9 @@ export const refreshTokenResponse = rest.post(
 export const allVaccinesResponse = rest.get(
   `${config.apiBaseURL}${config.endpoints.vaccine.all}`,
   (req, res, ctx) => {
-    const search = req.query.get("search");
-    const mandatory = req.query.get("mandatory");
+    const search = req.url.searchParams.get("search");
+    const mandatory = req.url.searchParams.get("mandatory");
+
     if (mandatory === "true") {
       return res(ctx.status(200), ctx.json([allVaccinesResponseData[0]]));
     } else if (search === "Vaccine 2") {
@@ -46,3 +47,12 @@ export const vaccineResponse = rest.put(
   `${config.apiBaseURL}${config.endpoints.vaccine.one}`,
   (req, res, ctx) => res(ctx.status(200), ctx.json(allVaccinesResponseData[0]))
 );
+
+export const handlers = [
+  signInResponse,
+  signUpResponse,
+  refreshTokenResponse,
+  allVaccinesResponse,
+  vaccineCountResponse,
+  vaccineResponse,
+];
